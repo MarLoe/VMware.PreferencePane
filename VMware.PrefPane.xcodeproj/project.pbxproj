@@ -1,0 +1,483 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5B3A823E2030ED960062DFEF /* MainPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A823D2030ED960062DFEF /* MainPane.h */; };
+		5B3A82402030ED960062DFEF /* MainPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A823F2030ED960062DFEF /* MainPane.m */; };
+		5B3A82452030ED960062DFEF /* MainPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A82432030ED960062DFEF /* MainPane.xib */; };
+		5B3A824E2030EE720062DFEF /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3A824D2030EE720062DFEF /* PreferencePanes.framework */; };
+		5B3A8259203114AB0062DFEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
+		5B3A825B203118790062DFEF /* VMware.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A825A203118790062DFEF /* VMware.icns */; };
+		5B3A826420312D820062DFEF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826320312D820062DFEF /* AppDelegate.m */; };
+		5B3A826720312D820062DFEF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826620312D820062DFEF /* ViewController.m */; };
+		5B3A826C20312D820062DFEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A826A20312D820062DFEF /* Main.storyboard */; };
+		5B3A826F20312D820062DFEF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826E20312D820062DFEF /* main.m */; };
+		5B3A827420312E340062DFEF /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3A824D2030EE720062DFEF /* PreferencePanes.framework */; };
+		5B3A827F203182440062DFEF /* IntegerValueFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A827D203182440062DFEF /* IntegerValueFormatter.h */; };
+		5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A827E203182440062DFEF /* IntegerValueFormatter.m */; };
+		5BAC02EE2032CC79005FA460 /* VMware.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5BAC02ED2032CC79005FA460 /* VMware.icns */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5B3A827520312FA20062DFEF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B3A82312030ED960062DFEF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B3A82392030ED960062DFEF;
+			remoteInfo = "VMware Screen Resulution";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		5B3A823A2030ED960062DFEF /* VMware.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VMware.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B3A823D2030ED960062DFEF /* MainPane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainPane.h; sourceTree = "<group>"; };
+		5B3A823F2030ED960062DFEF /* MainPane.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainPane.m; sourceTree = "<group>"; };
+		5B3A82442030ED960062DFEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainPane.xib; sourceTree = "<group>"; };
+		5B3A82462030ED960062DFEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5B3A824D2030EE720062DFEF /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = System/Library/Frameworks/PreferencePanes.framework; sourceTree = SDKROOT; };
+		5B3A8258203114AB0062DFEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5B3A825A203118790062DFEF /* VMware.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = VMware.icns; sourceTree = "<group>"; };
+		5B3A826020312D820062DFEF /* VMware.Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VMware.Debug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5B3A826220312D820062DFEF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		5B3A826320312D820062DFEF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		5B3A826520312D820062DFEF /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		5B3A826620312D820062DFEF /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		5B3A826B20312D820062DFEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5B3A826D20312D820062DFEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5B3A826E20312D820062DFEF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5B3A827D203182440062DFEF /* IntegerValueFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntegerValueFormatter.h; sourceTree = "<group>"; };
+		5B3A827E203182440062DFEF /* IntegerValueFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntegerValueFormatter.m; sourceTree = "<group>"; };
+		5BAC02ED2032CC79005FA460 /* VMware.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = VMware.icns; path = VMware/VMware.icns; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5B3A82362030ED960062DFEF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B3A824E2030EE720062DFEF /* PreferencePanes.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B3A825D20312D820062DFEF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B3A827420312E340062DFEF /* PreferencePanes.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5B3A82302030ED960062DFEF = {
+			isa = PBXGroup;
+			children = (
+				5B3A823C2030ED960062DFEF /* VMware */,
+				5B3A826120312D820062DFEF /* VMware.Debug */,
+				5B3A823B2030ED960062DFEF /* Products */,
+				5B3A824C2030EE720062DFEF /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		5B3A823B2030ED960062DFEF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5B3A823A2030ED960062DFEF /* VMware.prefPane */,
+				5B3A826020312D820062DFEF /* VMware.Debug.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5B3A823C2030ED960062DFEF /* VMware */ = {
+			isa = PBXGroup;
+			children = (
+				5B3A823D2030ED960062DFEF /* MainPane.h */,
+				5B3A823F2030ED960062DFEF /* MainPane.m */,
+				5B3A82432030ED960062DFEF /* MainPane.xib */,
+				5B3A82462030ED960062DFEF /* Info.plist */,
+				5B3A825A203118790062DFEF /* VMware.icns */,
+				5B3A8258203114AB0062DFEF /* Assets.xcassets */,
+				5B3A827D203182440062DFEF /* IntegerValueFormatter.h */,
+				5B3A827E203182440062DFEF /* IntegerValueFormatter.m */,
+			);
+			path = VMware;
+			sourceTree = "<group>";
+		};
+		5B3A824C2030EE720062DFEF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5B3A824D2030EE720062DFEF /* PreferencePanes.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5B3A826120312D820062DFEF /* VMware.Debug */ = {
+			isa = PBXGroup;
+			children = (
+				5BAC02ED2032CC79005FA460 /* VMware.icns */,
+				5B3A826220312D820062DFEF /* AppDelegate.h */,
+				5B3A826320312D820062DFEF /* AppDelegate.m */,
+				5B3A826520312D820062DFEF /* ViewController.h */,
+				5B3A826620312D820062DFEF /* ViewController.m */,
+				5B3A826A20312D820062DFEF /* Main.storyboard */,
+				5B3A826D20312D820062DFEF /* Info.plist */,
+				5B3A826E20312D820062DFEF /* main.m */,
+			);
+			path = VMware.Debug;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		5B3A82372030ED960062DFEF /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B3A827F203182440062DFEF /* IntegerValueFormatter.h in Headers */,
+				5B3A823E2030ED960062DFEF /* MainPane.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		5B3A82392030ED960062DFEF /* VMware */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B3A82492030ED960062DFEF /* Build configuration list for PBXNativeTarget "VMware" */;
+			buildPhases = (
+				5B3A82352030ED960062DFEF /* Sources */,
+				5B3A82362030ED960062DFEF /* Frameworks */,
+				5B3A82372030ED960062DFEF /* Headers */,
+				5B3A82382030ED960062DFEF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VMware;
+			productName = "VMware Screen Resulution";
+			productReference = 5B3A823A2030ED960062DFEF /* VMware.prefPane */;
+			productType = "com.apple.product-type.bundle";
+		};
+		5B3A825F20312D820062DFEF /* VMware.Debug */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B3A827120312D820062DFEF /* Build configuration list for PBXNativeTarget "VMware.Debug" */;
+			buildPhases = (
+				5B3A825C20312D820062DFEF /* Sources */,
+				5B3A825D20312D820062DFEF /* Frameworks */,
+				5B3A825E20312D820062DFEF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5B3A827620312FA20062DFEF /* PBXTargetDependency */,
+			);
+			name = VMware.Debug;
+			productName = Test;
+			productReference = 5B3A826020312D820062DFEF /* VMware.Debug.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5B3A82312030ED960062DFEF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "ML-Consulting";
+				TargetAttributes = {
+					5B3A82392030ED960062DFEF = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					5B3A825F20312D820062DFEF = {
+						CreatedOnToolsVersion = 9.2;
+					};
+				};
+			};
+			buildConfigurationList = 5B3A82342030ED960062DFEF /* Build configuration list for PBXProject "VMware.PrefPane" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 5B3A82302030ED960062DFEF;
+			productRefGroup = 5B3A823B2030ED960062DFEF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5B3A82392030ED960062DFEF /* VMware */,
+				5B3A825F20312D820062DFEF /* VMware.Debug */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5B3A82382030ED960062DFEF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B3A8259203114AB0062DFEF /* Assets.xcassets in Resources */,
+				5B3A825B203118790062DFEF /* VMware.icns in Resources */,
+				5B3A82452030ED960062DFEF /* MainPane.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B3A825E20312D820062DFEF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5BAC02EE2032CC79005FA460 /* VMware.icns in Resources */,
+				5B3A826C20312D820062DFEF /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5B3A82352030ED960062DFEF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B3A82402030ED960062DFEF /* MainPane.m in Sources */,
+				5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5B3A825C20312D820062DFEF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5B3A826720312D820062DFEF /* ViewController.m in Sources */,
+				5B3A826F20312D820062DFEF /* main.m in Sources */,
+				5B3A826420312D820062DFEF /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5B3A827620312FA20062DFEF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B3A82392030ED960062DFEF /* VMware */;
+			targetProxy = 5B3A827520312FA20062DFEF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		5B3A82432030ED960062DFEF /* MainPane.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5B3A82442030ED960062DFEF /* Base */,
+			);
+			name = MainPane.xib;
+			sourceTree = "<group>";
+		};
+		5B3A826A20312D820062DFEF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5B3A826B20312D820062DFEF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5B3A82472030ED960062DFEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5B3A82482030ED960062DFEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5B3A824A2030ED960062DFEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 38G5P3YVC2;
+				INFOPLIST_FILE = "$(SRCROOT)/VMware/Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lobger.VMware-Screen-Resulution";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = prefPane;
+			};
+			name = Debug;
+		};
+		5B3A824B2030ED960062DFEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 38G5P3YVC2;
+				INFOPLIST_FILE = "$(SRCROOT)/VMware/Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lobger.VMware-Screen-Resulution";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = prefPane;
+			};
+			name = Release;
+		};
+		5B3A827220312D820062DFEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "$(SRCROOT)/VMware.Debug/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lobger.VMware-Screen-Resulution.Test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5B3A827320312D820062DFEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "$(SRCROOT)/VMware.Debug/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.lobger.VMware-Screen-Resulution.Test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5B3A82342030ED960062DFEF /* Build configuration list for PBXProject "VMware.PrefPane" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B3A82472030ED960062DFEF /* Debug */,
+				5B3A82482030ED960062DFEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5B3A82492030ED960062DFEF /* Build configuration list for PBXNativeTarget "VMware" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B3A824A2030ED960062DFEF /* Debug */,
+				5B3A824B2030ED960062DFEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5B3A827120312D820062DFEF /* Build configuration list for PBXNativeTarget "VMware.Debug" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5B3A827220312D820062DFEF /* Debug */,
+				5B3A827320312D820062DFEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5B3A82312030ED960062DFEF /* Project object */;
+}
