@@ -26,7 +26,11 @@
 
 - (void)mainViewDidLoad
 {
-    [super mainViewDidLoad];
+    // Fix for size according to :
+    // https://blog.timschroeder.net/2016/07/16/the-strange-case-of-the-os-x-system-preferences-window-width
+    NSSize size = self.mainView.frame.size;
+    size.width = [self preferenceWindowWidth];
+    [[self mainView] setFrameSize:size];
     
     NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
     NSString * versionString = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
@@ -45,6 +49,27 @@
     _stepperResY.intValue = screenSize.size.height;
 }
 
+
+- (float)preferenceWindowWidth
+{
+    float result = 668.0; // default in case something goes wrong
+    NSMutableArray *windows = (NSMutableArray *)CFBridgingRelease(CGWindowListCopyWindowInfo
+                                                                  (kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID));
+    int myProcessIdentifier = [[NSProcessInfo processInfo] processIdentifier];
+    BOOL foundWidth = NO;
+    for (NSDictionary *window in windows) {
+        int windowProcessIdentifier = [[window objectForKey:@"kCGWindowOwnerPID"] intValue];
+        if ((myProcessIdentifier == windowProcessIdentifier) && (!foundWidth)) {
+            foundWidth = YES;
+            NSDictionary *bounds = [window objectForKey:@"kCGWindowBounds"];
+            result = [[bounds valueForKey:@"Width"] floatValue];
+        }
+    }
+    return result;
+}
+
+
+#pragma mark Interface Builder Action
 
 - (IBAction)apply:(id)sender
 {

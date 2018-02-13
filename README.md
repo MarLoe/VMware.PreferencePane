@@ -27,12 +27,12 @@ Then open it by double clicking it or manually copy the VMware.prefPane to one o
 ### Current user
 ```~/Library/PreferencePanes```
 ```bash
-cp -r VMware.prefPane ~/Library/PreferencePanes
+cp -r VMware.prefPane ~/Library/PreferencePanes/
 ```
 ### All users
-```/System/Library/PreferencePanes```
+```/Library/PreferencePanes```
 ```bash
-cp -r VMware.prefPane /System/Library/PreferencePanes
+cp -r VMware.prefPane /Library/PreferencePanes/
 ```
 
 # Building
