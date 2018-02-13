@@ -12,6 +12,8 @@
 
 @interface MainPane()
 
+@property (nonatomic, weak) IBOutlet NSTextField* labelVersion;
+
 @property (nonatomic, weak) IBOutlet NSTextField* textFieldResX;
 @property (nonatomic, weak) IBOutlet NSStepper* stepperResX;
 @property (nonatomic, weak) IBOutlet NSTextField* textFieldResY;
@@ -25,6 +27,10 @@
 - (void)mainViewDidLoad
 {
     [super mainViewDidLoad];
+    
+    NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
+    NSString * versionString = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    _labelVersion.stringValue = [NSString stringWithFormat:@"Version: %@", versionString];
 
     IntegerValueFormatter *formatter = [[IntegerValueFormatter alloc] init];
     [_textFieldResX setFormatter:formatter];
