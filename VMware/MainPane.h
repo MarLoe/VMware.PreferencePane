@@ -8,7 +8,7 @@
 
 #import <PreferencePanes/PreferencePanes.h>
 
-@interface MainPane : NSPreferencePane
+@interface MainPane : NSPreferencePane<NSTableViewDelegate>
 
 - (void)mainViewDidLoad;
 

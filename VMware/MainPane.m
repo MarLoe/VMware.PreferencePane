@@ -8,7 +8,7 @@
 
 #import "MainPane.h"
 #import "IntegerValueFormatter.h"
-
+#import <CoreFoundation/CoreFoundation.h>
 
 @interface MainPane()
 
@@ -20,9 +20,15 @@
 @property (nonatomic, weak) IBOutlet NSStepper* stepperResY;
 @property (nonatomic, weak) IBOutlet NSButton* buttonApply;
 
+@property (strong) IBOutlet NSUserDefaultsController *userDefaultsController;
+@property (strong) IBOutlet NSArrayController *presetsArrayController;
+
 @end
 
 @implementation MainPane
+{
+    NSString* _bundleIdentifier;
+}
 
 - (void)mainViewDidLoad
 {
@@ -33,6 +39,18 @@
     [[self mainView] setFrameSize:size];
     
     NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
+    _bundleIdentifier = [prefPaneBundle objectForInfoDictionaryKey:(NSString*)kCFBundleIdentifierKey];
+
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString* presetsKey = [_bundleIdentifier stringByAppendingString:@"@presets"];
+    //[userDefaults removeObjectForKey:presetsKey];
+    if ( [userDefaults arrayForKey:presetsKey].count == 0) {
+        NSURL* presetsUrl = [prefPaneBundle URLForResource:@"Presets" withExtension:@"plist"];
+        NSArray* presets = [NSArray arrayWithContentsOfURL:presetsUrl];
+        [_presetsArrayController addObjects:presets];
+        [_presetsArrayController setSelectionIndexes:[NSIndexSet new]];
+    }
+
     NSString * versionString = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     _labelVersion.stringValue = [NSString stringWithFormat:@"Version: %@", versionString];
 
@@ -69,7 +87,17 @@
 }
 
 
-#pragma mark Interface Builder Action
+#pragma mark - NSTableViewDelegate
+
+- (void)tableViewSelectionDidChange:(NSNotification *)notification
+{
+    NSDictionary* selectedPreset = [_presetsArrayController.selectedObjects firstObject];
+    _textFieldResX.integerValue = [selectedPreset[@"width"] integerValue];
+    _textFieldResY.integerValue = [selectedPreset[@"height"] integerValue];
+}
+
+
+#pragma mark - Interface Builder Action
 
 - (IBAction)apply:(id)sender
 {
@@ -123,8 +151,28 @@
         NSAlert* alert = [NSAlert alertWithError:error];
         [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
     }
-    
+}
 
+
+- (IBAction)presetNameAction:(id)sender
+{
+    // The ugliest hack ever:
+    // In order to trigger NSArrayController to write
+    // back changes, we will add/remove an object :(
+    id selectedObjects = _presetsArrayController.selectedObjects;
+
+    NSDictionary* newPreset = @{ @"name" : @"dummy", @"width" : @0, @"height" : @0 };
+    [_presetsArrayController addObject:newPreset];
+    [_presetsArrayController removeObject:newPreset];
+
+    _presetsArrayController.selectedObjects = selectedObjects;
+}
+
+
+- (IBAction)presetsAdd:(id)sender
+{
+    NSDictionary* newPreset = @{ @"name" : @"New Screen Size", @"width" : @(_textFieldResX.integerValue), @"height" : @(_textFieldResY.integerValue) };
+    [_presetsArrayController addObject:newPreset];
 }
 
 @end
