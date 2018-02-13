@@ -7,10 +7,10 @@ This is a System Preferences pane to change screen resolution on your macOS gues
 
 ![VMware.prefPane](Images/VMware.prefPane.png)
 
-## Introduction
+# Introduction
 When running macOS as a guest on a WMware host, the way you change screen resolution is using a command line tool that comes with VMware Tools:
 
-```bash
+```
 /Library/Application Support/VMware Tools/vmware-resolutionSet <width> <height>
 ```
 
@@ -20,7 +20,9 @@ I access my virtual macOS via [VNC Viewer](https://www.realvnc.com/en/connect/do
 The installation is currently manual. 
 
 ## Manual
-Please copy the VMware.prefPane to one of these locations:
+Please download and unzip VMware.prefPane.zip from the [latest release](https://github.com/MarLoe/VMware.PreferencePane/releases/latest). 
+
+Then open it by double clicking it or manually copy the VMware.prefPane to one of these locations:
 
 ### Current user
 ```~/Library/PreferencePanes```
@@ -29,7 +31,7 @@ cp -r VMware.prefPane ~/Library/PreferencePanes
 ```
 ### All users
 ```/System/Library/PreferencePanes```
-```
+```bash
 cp -r VMware.prefPane /System/Library/PreferencePanes
 ```
 
