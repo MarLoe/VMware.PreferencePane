@@ -201,7 +201,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5B3A82342030ED960062DFEF /* Build configuration list for PBXProject "VMware.PrefPane" */;
+			buildConfigurationList = 5B3A82342030ED960062DFEF /* Build configuration list for PBXProject "VMware.PreferencePane" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -401,7 +401,7 @@
 				DEVELOPMENT_TEAM = 38G5P3YVC2;
 				INFOPLIST_FILE = "$(SRCROOT)/VMware/Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.lobger.VMware-Screen-Resulution";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lobger.VMware.PreferencePane;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = prefPane;
 			};
@@ -415,7 +415,7 @@
 				DEVELOPMENT_TEAM = 38G5P3YVC2;
 				INFOPLIST_FILE = "$(SRCROOT)/VMware/Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.lobger.VMware-Screen-Resulution";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lobger.VMware.PreferencePane;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = prefPane;
 			};
@@ -429,7 +429,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/VMware.Debug/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.lobger.VMware-Screen-Resulution.Test";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lobger.VMware.PreferencePane.Debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -442,7 +442,7 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/VMware.Debug/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.lobger.VMware-Screen-Resulution.Test";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lobger.VMware.PreferencePane.Debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -450,7 +450,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5B3A82342030ED960062DFEF /* Build configuration list for PBXProject "VMware.PrefPane" */ = {
+		5B3A82342030ED960062DFEF /* Build configuration list for PBXProject "VMware.PreferencePane" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5B3A82472030ED960062DFEF /* Debug */,
