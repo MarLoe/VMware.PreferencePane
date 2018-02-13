@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B3183A72032E11100EFDB87 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5B3183A62032E11100EFDB87 /* README.md */; };
 		5B3A823E2030ED960062DFEF /* MainPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A823D2030ED960062DFEF /* MainPane.h */; };
 		5B3A82402030ED960062DFEF /* MainPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A823F2030ED960062DFEF /* MainPane.m */; };
 		5B3A82452030ED960062DFEF /* MainPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A82432030ED960062DFEF /* MainPane.xib */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5B3183A62032E11100EFDB87 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5B3A823A2030ED960062DFEF /* VMware.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VMware.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B3A823D2030ED960062DFEF /* MainPane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainPane.h; sourceTree = "<group>"; };
 		5B3A823F2030ED960062DFEF /* MainPane.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainPane.m; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 		5B3A82302030ED960062DFEF = {
 			isa = PBXGroup;
 			children = (
+				5B3183A62032E11100EFDB87 /* README.md */,
 				5B3A823C2030ED960062DFEF /* VMware */,
 				5B3A826120312D820062DFEF /* VMware.Debug */,
 				5B3A823B2030ED960062DFEF /* Products */,
@@ -227,6 +230,7 @@
 			files = (
 				5B3A8259203114AB0062DFEF /* Assets.xcassets in Resources */,
 				5B3A825B203118790062DFEF /* VMware.icns in Resources */,
+				5B3183A72032E11100EFDB87 /* README.md in Resources */,
 				5B3A82452030ED960062DFEF /* MainPane.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
