@@ -53,11 +53,36 @@
                                             <rect key="frame" x="324" y="270" width="60" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" usesSingleLineMode="YES" id="mGt-66-PVf">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="r4S-Oc-Yz1" customClass="IntegerValueFormatter">
+                                                    <real key="minimum" value="1024"/>
+                                                    <real key="maximum" value="8192"/>
+                                                </numberFormatter>
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
+                                            <connections>
+                                                <binding destination="-2" name="value" keyPath="self.stepperResX.integerValue" id="6tK-hf-g65">
+                                                    <dictionary key="options">
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                        <bool key="NSValidatesImmediately" value="YES"/>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
                                         </textField>
+                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ogO-mw-Ufl">
+                                            <rect key="frame" x="384" y="268" width="19" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" alignment="left" id="y0x-xP-D1x">
+                                                <connections>
+                                                    <action selector="takeIntegerValueFrom:" target="N4B-s8-esC" id="d98-XY-EUB"/>
+                                                </connections>
+                                            </stepperCell>
+                                            <connections>
+                                                <binding destination="-2" name="maxValue" keyPath="self.textFieldResX.formatter.maximum" id="gYO-mt-PJq"/>
+                                                <binding destination="-2" name="minValue" keyPath="self.textFieldResX.formatter.minimum" previousBinding="gYO-mt-PJq" id="uGb-x4-Bkk"/>
+                                            </connections>
+                                        </stepper>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cSP-Gc-jxM">
                                             <rect key="frame" x="405" y="273" width="11" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -71,25 +96,34 @@
                                             <rect key="frame" x="430" y="270" width="60" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" usesSingleLineMode="YES" id="xdl-Ih-fOe">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="MP8-mg-Bby">
+                                                    <real key="minimum" value="768"/>
+                                                    <real key="maximum" value="8192"/>
+                                                </numberFormatter>
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
-                                        </textField>
-                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ogO-mw-Ufl">
-                                            <rect key="frame" x="384" y="268" width="19" height="27"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <stepperCell key="cell" continuous="YES" alignment="left" minValue="1024" maxValue="8192" doubleValue="1024" id="y0x-xP-D1x"/>
                                             <connections>
-                                                <action selector="takeIntValueFrom:" target="N4B-s8-esC" id="U0J-Pc-3Wd"/>
+                                                <binding destination="-2" name="value" keyPath="self.stepperResY.integerValue" id="VsX-Ov-ygg">
+                                                    <dictionary key="options">
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                        <bool key="NSValidatesImmediately" value="YES"/>
+                                                    </dictionary>
+                                                </binding>
                                             </connections>
-                                        </stepper>
+                                        </textField>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="22A-sq-P4P">
                                             <rect key="frame" x="490" y="268" width="19" height="27"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <stepperCell key="cell" continuous="YES" alignment="left" minValue="768" maxValue="8192" doubleValue="768" id="s5L-mm-3i4"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" alignment="left" minValue="768" maxValue="8192" doubleValue="768" id="s5L-mm-3i4">
+                                                <connections>
+                                                    <action selector="takeIntegerValueFrom:" target="0w8-gU-ovm" id="jwA-86-PgB"/>
+                                                </connections>
+                                            </stepperCell>
                                             <connections>
-                                                <action selector="takeIntValueFrom:" target="0w8-gU-ovm" id="uBb-PN-1hy"/>
+                                                <binding destination="-2" name="maxValue" keyPath="self.textFieldResY.formatter.maximum" id="yrx-b7-2z8"/>
+                                                <binding destination="-2" name="minValue" keyPath="self.textFieldResY.formatter.minimum" previousBinding="yrx-b7-2z8" id="72m-Nh-EVa"/>
                                             </connections>
                                         </stepper>
                                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Smz-cM-XLV">

@@ -7,7 +7,6 @@
 //
 
 #import "MainPane.h"
-#import "IntegerValueFormatter.h"
 #import <CoreFoundation/CoreFoundation.h>
 
 @interface MainPane()
@@ -53,10 +52,6 @@
 
     NSString * versionString = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     _labelVersion.stringValue = [NSString stringWithFormat:@"Version: %@", versionString];
-
-    IntegerValueFormatter *formatter = [[IntegerValueFormatter alloc] init];
-    [_textFieldResX setFormatter:formatter];
-    [_textFieldResY setFormatter:formatter];
 
     NSScreen* screen = NSScreen.mainScreen;
     NSRect screenSize = screen.frame;
