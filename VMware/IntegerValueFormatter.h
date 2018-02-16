@@ -11,4 +11,5 @@
 @interface IntegerValueFormatter : NSNumberFormatter
 
 - (instancetype)init;
+
 @end

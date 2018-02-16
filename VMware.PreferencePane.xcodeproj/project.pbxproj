@@ -21,6 +21,7 @@
 		5B3A827420312E340062DFEF /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3A824D2030EE720062DFEF /* PreferencePanes.framework */; };
 		5B3A827F203182440062DFEF /* IntegerValueFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A827D203182440062DFEF /* IntegerValueFormatter.h */; };
 		5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A827E203182440062DFEF /* IntegerValueFormatter.m */; };
+		5B509F9520362265001A2037 /* Presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B509F9420362265001A2037 /* Presets.plist */; };
 		5BAC02EE2032CC79005FA460 /* VMware.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5BAC02ED2032CC79005FA460 /* VMware.icns */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		5B3A826E20312D820062DFEF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5B3A827D203182440062DFEF /* IntegerValueFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntegerValueFormatter.h; sourceTree = "<group>"; };
 		5B3A827E203182440062DFEF /* IntegerValueFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntegerValueFormatter.m; sourceTree = "<group>"; };
+		5B509F9420362265001A2037 /* Presets.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Presets.plist; sourceTree = "<group>"; };
 		5BAC02ED2032CC79005FA460 /* VMware.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = VMware.icns; path = VMware/VMware.icns; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -100,6 +102,7 @@
 		5B3A823C2030ED960062DFEF /* VMware */ = {
 			isa = PBXGroup;
 			children = (
+				5B509F9420362265001A2037 /* Presets.plist */,
 				5B3A823D2030ED960062DFEF /* MainPane.h */,
 				5B3A823F2030ED960062DFEF /* MainPane.m */,
 				5B3A82432030ED960062DFEF /* MainPane.xib */,
@@ -231,6 +234,7 @@
 				5B3A8259203114AB0062DFEF /* Assets.xcassets in Resources */,
 				5B3A825B203118790062DFEF /* VMware.icns in Resources */,
 				5B3183A72032E11100EFDB87 /* README.md in Resources */,
+				5B509F9520362265001A2037 /* Presets.plist in Resources */,
 				5B3A82452030ED960062DFEF /* MainPane.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,8 +11,10 @@
 
 @implementation IntegerValueFormatter
 
-- (instancetype)init {
+- (instancetype)init
+{
     if (self = [super init]) {
+        self.numberStyle = NSNumberFormatterNoStyle;
     }
     return self;
 }

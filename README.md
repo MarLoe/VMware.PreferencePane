@@ -59,3 +59,8 @@ License
 -------
 
 VMware.PreferencesPane is released under the [MIT License](https://github.com/MarLoe/VMware.PreferencePane/blob/master/LICENSE).
+
+
+Acknowledgements
+----------------
+VMware is a registered trademark of [VMware Inc.](http://vmware.com)

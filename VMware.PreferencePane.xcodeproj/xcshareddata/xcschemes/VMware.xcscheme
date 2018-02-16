@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "0920"
-   version = "1.7">
+   version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -44,24 +44,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <PreActions>
-         <ExecutionAction
-            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent
-               title = "Run Script"
-               scriptText = "cp -a &quot;$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME&quot; &quot;$USER_LIBRARY_DIR/PreferencePanes/&quot;">
-               <EnvironmentBuildable>
-                  <BuildableReference
-                     BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "5B3A82392030ED960062DFEF"
-                     BuildableName = "VMware.prefPane"
-                     BlueprintName = "VMware"
-                     ReferencedContainer = "container:VMware.PreferencePane.xcodeproj">
-                  </BuildableReference>
-               </EnvironmentBuildable>
-            </ActionContent>
-         </ExecutionAction>
-      </PreActions>
       <PathRunnable
          runnableDebuggingMode = "0"
          BundleIdentifier = "com.apple.systempreferences"
@@ -78,7 +60,7 @@
       </MacroExpansion>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "$USER_LIBRARY_DIR/PreferencePanes/$FULL_PRODUCT_NAME"
+            argument = "$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
