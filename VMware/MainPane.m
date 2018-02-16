@@ -11,6 +11,7 @@
 
 @interface MainPane()
 
+@property (nonatomic, weak) IBOutlet NSTableView* presetsTableView;
 @property (nonatomic, weak) IBOutlet NSTextField* textFieldResX;
 @property (nonatomic, weak) IBOutlet NSStepper* stepperResX;
 @property (nonatomic, weak) IBOutlet NSTextField* textFieldResY;
@@ -38,15 +39,7 @@
     NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
     _bundleIdentifier = [prefPaneBundle objectForInfoDictionaryKey:(NSString*)kCFBundleIdentifierKey];
 
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString* presetsKey = [_bundleIdentifier stringByAppendingString:@"@presets"];
-    //[userDefaults removeObjectForKey:presetsKey];
-    if ( [userDefaults arrayForKey:presetsKey].count == 0) {
-        NSURL* presetsUrl = [prefPaneBundle URLForResource:@"Presets" withExtension:@"plist"];
-        NSArray* presets = [NSArray arrayWithContentsOfURL:presetsUrl];
-        [_presetsArrayController addObjects:presets];
-        [_presetsArrayController setSelectionIndexes:[NSIndexSet new]];
-    }
+    [self loadDefaultPresets:NO];
 
     NSString * versionString = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     self.version = [NSString stringWithFormat:@"Version: %@", versionString];
@@ -79,6 +72,24 @@
         }
     }
     return result;
+}
+
+
+- (void)loadDefaultPresets:(bool)reset
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString* presetsKey = [_bundleIdentifier stringByAppendingString:@"@presets"];
+    if (reset) {
+        [_presetsArrayController removeObjects:_presetsArrayController.arrangedObjects];
+        [userDefaults removeObjectForKey:presetsKey];
+    }
+    if ( [userDefaults arrayForKey:presetsKey].count == 0) {
+        NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
+        NSURL* presetsUrl = [prefPaneBundle URLForResource:@"Presets" withExtension:@"plist"];
+        NSArray* presets = [NSArray arrayWithContentsOfURL:presetsUrl];
+        [_presetsArrayController addObjects:presets];
+        [_presetsArrayController setSelectionIndexes:[NSIndexSet new]];
+    }
 }
 
 
@@ -179,6 +190,35 @@
 {
     NSDictionary* newPreset = @{ @"name" : @"New Screen Size", @"width" : @(_textFieldResX.integerValue), @"height" : @(_textFieldResY.integerValue) };
     [_presetsArrayController addObject:newPreset];
+}
+
+
+- (IBAction)presetRename:(id)sender
+{
+    NSInteger selectedRow = _presetsTableView.selectedRow;
+    if (selectedRow >= 0) {
+        [_presetsTableView editColumn:0
+                                  row:selectedRow
+                            withEvent:nil
+                               select:YES];
+    }
+}
+
+
+- (IBAction)presetReset:(id)sender
+{
+    NSAlert* alert = [[NSAlert alloc] init];
+    [alert setAlertStyle:NSAlertStyleWarning];
+    [alert setMessageText:@"Reset all presets?"];
+    [alert setInformativeText:@"This will remove all presets and restore the defaults!"];
+    [alert addButtonWithTitle:@"Reset"];
+    [alert addButtonWithTitle:@"Cancel"];
+
+    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
+        if (returnCode != NSModalResponseCancel) {
+            [self loadDefaultPresets:YES];
+        }
+    }];
 }
 
 @end

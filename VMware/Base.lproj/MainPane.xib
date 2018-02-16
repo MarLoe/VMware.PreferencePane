@@ -11,6 +11,7 @@
                 <outlet property="_window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
                 <outlet property="buttonApply" destination="8ew-TP-RYp" id="nSl-iW-gD1"/>
                 <outlet property="presetsArrayController" destination="kcO-Vf-8QR" id="q2Y-WT-Ihe"/>
+                <outlet property="presetsTableView" destination="yV1-Es-Vol" id="z8Q-yn-yV0"/>
                 <outlet property="stepperResX" destination="ogO-mw-Ufl" id="kIm-q1-0I2"/>
                 <outlet property="stepperResY" destination="22A-sq-P4P" id="W8l-Rh-fFD"/>
                 <outlet property="textFieldResX" destination="N4B-s8-esC" id="BDu-oY-C5p"/>
@@ -20,11 +21,25 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <arrayController automaticallyPreparesContent="YES" avoidsEmptySelection="NO" id="kcO-Vf-8QR">
+            <declaredKeys>
+                <string>name</string>
+                <string>width</string>
+                <string>height</string>
+            </declaredKeys>
+            <connections>
+                <binding destination="Xs9-rl-isb" name="contentArray" keyPath="values.com.lobger.VMware.PreferencePane@presets" id="52G-vL-FIS">
+                    <dictionary key="options">
+                        <bool key="NSHandlesContentAsCompoundValue" value="YES"/>
+                    </dictionary>
+                </binding>
+            </connections>
+        </arrayController>
         <window title="≪ do not localize ≫" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" deferred="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="F0z-JX-Cv5" userLabel="PrefPane">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="176" y="715" width="680" height="409"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1152" height="841"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="680" height="409"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -221,7 +236,7 @@
                                                 </subviews>
                                             </clipView>
                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="5yY-Kq-kAi">
-                                                <rect key="frame" x="1" y="-14" width="0.0" height="15"/>
+                                                <rect key="frame" x="1" y="-15" width="0.0" height="16"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="ugt-zl-hW0">
@@ -230,15 +245,15 @@
                                             </scroller>
                                         </scrollView>
                                         <box fixedFrame="YES" boxType="custom" borderType="line" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="Ml3-LL-JQx">
-                                            <rect key="frame" x="18" y="8" width="178" height="19"/>
+                                            <rect key="frame" x="18" y="8" width="178" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <view key="contentView" ambiguous="YES" id="X4g-kO-9w9">
-                                                <rect key="frame" x="1" y="1" width="176" height="17"/>
+                                                <rect key="frame" x="1" y="1" width="176" height="19"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h8h-2M-7ir">
-                                                        <rect key="frame" x="-1" y="-2" width="21" height="21"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <rect key="frame" x="-1" y="-2" width="26" height="23"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MVD-PL-hUf">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
@@ -248,8 +263,8 @@
                                                         </connections>
                                                     </button>
                                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lw6-CY-UK3">
-                                                        <rect key="frame" x="19" y="-2" width="21" height="21"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <rect key="frame" x="24" y="-2" width="26" height="23"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QFb-a0-Vkj">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
@@ -266,9 +281,42 @@
                                                             </binding>
                                                         </connections>
                                                     </button>
-                                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Oi-R3-h0s">
-                                                        <rect key="frame" x="39" y="-2" width="138" height="21"/>
+                                                    <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hN9-Gv-qSP">
+                                                        <rect key="frame" x="48" y="-2" width="34" height="23"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="left" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" autoenablesItems="NO" altersStateOfSelectedItem="NO" id="npB-nL-98z">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="menu"/>
+                                                            <menu key="menu" autoenablesItems="NO" id="bll-pg-SXC">
+                                                                <items>
+                                                                    <menuItem state="on" image="NSActionTemplate" hidden="YES" id="bvj-Vr-4ni"/>
+                                                                    <menuItem title="Rename" id="OS8-cI-EjH">
+                                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                                        <connections>
+                                                                            <action selector="presetRename:" target="-2" id="R21-z2-M6b"/>
+                                                                            <binding destination="kcO-Vf-8QR" name="enabled" keyPath="selectedObjects.@count" id="vI9-U7-pqV">
+                                                                                <dictionary key="options">
+                                                                                    <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                                                                    <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                                                                    <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                                                </dictionary>
+                                                                            </binding>
+                                                                        </connections>
+                                                                    </menuItem>
+                                                                    <menuItem isSeparatorItem="YES" id="yvw-1p-4VJ"/>
+                                                                    <menuItem title="Reset" id="WAC-aa-wqw">
+                                                                        <connections>
+                                                                            <action selector="presetReset:" target="-2" id="HHE-Jd-9iD"/>
+                                                                        </connections>
+                                                                    </menuItem>
+                                                                </items>
+                                                            </menu>
+                                                        </popUpButtonCell>
+                                                    </popUpButton>
+                                                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Oi-R3-h0s">
+                                                        <rect key="frame" x="81" y="-2" width="96" height="23"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7Q5-ox-Sy8">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
@@ -308,12 +356,12 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="-2" name="displayPatternValue1" keyPath="self.currentWidth" id="Kr9-VU-Tb2">
+                                                <binding destination="-2" name="displayPatternValue2" keyPath="self.currentHeight" previousBinding="Kr9-VU-Tb2" id="sZQ-JG-hzq">
                                                     <dictionary key="options">
                                                         <string key="NSDisplayPattern">%{value1}@ x %{value2}@</string>
                                                     </dictionary>
                                                 </binding>
-                                                <binding destination="-2" name="displayPatternValue2" keyPath="self.currentHeight" previousBinding="Kr9-VU-Tb2" id="sZQ-JG-hzq">
+                                                <binding destination="-2" name="displayPatternValue1" keyPath="self.currentWidth" id="Kr9-VU-Tb2">
                                                     <dictionary key="options">
                                                         <string key="NSDisplayPattern">%{value1}@ x %{value2}@</string>
                                                     </dictionary>
@@ -344,20 +392,6 @@
             </view>
             <point key="canvasLocation" x="145" y="181.5"/>
         </window>
-        <arrayController automaticallyPreparesContent="YES" avoidsEmptySelection="NO" id="kcO-Vf-8QR">
-            <declaredKeys>
-                <string>name</string>
-                <string>width</string>
-                <string>height</string>
-            </declaredKeys>
-            <connections>
-                <binding destination="Xs9-rl-isb" name="contentArray" keyPath="values.com.lobger.VMware.PreferencePane@presets" id="52G-vL-FIS">
-                    <dictionary key="options">
-                        <bool key="NSHandlesContentAsCompoundValue" value="YES"/>
-                    </dictionary>
-                </binding>
-            </connections>
-        </arrayController>
         <userDefaultsController representsSharedInstance="YES" id="Xs9-rl-isb"/>
     </objects>
     <resources>
