@@ -11,8 +11,6 @@
 
 @interface MainPane()
 
-@property (nonatomic, weak) IBOutlet NSTextField* labelVersion;
-
 @property (nonatomic, weak) IBOutlet NSTextField* textFieldResX;
 @property (nonatomic, weak) IBOutlet NSStepper* stepperResX;
 @property (nonatomic, weak) IBOutlet NSTextField* textFieldResY;
@@ -51,15 +49,17 @@
     }
 
     NSString * versionString = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    _labelVersion.stringValue = [NSString stringWithFormat:@"Version: %@", versionString];
+    self.version = [NSString stringWithFormat:@"Version: %@", versionString];
 
-    NSScreen* screen = NSScreen.mainScreen;
-    NSRect screenSize = screen.frame;
-
-    _textFieldResX.integerValue = screenSize.size.width;
-    _stepperResX.integerValue = screenSize.size.width;
-    _textFieldResY.integerValue = screenSize.size.height;
-    _stepperResY.integerValue = screenSize.size.height;
+    [self applicationDidChangeScreenParametersNotification:nil];
+    
+    _stepperResX.integerValue = _currentWidth.integerValue;
+    _stepperResY.integerValue = _currentHeight.integerValue;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidChangeScreenParametersNotification:)
+                                                 name:NSApplicationDidChangeScreenParametersNotification
+                                               object:nil];
 }
 
 
@@ -82,13 +82,24 @@
 }
 
 
+#pragma mark - Notification Handlers
+
+- (void)applicationDidChangeScreenParametersNotification:(NSNotification*) notification
+{
+    NSScreen* screen = NSScreen.mainScreen;
+    NSRect screenSize = screen.frame;
+    self.currentWidth = [NSNumber numberWithInteger:screenSize.size.width];
+    self.currentHeight = [NSNumber numberWithInteger:screenSize.size.height];
+}
+
+
 #pragma mark - NSTableViewDelegate
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
     NSDictionary* selectedPreset = [_presetsArrayController.selectedObjects firstObject];
-    _textFieldResX.integerValue = [selectedPreset[@"width"] integerValue];
-    _textFieldResY.integerValue = [selectedPreset[@"height"] integerValue];
+    _stepperResX.integerValue = [selectedPreset[@"width"] integerValue];
+    _stepperResY.integerValue = [selectedPreset[@"height"] integerValue];
 }
 
 
