@@ -61,10 +61,10 @@
     NSScreen* screen = NSScreen.mainScreen;
     NSRect screenSize = screen.frame;
 
-    _textFieldResX.intValue = screenSize.size.width;
-    _stepperResX.intValue = screenSize.size.width;
-    _textFieldResY.intValue = screenSize.size.height;
-    _stepperResY.intValue = screenSize.size.height;
+    _textFieldResX.integerValue = screenSize.size.width;
+    _stepperResX.integerValue = screenSize.size.width;
+    _textFieldResY.integerValue = screenSize.size.height;
+    _stepperResY.integerValue = screenSize.size.height;
 }
 
 
