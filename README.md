@@ -17,12 +17,11 @@ When running macOS as a guest on a WMware host, the way you change screen resolu
 I access my virtual macOS via [VNC Viewer](https://www.realvnc.com/en/connect/download/viewer) from different workstations with different screen sizes. This leaves me with the need to change screen size often - and for some reason I always has to [google](https://www.google.dk/search?q=vmware+osx+change+resolution) how to do this.
 
 # Installing
-The installation is currently manual. 
-
-## Manual
 Please download and unzip VMware.prefPane.zip from the [latest release](https://github.com/MarLoe/VMware.PreferencePane/releases/latest). 
 
-Then open it by double clicking it or manually copy the VMware.prefPane to one of these locations:
+Then open it by double clicking it. If you get a message that "VMware.prefPane can't be opened because it is from an unidentified developer", then you can right-click "VMware.prefPane" and select open from the menu.
+
+You can also manually copy the VMware.prefPane to one of these locations:
 
 ### Current user
 ```~/Library/PreferencePanes```
