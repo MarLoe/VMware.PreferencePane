@@ -23,6 +23,7 @@
 		5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A827E203182440062DFEF /* IntegerValueFormatter.m */; };
 		5B509F9520362265001A2037 /* Presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B509F9420362265001A2037 /* Presets.plist */; };
 		5BAC02EE2032CC79005FA460 /* VMware.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5BAC02ED2032CC79005FA460 /* VMware.icns */; };
+		5BB1E4BF2038498600576AAF /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB1E4BE2038498600576AAF /* SecurityInterface.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,8 @@
 		5B3A827E203182440062DFEF /* IntegerValueFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntegerValueFormatter.m; sourceTree = "<group>"; };
 		5B509F9420362265001A2037 /* Presets.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Presets.plist; sourceTree = "<group>"; };
 		5BAC02ED2032CC79005FA460 /* VMware.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = VMware.icns; path = VMware/VMware.icns; sourceTree = SOURCE_ROOT; };
+		5BB1E4BE2038498600576AAF /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
+		5BB1E4C02038498F00576AAF /* SecurityFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityFoundation.framework; path = System/Library/Frameworks/SecurityFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5BB1E4BF2038498600576AAF /* SecurityInterface.framework in Frameworks */,
 				5B3A824E2030EE720062DFEF /* PreferencePanes.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +122,8 @@
 		5B3A824C2030EE720062DFEF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5BB1E4C02038498F00576AAF /* SecurityFoundation.framework */,
+				5BB1E4BE2038498600576AAF /* SecurityInterface.framework */,
 				5B3A824D2030EE720062DFEF /* PreferencePanes.framework */,
 			);
 			name = Frameworks;

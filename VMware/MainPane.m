@@ -8,6 +8,7 @@
 
 #import "MainPane.h"
 #import <CoreFoundation/CoreFoundation.h>
+#import <SecurityInterface/SFAuthorizationView.h>
 
 @interface MainPane()
 
@@ -16,6 +17,8 @@
 @property (nonatomic, weak) IBOutlet NSStepper* stepperResX;
 @property (nonatomic, weak) IBOutlet NSTextField* textFieldResY;
 @property (nonatomic, weak) IBOutlet NSStepper* stepperResY;
+
+@property (nonatomic, weak) IBOutlet SFAuthorizationView* authorizationView;
 @property (nonatomic, weak) IBOutlet NSButton* buttonApply;
 
 @property (strong) IBOutlet NSUserDefaultsController *userDefaultsController;
@@ -53,6 +56,13 @@
                                              selector:@selector(applicationDidChangeScreenParametersNotification:)
                                                  name:NSApplicationDidChangeScreenParametersNotification
                                                object:nil];
+
+    // Setup security.
+    AuthorizationItem items = {kAuthorizationRightExecute, 0, NULL, 0};
+    AuthorizationRights rights = {1, &items};
+    _authorizationView.delegate = self;
+    [_authorizationView setAuthorizationRights:&rights];
+    [_authorizationView updateStatus:nil];
 }
 
 
@@ -93,6 +103,84 @@
 }
 
 
+- (BOOL)setScreenSize:(NSSize)size priviledged:(BOOL)priviledged
+{
+    NSPipe *pipeError = [NSPipe pipe];
+    NSPipe *pipeOutput = [NSPipe pipe];
+    
+    NSTask *task = [[NSTask alloc] init];
+    task.currentDirectoryPath = @"/Library/Application Support/VMware Tools/";
+    task.launchPath = [task.currentDirectoryPath stringByAppendingPathComponent:@"vmware-resolutionSet"];
+    task.arguments = @[@(size.width).stringValue, @(size.height).stringValue];
+    task.standardError = pipeError;
+    task.standardOutput = pipeOutput;
+
+    NSError* error = nil;
+    if (![task launchAndReturnError:(&error)]) {
+        NSLog (@"ERROR:\n%@", error);
+        NSAlert* alert = [NSAlert alertWithError:error];
+        [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
+        return NO;
+    }
+    
+    [task waitUntilExit];
+    
+    if (task.terminationStatus != 0) {
+        
+        // ERROR
+        NSFileHandle *file = pipeError.fileHandleForReading;
+        NSData *data = [file readDataToEndOfFile];
+        [file closeFile];
+        NSString *errorText = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+        NSLog (@"ERROR (%i):\n%@", task.terminationStatus, errorText);
+        
+        error = [NSError errorWithDomain:NSPOSIXErrorDomain
+                                    code:task.terminationStatus
+                                userInfo:@{ NSLocalizedDescriptionKey: errorText }];
+        
+        NSAlert* alert = [NSAlert alertWithError:error];
+        [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
+        return NO;
+    }
+    
+    // SUCCESS
+    NSFileHandle *file = pipeOutput.fileHandleForReading;
+    NSData *data = [file readDataToEndOfFile];
+    [file closeFile];
+    if (data.length == 0) {
+        // vmware-resolutionSet writes its log to stderr
+        NSFileHandle *file = pipeError.fileHandleForReading;
+        data = [file readDataToEndOfFile];
+        [file closeFile];
+    }
+    NSString *outputText = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+    NSLog (@"SUCCESS:\n%@", outputText);
+    
+    if (priviledged) {
+        // Convert array into void-* array.
+        const char **argv = (const char **)malloc(sizeof(char *) * [task.arguments count] + 1);
+        int argvIndex = 0;
+        for (NSString *string in task.arguments) {
+            argv[argvIndex] = [string UTF8String];
+            argvIndex++;
+        }
+        argv[argvIndex] = nil;
+        
+        // This is depricated - but if it works, it works
+        OSErr processError = AuthorizationExecuteWithPrivileges([[_authorizationView authorization] authorizationRef],
+                                                                [task.launchPath UTF8String],
+                                                                kAuthorizationFlagDefaults,
+                                                                (char *const *)argv, nil);
+        free(argv);
+        
+        if (processError != errAuthorizationSuccess)
+            NSLog(@"Error: %d", processError);
+    }
+    
+    return YES;
+}
+
+
 #pragma mark - Notification Handlers
 
 - (void)applicationDidChangeScreenParametersNotification:(NSNotification*) notification
@@ -118,56 +206,8 @@
 
 - (IBAction)apply:(id)sender
 {
-    NSPipe *pipeError = [NSPipe pipe];
-    NSPipe *pipeOutput = [NSPipe pipe];
-
-    NSTask *task = [[NSTask alloc] init];
-    task.currentDirectoryPath = @"/Library/Application Support/VMware Tools/";
-    task.launchPath = [task.currentDirectoryPath stringByAppendingPathComponent:@"vmware-resolutionSet"];
-    task.arguments = @[_textFieldResX.stringValue, _textFieldResY.stringValue];
-    task.standardError = pipeError;
-    task.standardOutput = pipeOutput;
-
-    NSError* error = nil;
-    if (![task launchAndReturnError:(&error)]) {
-        NSLog (@"ERROR:\n%@", error);
-        NSAlert* alert = [NSAlert alertWithError:error];
-        [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
-        return;
-    }
-
-    [task waitUntilExit];
-    
-    if (task.terminationStatus == 0) {
-        // SUCCESS
-        NSFileHandle *file = pipeOutput.fileHandleForReading;
-        NSData *data = [file readDataToEndOfFile];
-        [file closeFile];
-        if (data.length == 0) {
-            // vmware-resolutionSet writes its log to stderr
-            NSFileHandle *file = pipeError.fileHandleForReading;
-            data = [file readDataToEndOfFile];
-            [file closeFile];
-        }
-        NSString *outputText = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-        NSLog (@"SUCCESS:\n%@", outputText);
-    }
-    else
-    {
-        // ERROR
-        NSFileHandle *file = pipeError.fileHandleForReading;
-        NSData *data = [file readDataToEndOfFile];
-        [file closeFile];
-        NSString *errorText = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-        NSLog (@"ERROR (%i):\n%@", task.terminationStatus, errorText);
-
-        error = [NSError errorWithDomain:NSPOSIXErrorDomain
-                                    code:task.terminationStatus
-                                userInfo:@{ NSLocalizedDescriptionKey: errorText }];
-        
-        NSAlert* alert = [NSAlert alertWithError:error];
-        [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
-    }
+    [self setScreenSize:NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue)
+            priviledged:_authorizationView.authorizationState == SFAuthorizationViewUnlockedState];
 }
 
 
