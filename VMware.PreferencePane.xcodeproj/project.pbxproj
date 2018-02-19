@@ -12,7 +12,6 @@
 		5B3A82402030ED960062DFEF /* MainPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A823F2030ED960062DFEF /* MainPane.m */; };
 		5B3A82452030ED960062DFEF /* MainPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A82432030ED960062DFEF /* MainPane.xib */; };
 		5B3A824E2030EE720062DFEF /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3A824D2030EE720062DFEF /* PreferencePanes.framework */; };
-		5B3A8259203114AB0062DFEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		5B3A825B203118790062DFEF /* VMware.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A825A203118790062DFEF /* VMware.icns */; };
 		5B3A826420312D820062DFEF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826320312D820062DFEF /* AppDelegate.m */; };
 		5B3A826720312D820062DFEF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826620312D820062DFEF /* ViewController.m */; };
@@ -237,7 +236,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B3A8259203114AB0062DFEF /* Assets.xcassets in Resources */,
 				5B3A825B203118790062DFEF /* VMware.icns in Resources */,
 				5B3183A72032E11100EFDB87 /* README.md in Resources */,
 				5B509F9520362265001A2037 /* Presets.plist in Resources */,

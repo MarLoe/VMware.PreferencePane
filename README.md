@@ -46,9 +46,9 @@ One is of cause to [disable System Integration Protection](https://developer.app
 
 Another is making a copy of the "System Preferences" application and resign it. See [stack**overflow**](https://stackoverflow.com/a/40708258) for more information on this approach.
 
-I went with the test bed application. So I created "VMware.Debug" that basically loads the VMware.prefPane and displays it. Simply select this target and press "Run".
+I went with the test bed application. So I created "VMware.Debug", which basically loads the VMware.prefPane and displays it. Simply select this target and press "Run".
 
-Selecting the "VMware" target will copy the preferance pane to the users "PreferencePanes" folder and then launch (not debug) the "System Preferences" application. You won't be able to debug, but you can test the preference pane live.
+Selecting the "VMware" target will launch the VMware.prePane initiating a (re)install in "System Preferences" application. You won't be able to debug, but you can test the preference pane live.
 > Sometimes it can be neccessary to remove the existing instalation from the "System Preferences" application first.
 >
 >![Remove VMware Preference Pane](Images/VMware.prefPane.remove.png)
