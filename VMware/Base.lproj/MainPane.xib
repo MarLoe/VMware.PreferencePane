@@ -40,7 +40,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="176" y="715" width="680" height="409"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="680" height="409"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -237,7 +237,7 @@
                                                 </subviews>
                                             </clipView>
                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="5yY-Kq-kAi">
-                                                <rect key="frame" x="1" y="-15" width="0.0" height="16"/>
+                                                <rect key="frame" x="1" y="-14" width="0.0" height="15"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="ugt-zl-hW0">
@@ -377,9 +377,9 @@
                             <outlet property="delegate" destination="-2" id="yhP-EL-6Cl"/>
                         </connections>
                     </tabView>
-                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IgJ-mo-r8R" customClass="SFAuthorizationView">
+                    <customView toolTip="To make screen size permanet accross reboot, you must unlock" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IgJ-mo-r8R" customClass="SFAuthorizationView">
                         <rect key="frame" x="25" y="16" width="465" height="34"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                     </customView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNY-mm-gBj">
                         <rect key="frame" x="537" y="386" width="125" height="17"/>

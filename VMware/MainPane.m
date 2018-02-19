@@ -103,7 +103,7 @@
 }
 
 
-- (BOOL)setScreenSize:(NSSize)size priviledged:(BOOL)priviledged
+- (void)setScreenSize:(NSSize)size authorization:(SFAuthorization*)authorization
 {
     NSPipe *pipeError = [NSPipe pipe];
     NSPipe *pipeOutput = [NSPipe pipe];
@@ -114,13 +114,13 @@
     task.arguments = @[@(size.width).stringValue, @(size.height).stringValue];
     task.standardError = pipeError;
     task.standardOutput = pipeOutput;
-
+    
     NSError* error = nil;
     if (![task launchAndReturnError:(&error)]) {
         NSLog (@"ERROR:\n%@", error);
         NSAlert* alert = [NSAlert alertWithError:error];
         [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
-        return NO;
+        return;
     }
     
     [task waitUntilExit];
@@ -140,12 +140,12 @@
         
         NSAlert* alert = [NSAlert alertWithError:error];
         [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
-        return NO;
+        return;
     }
     
     // SUCCESS
-    NSFileHandle *file = pipeOutput.fileHandleForReading;
-    NSData *data = [file readDataToEndOfFile];
+    NSFileHandle* file = pipeOutput.fileHandleForReading;
+    NSData* data = [file readDataToEndOfFile];
     [file closeFile];
     if (data.length == 0) {
         // vmware-resolutionSet writes its log to stderr
@@ -153,12 +153,15 @@
         data = [file readDataToEndOfFile];
         [file closeFile];
     }
-    NSString *outputText = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+    NSString *outputText = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSLog (@"SUCCESS:\n%@", outputText);
     
-    if (priviledged) {
-        // Convert array into void-* array.
-        const char **argv = (const char **)malloc(sizeof(char *) * [task.arguments count] + 1);
+    if (authorization != nil) {
+        // Make mutable copy - needed to test different extra parameters during development
+        NSMutableArray* args = task.arguments.mutableCopy;
+        
+        // Convert array into void* array.
+        const char **argv = (const char **)malloc(sizeof(char *) * [args count] + 1);
         int argvIndex = 0;
         for (NSString *string in task.arguments) {
             argv[argvIndex] = [string UTF8String];
@@ -166,18 +169,20 @@
         }
         argv[argvIndex] = nil;
         
-        // This is depricated - but if it works, it works
-        OSErr processError = AuthorizationExecuteWithPrivileges([[_authorizationView authorization] authorizationRef],
+        // This is depricated - but if it works, it works - and if it works, don't fix it
+        // Anyway, someday I might look a bit more int SMJobBless
+        OSErr processError = AuthorizationExecuteWithPrivileges([authorization authorizationRef],
                                                                 [task.launchPath UTF8String],
                                                                 kAuthorizationFlagDefaults,
-                                                                (char *const *)argv, nil);
+                                                                (char *const *)argv,
+                                                                NULL);
         free(argv);
         
-        if (processError != errAuthorizationSuccess)
+        if (processError != errAuthorizationSuccess) {
             NSLog(@"Error: %d", processError);
+            return;
+        }
     }
-    
-    return YES;
 }
 
 
@@ -206,8 +211,13 @@
 
 - (IBAction)apply:(id)sender
 {
+    SFAuthorization* authorization = nil;
+    if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
+        authorization = [_authorizationView authorization];
+    }
+    
     [self setScreenSize:NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue)
-            priviledged:_authorizationView.authorizationState == SFAuthorizationViewUnlockedState];
+          authorization:authorization];
 }
 
 
@@ -216,6 +226,7 @@
     // The ugliest hack ever:
     // In order to trigger NSArrayController to write
     // back changes, we will add/remove an object :(
+    // Please, anyone! Tell me how to go bout this....
     id selectedObjects = _presetsArrayController.selectedObjects;
 
     NSDictionary* newPreset = @{ @"name" : @"dummy", @"width" : @0, @"height" : @0 };
