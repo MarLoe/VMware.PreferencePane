@@ -10,6 +10,7 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <SecurityInterface/SFAuthorizationView.h>
 
+
 @interface MainPane()
 
 @property (nonatomic, weak) IBOutlet NSTableView* presetsTableView;
@@ -211,13 +212,39 @@
 
 - (IBAction)apply:(id)sender
 {
-    SFAuthorization* authorization = nil;
+    NSSize size = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@"@skipPrivilegedWarning"];
+
     if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
-        authorization = [_authorizationView authorization];
+        [self setScreenSize:size authorization:[_authorizationView authorization]];
+    }
+    else if ([userDefaults boolForKey:skipPrivilegedWarningKey]) {
+        [self setScreenSize:size authorization:nil];
+    }
+    else {
+        NSAlert* alert = [[NSAlert alloc] init];
+        alert.alertStyle = NSAlertStyleWarning;
+        alert.showsSuppressionButton = YES; // Uses default checkbox title
+        alert.messageText = NSLocalizedString(@"This is not permanent!", -);
+        alert.informativeText = NSLocalizedString(@"To make the screen size change accross reboots, you must unlock the padlock before pressing \"Apply\"!", -);
+        [alert addButtonWithTitle:NSLocalizedString(@"Continue", -)];
+        [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
+
+        [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
+            if (returnCode == NSModalResponseCancel) {
+                return;
+            }
+            
+            if (alert.suppressionButton.state == NSOnState) {
+                // Suppress this alert from now on
+                [userDefaults setBool:YES forKey:skipPrivilegedWarningKey];
+            }
+            
+            [self setScreenSize:size authorization:nil];
+        }];
     }
     
-    [self setScreenSize:NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue)
-          authorization:authorization];
 }
 
 
@@ -259,16 +286,17 @@
 - (IBAction)presetReset:(id)sender
 {
     NSAlert* alert = [[NSAlert alloc] init];
-    [alert setAlertStyle:NSAlertStyleWarning];
-    [alert setMessageText:@"Reset all presets?"];
-    [alert setInformativeText:@"This will remove all presets and restore the defaults!"];
-    [alert addButtonWithTitle:@"Reset"];
-    [alert addButtonWithTitle:@"Cancel"];
+    alert.alertStyle = NSAlertStyleWarning;
+    alert.messageText = NSLocalizedString(@"Reset all presets?", -);
+    alert.informativeText = NSLocalizedString(@"This will remove all presets and restore the defaults!", -);
+    [alert addButtonWithTitle:NSLocalizedString(@"Reset", -)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
 
     [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
-        if (returnCode != NSModalResponseCancel) {
-            [self loadDefaultPresets:YES];
+        if (returnCode == NSModalResponseCancel) {
+            return;
         }
+        [self loadDefaultPresets:YES];
     }];
 }
 
