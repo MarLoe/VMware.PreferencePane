@@ -8,6 +8,8 @@
 
 #import "MainPane.h"
 #import <CoreFoundation/CoreFoundation.h>
+#import <SecurityInterface/SFAuthorizationView.h>
+
 
 @interface MainPane()
 
@@ -16,6 +18,8 @@
 @property (nonatomic, weak) IBOutlet NSStepper* stepperResX;
 @property (nonatomic, weak) IBOutlet NSTextField* textFieldResY;
 @property (nonatomic, weak) IBOutlet NSStepper* stepperResY;
+
+@property (nonatomic, weak) IBOutlet SFAuthorizationView* authorizationView;
 @property (nonatomic, weak) IBOutlet NSButton* buttonApply;
 
 @property (strong) IBOutlet NSUserDefaultsController *userDefaultsController;
@@ -53,6 +57,13 @@
                                              selector:@selector(applicationDidChangeScreenParametersNotification:)
                                                  name:NSApplicationDidChangeScreenParametersNotification
                                                object:nil];
+
+    // Setup security.
+    AuthorizationItem items = {kAuthorizationRightExecute, 0, NULL, 0};
+    AuthorizationRights rights = {1, &items};
+    _authorizationView.delegate = self;
+    [_authorizationView setAuthorizationRights:&rights];
+    [_authorizationView updateStatus:nil];
 }
 
 
@@ -93,6 +104,89 @@
 }
 
 
+- (void)setScreenSize:(NSSize)size authorization:(SFAuthorization*)authorization
+{
+    NSPipe *pipeError = [NSPipe pipe];
+    NSPipe *pipeOutput = [NSPipe pipe];
+    
+    NSTask *task = [[NSTask alloc] init];
+    task.currentDirectoryPath = @"/Library/Application Support/VMware Tools/";
+    task.launchPath = [task.currentDirectoryPath stringByAppendingPathComponent:@"vmware-resolutionSet"];
+    task.arguments = @[@(size.width).stringValue, @(size.height).stringValue];
+    task.standardError = pipeError;
+    task.standardOutput = pipeOutput;
+    
+    NSError* error = nil;
+    if (![task launchAndReturnError:(&error)]) {
+        NSLog (@"ERROR:\n%@", error);
+        NSAlert* alert = [NSAlert alertWithError:error];
+        [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
+        return;
+    }
+    
+    [task waitUntilExit];
+    
+    if (task.terminationStatus != 0) {
+        
+        // ERROR
+        NSFileHandle *file = pipeError.fileHandleForReading;
+        NSData *data = [file readDataToEndOfFile];
+        [file closeFile];
+        NSString *errorText = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+        NSLog (@"ERROR (%i):\n%@", task.terminationStatus, errorText);
+        
+        error = [NSError errorWithDomain:NSPOSIXErrorDomain
+                                    code:task.terminationStatus
+                                userInfo:@{ NSLocalizedDescriptionKey: errorText }];
+        
+        NSAlert* alert = [NSAlert alertWithError:error];
+        [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
+        return;
+    }
+    
+    // SUCCESS
+    NSFileHandle* file = pipeOutput.fileHandleForReading;
+    NSData* data = [file readDataToEndOfFile];
+    [file closeFile];
+    if (data.length == 0) {
+        // vmware-resolutionSet writes its log to stderr
+        NSFileHandle *file = pipeError.fileHandleForReading;
+        data = [file readDataToEndOfFile];
+        [file closeFile];
+    }
+    NSString *outputText = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog (@"SUCCESS:\n%@", outputText);
+    
+    if (authorization != nil) {
+        // Make mutable copy - needed to test different extra parameters during development
+        NSMutableArray* args = task.arguments.mutableCopy;
+        
+        // Convert array into void* array.
+        const char **argv = (const char **)malloc(sizeof(char *) * [args count] + 1);
+        int argvIndex = 0;
+        for (NSString *string in task.arguments) {
+            argv[argvIndex] = [string UTF8String];
+            argvIndex++;
+        }
+        argv[argvIndex] = nil;
+        
+        // This is depricated - but if it works, it works - and if it works, don't fix it
+        // Anyway, someday I might look a bit more int SMJobBless
+        OSErr processError = AuthorizationExecuteWithPrivileges([authorization authorizationRef],
+                                                                [task.launchPath UTF8String],
+                                                                kAuthorizationFlagDefaults,
+                                                                (char *const *)argv,
+                                                                NULL);
+        free(argv);
+        
+        if (processError != errAuthorizationSuccess) {
+            NSLog(@"Error: %d", processError);
+            return;
+        }
+    }
+}
+
+
 #pragma mark - Notification Handlers
 
 - (void)applicationDidChangeScreenParametersNotification:(NSNotification*) notification
@@ -118,56 +212,39 @@
 
 - (IBAction)apply:(id)sender
 {
-    NSPipe *pipeError = [NSPipe pipe];
-    NSPipe *pipeOutput = [NSPipe pipe];
+    NSSize size = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@"@skipPrivilegedWarning"];
 
-    NSTask *task = [[NSTask alloc] init];
-    task.currentDirectoryPath = @"/Library/Application Support/VMware Tools/";
-    task.launchPath = [task.currentDirectoryPath stringByAppendingPathComponent:@"vmware-resolutionSet"];
-    task.arguments = @[_textFieldResX.stringValue, _textFieldResY.stringValue];
-    task.standardError = pipeError;
-    task.standardOutput = pipeOutput;
-
-    NSError* error = nil;
-    if (![task launchAndReturnError:(&error)]) {
-        NSLog (@"ERROR:\n%@", error);
-        NSAlert* alert = [NSAlert alertWithError:error];
-        [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
-        return;
+    if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
+        [self setScreenSize:size authorization:[_authorizationView authorization]];
     }
+    else if ([userDefaults boolForKey:skipPrivilegedWarningKey]) {
+        [self setScreenSize:size authorization:nil];
+    }
+    else {
+        NSAlert* alert = [[NSAlert alloc] init];
+        alert.alertStyle = NSAlertStyleWarning;
+        alert.showsSuppressionButton = YES; // Uses default checkbox title
+        alert.messageText = NSLocalizedString(@"This is not permanent!", -);
+        alert.informativeText = NSLocalizedString(@"To make the screen size change accross reboots, you must unlock the padlock before pressing \"Apply\"!", -);
+        [alert addButtonWithTitle:NSLocalizedString(@"Continue", -)];
+        [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
 
-    [task waitUntilExit];
+        [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
+            if (returnCode == NSModalResponseCancel) {
+                return;
+            }
+            
+            if (alert.suppressionButton.state == NSOnState) {
+                // Suppress this alert from now on
+                [userDefaults setBool:YES forKey:skipPrivilegedWarningKey];
+            }
+            
+            [self setScreenSize:size authorization:nil];
+        }];
+    }
     
-    if (task.terminationStatus == 0) {
-        // SUCCESS
-        NSFileHandle *file = pipeOutput.fileHandleForReading;
-        NSData *data = [file readDataToEndOfFile];
-        [file closeFile];
-        if (data.length == 0) {
-            // vmware-resolutionSet writes its log to stderr
-            NSFileHandle *file = pipeError.fileHandleForReading;
-            data = [file readDataToEndOfFile];
-            [file closeFile];
-        }
-        NSString *outputText = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-        NSLog (@"SUCCESS:\n%@", outputText);
-    }
-    else
-    {
-        // ERROR
-        NSFileHandle *file = pipeError.fileHandleForReading;
-        NSData *data = [file readDataToEndOfFile];
-        [file closeFile];
-        NSString *errorText = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-        NSLog (@"ERROR (%i):\n%@", task.terminationStatus, errorText);
-
-        error = [NSError errorWithDomain:NSPOSIXErrorDomain
-                                    code:task.terminationStatus
-                                userInfo:@{ NSLocalizedDescriptionKey: errorText }];
-        
-        NSAlert* alert = [NSAlert alertWithError:error];
-        [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
-    }
 }
 
 
@@ -176,6 +253,7 @@
     // The ugliest hack ever:
     // In order to trigger NSArrayController to write
     // back changes, we will add/remove an object :(
+    // Please, anyone! Tell me how to go bout this....
     id selectedObjects = _presetsArrayController.selectedObjects;
 
     NSDictionary* newPreset = @{ @"name" : @"dummy", @"width" : @0, @"height" : @0 };
@@ -208,16 +286,17 @@
 - (IBAction)presetReset:(id)sender
 {
     NSAlert* alert = [[NSAlert alloc] init];
-    [alert setAlertStyle:NSAlertStyleWarning];
-    [alert setMessageText:@"Reset all presets?"];
-    [alert setInformativeText:@"This will remove all presets and restore the defaults!"];
-    [alert addButtonWithTitle:@"Reset"];
-    [alert addButtonWithTitle:@"Cancel"];
+    alert.alertStyle = NSAlertStyleWarning;
+    alert.messageText = NSLocalizedString(@"Reset all presets?", -);
+    alert.informativeText = NSLocalizedString(@"This will remove all presets and restore the defaults!", -);
+    [alert addButtonWithTitle:NSLocalizedString(@"Reset", -)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
 
     [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
-        if (returnCode != NSModalResponseCancel) {
-            [self loadDefaultPresets:YES];
+        if (returnCode == NSModalResponseCancel) {
+            return;
         }
+        [self loadDefaultPresets:YES];
     }];
 }
 
