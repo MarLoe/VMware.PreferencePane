@@ -117,11 +117,17 @@
     task.standardOutput = pipeOutput;
     
     NSError* error = nil;
-    if (![task launchAndReturnError:(&error)]) {
-        NSLog (@"ERROR:\n%@", error);
-        NSAlert* alert = [NSAlert alertWithError:error];
-        [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
-        return;
+    
+    if (@available(macOS 10.13, *)) {
+        if (![task launchAndReturnError:(&error)]) {
+            NSLog (@"ERROR:\n%@", error);
+            NSAlert* alert = [NSAlert alertWithError:error];
+            [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
+            return;
+        }
+    }
+    else {
+        [task launch];
     }
     
     [task waitUntilExit];
