@@ -58,6 +58,17 @@
                                                  name:NSApplicationDidChangeScreenParametersNotification
                                                object:nil];
 
+    if ([_authorizationView.subviews count] == 0) {
+        // On earlier versions (seen on Yosemite) the SFAuthorizationView does
+        // not deserialieze from xib correctly, leaving it "empty".
+        // If it is empty we know it failed and we can mauallyt create
+        // one to work around it - thank you Apple.
+        SFAuthorizationView* authView = [[SFAuthorizationView alloc] initWithFrame:_authorizationView.frame];
+        [_authorizationView.superview addSubview:authView];
+        [_authorizationView removeFromSuperview];
+        _authorizationView = authView;
+    }
+
     // Setup security.
     AuthorizationItem items = {kAuthorizationRightExecute, 0, NULL, 0};
     AuthorizationRights rights = {1, &items};
