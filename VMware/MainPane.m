@@ -11,6 +11,10 @@
 #import <SecurityInterface/SFAuthorizationView.h>
 
 
+const NSString* kPresetName     = @"name";
+const NSString* kPresetWidth    = @"width";
+const NSString* kPresetHeight   = @"height";
+
 @interface MainPane()
 
 @property (nonatomic, weak) IBOutlet NSTableView* presetsTableView;
@@ -43,20 +47,40 @@
     NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
     _bundleIdentifier = [prefPaneBundle objectForInfoDictionaryKey:(NSString*)kCFBundleIdentifierKey];
 
-    [self loadDefaultPresets:NO];
-
     NSString * versionString = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     self.version = [NSString stringWithFormat:@"Version: %@", versionString];
-
+    
     [self applicationDidChangeScreenParametersNotification:nil];
     
+    [self loadDefaultPresets:NO];
+
     _stepperResX.integerValue = _currentWidth.integerValue;
     _stepperResY.integerValue = _currentHeight.integerValue;
+    
+    for (NSDictionary* preset in _presetsArrayController.arrangedObjects) {
+        if ([preset[kPresetWidth] isEqualToValue:_currentWidth] &&
+            [preset[kPresetHeight] isEqualToValue:_currentHeight]) {
+            [_presetsArrayController setSelectedObjects:@[preset]];
+            [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
+            break;
+        }
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidChangeScreenParametersNotification:)
                                                  name:NSApplicationDidChangeScreenParametersNotification
                                                object:nil];
+
+    if ([_authorizationView.subviews count] == 0) {
+        // On earlier versions (seen on Yosemite) the SFAuthorizationView does
+        // not deserialieze from xib correctly, leaving it "empty".
+        // If it is empty we know it failed and we can mauallyt create
+        // one to work around it - thank you Apple.
+        SFAuthorizationView* authView = [[SFAuthorizationView alloc] initWithFrame:_authorizationView.frame];
+        [_authorizationView.superview addSubview:authView];
+        [_authorizationView removeFromSuperview];
+        _authorizationView = authView;
+    }
 
     // Setup security.
     AuthorizationItem items = {kAuthorizationRightExecute, 0, NULL, 0};
@@ -209,8 +233,8 @@
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
     NSDictionary* selectedPreset = [_presetsArrayController.selectedObjects firstObject];
-    _stepperResX.integerValue = [selectedPreset[@"width"] integerValue];
-    _stepperResY.integerValue = [selectedPreset[@"height"] integerValue];
+    _stepperResX.integerValue = [selectedPreset[kPresetWidth] integerValue];
+    _stepperResY.integerValue = [selectedPreset[kPresetHeight] integerValue];
 }
 
 
@@ -262,7 +286,11 @@
     // Please, anyone! Tell me how to go bout this....
     id selectedObjects = _presetsArrayController.selectedObjects;
 
-    NSDictionary* newPreset = @{ @"name" : @"dummy", @"width" : @0, @"height" : @0 };
+    NSDictionary* newPreset = @{
+                                kPresetName : @"dummy",
+                                kPresetWidth : @0,
+                                kPresetHeight : @0
+                                };
     [_presetsArrayController addObject:newPreset];
     [_presetsArrayController removeObject:newPreset];
 
@@ -272,7 +300,11 @@
 
 - (IBAction)presetsAdd:(id)sender
 {
-    NSDictionary* newPreset = @{ @"name" : @"New Screen Size", @"width" : @(_textFieldResX.integerValue), @"height" : @(_textFieldResY.integerValue) };
+    NSDictionary* newPreset = @{
+                                kPresetName : @"New Screen Size",
+                                kPresetWidth : @(_textFieldResX.integerValue),
+                                kPresetHeight : @(_textFieldResY.integerValue)
+                                };
     [_presetsArrayController addObject:newPreset];
 }
 
