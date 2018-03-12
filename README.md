@@ -35,7 +35,11 @@ cp -r VMware.prefPane /Library/PreferencePanes/
 ```
 
 # Building
-Use XCode
+This project uses [cocoapods](https://cocoapods.org/). Please install cocoapods and from the terminal run this command from the project root folder:
+```bash
+pod install
+```
+Open the VMware.PreferencePane.xcworkspace workspace and build the project as normal.
 
 # Debugging
 Since ["System Integration Protection"](https://developer.apple.com/library/content/documentation/Security/Conceptual/System_Integrity_Protection_Guide/Introduction/Introduction.html) was introduced in macOS it is no longer possible to debug system shipped applications.

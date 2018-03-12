@@ -23,6 +23,8 @@
 		5B509F9520362265001A2037 /* Presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B509F9420362265001A2037 /* Presets.plist */; };
 		5BAC02EE2032CC79005FA460 /* VMware.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5BAC02ED2032CC79005FA460 /* VMware.icns */; };
 		5BB1E4BF2038498600576AAF /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB1E4BE2038498600576AAF /* SecurityInterface.framework */; };
+		778A13B215E188EAB0A35660 /* libPods-VMware.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 364631799F3A44D6882C77D1 /* libPods-VMware.a */; };
+		BFE9F02B25CD9A8BBBA27448 /* libPods-VMware.Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1C2DDAF7AFA8257D0DFE363C /* Pods-VMware.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.release.xcconfig"; path = "Pods/Target Support Files/Pods-VMware/Pods-VMware.release.xcconfig"; sourceTree = "<group>"; };
+		35ACAACE6454C6EF5661563C /* Pods-VMware.Debug.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.Debug.release.xcconfig"; path = "Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug.release.xcconfig"; sourceTree = "<group>"; };
+		364631799F3A44D6882C77D1 /* libPods-VMware.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B3183A62032E11100EFDB87 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5B3A823A2030ED960062DFEF /* VMware.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VMware.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B3A823D2030ED960062DFEF /* MainPane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainPane.h; sourceTree = "<group>"; };
@@ -59,6 +64,9 @@
 		5BAC02ED2032CC79005FA460 /* VMware.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = VMware.icns; path = VMware/VMware.icns; sourceTree = SOURCE_ROOT; };
 		5BB1E4BE2038498600576AAF /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		5BB1E4C02038498F00576AAF /* SecurityFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityFoundation.framework; path = System/Library/Frameworks/SecurityFoundation.framework; sourceTree = SDKROOT; };
+		7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware/Pods-VMware.debug.xcconfig"; sourceTree = "<group>"; };
+		731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.Debug.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug.debug.xcconfig"; sourceTree = "<group>"; };
+		A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.Debug.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +76,7 @@
 			files = (
 				5BB1E4BF2038498600576AAF /* SecurityInterface.framework in Frameworks */,
 				5B3A824E2030EE720062DFEF /* PreferencePanes.framework in Frameworks */,
+				778A13B215E188EAB0A35660 /* libPods-VMware.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,12 +85,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B3A827420312E340062DFEF /* PreferencePanes.framework in Frameworks */,
+				BFE9F02B25CD9A8BBBA27448 /* libPods-VMware.Debug.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		10538781C0A6092A9F8D39D8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */,
+				1C2DDAF7AFA8257D0DFE363C /* Pods-VMware.release.xcconfig */,
+				731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */,
+				35ACAACE6454C6EF5661563C /* Pods-VMware.Debug.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		5B3A82302030ED960062DFEF = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +111,7 @@
 				5B3A826120312D820062DFEF /* VMware.Debug */,
 				5B3A823B2030ED960062DFEF /* Products */,
 				5B3A824C2030EE720062DFEF /* Frameworks */,
+				10538781C0A6092A9F8D39D8 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -124,6 +146,8 @@
 				5BB1E4C02038498F00576AAF /* SecurityFoundation.framework */,
 				5BB1E4BE2038498600576AAF /* SecurityInterface.framework */,
 				5B3A824D2030EE720062DFEF /* PreferencePanes.framework */,
+				364631799F3A44D6882C77D1 /* libPods-VMware.a */,
+				A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -162,10 +186,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5B3A82492030ED960062DFEF /* Build configuration list for PBXNativeTarget "VMware" */;
 			buildPhases = (
+				635FCF93C2C14E09EAB97C43 /* [CP] Check Pods Manifest.lock */,
 				5B3A82352030ED960062DFEF /* Sources */,
 				5B3A82362030ED960062DFEF /* Frameworks */,
 				5B3A82372030ED960062DFEF /* Headers */,
 				5B3A82382030ED960062DFEF /* Resources */,
+				85F3B58AF365DD9A357D8BA3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -180,9 +206,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5B3A827120312D820062DFEF /* Build configuration list for PBXNativeTarget "VMware.Debug" */;
 			buildPhases = (
+				1C72F52CFDDCD52AF77CB610 /* [CP] Check Pods Manifest.lock */,
 				5B3A825C20312D820062DFEF /* Sources */,
 				5B3A825D20312D820062DFEF /* Frameworks */,
 				5B3A825E20312D820062DFEF /* Resources */,
+				95F95F7300322503ABFDC233 /* [CP] Embed Pods Frameworks */,
+				6D96993AA24E17407481F9E6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -253,6 +282,90 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1C72F52CFDDCD52AF77CB610 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VMware.Debug-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		635FCF93C2C14E09EAB97C43 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VMware-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6D96993AA24E17407481F9E6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		85F3B58AF365DD9A357D8BA3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VMware/Pods-VMware-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		95F95F7300322503ABFDC233 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5B3A82352030ED960062DFEF /* Sources */ = {
@@ -407,10 +520,12 @@
 		};
 		5B3A824A2030ED960062DFEF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 38G5P3YVC2;
+				FRAMEWORK_SEARCH_PATHS = .;
 				INFOPLIST_FILE = "$(SRCROOT)/VMware/Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lobger.VMware.PreferencePane;
@@ -421,10 +536,12 @@
 		};
 		5B3A824B2030ED960062DFEF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1C2DDAF7AFA8257D0DFE363C /* Pods-VMware.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 38G5P3YVC2;
+				FRAMEWORK_SEARCH_PATHS = .;
 				INFOPLIST_FILE = "$(SRCROOT)/VMware/Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lobger.VMware.PreferencePane;
@@ -435,6 +552,7 @@
 		};
 		5B3A827220312D820062DFEF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -448,6 +566,7 @@
 		};
 		5B3A827320312D820062DFEF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35ACAACE6454C6EF5661563C /* Pods-VMware.Debug.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
