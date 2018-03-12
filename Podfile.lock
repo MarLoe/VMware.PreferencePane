@@ -1,0 +1,16 @@
+PODS:
+  - GitHubRelease (0.1.0)
+
+DEPENDENCIES:
+  - GitHubRelease (from `../GitHub.Release`)
+
+EXTERNAL SOURCES:
+  GitHubRelease:
+    :path: ../GitHub.Release
+
+SPEC CHECKSUMS:
+  GitHubRelease: 5c4df4a9f649cabb8e6c618e60abf0f3659c92c4
+
+PODFILE CHECKSUM: 80c8a44345a6aeda5bde759a18500f1e70d8aef8
+
+COCOAPODS: 1.4.0
