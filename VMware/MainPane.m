@@ -9,6 +9,7 @@
 #import "MainPane.h"
 #import <CoreFoundation/CoreFoundation.h>
 #import <SecurityInterface/SFAuthorizationView.h>
+#import <GitHubRelease/GitHubRelease.h>
 
 
 const NSString* kPresetName     = @"name";
@@ -31,10 +32,15 @@ const NSString* kPresetHeight   = @"height";
 
 @end
 
+@interface MainPane(GitHubReleaseCheckerDelegate) <GitHubReleaseCheckerDelegate>
+@end
+
 @implementation MainPane
 {
     NSString* _bundleIdentifier;
+    GitHubReleaseChecker* _releaseChecker;
 }
+
 
 - (void)mainViewDidLoad
 {
@@ -47,8 +53,7 @@ const NSString* kPresetHeight   = @"height";
     NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
     _bundleIdentifier = [prefPaneBundle objectForInfoDictionaryKey:(NSString*)kCFBundleIdentifierKey];
 
-    NSString * versionString = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    self.version = [NSString stringWithFormat:@"Version: %@", versionString];
+    self.version = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     
     [self applicationDidChangeScreenParametersNotification:nil];
     
@@ -88,6 +93,17 @@ const NSString* kPresetHeight   = @"height";
     _authorizationView.delegate = self;
     [_authorizationView setAuthorizationRights:&rights];
     [_authorizationView updateStatus:nil];
+    
+}
+
+
+- (void)didSelect
+{
+    if (_releaseChecker == nil) {
+        _releaseChecker = [[GitHubReleaseChecker alloc] initWithUser:@"MarLoe" andProject:@"VMware.PreferencePane"];
+        _releaseChecker.delegate = self;
+        [_releaseChecker checkRelease:self.version];
+    }
 }
 
 
@@ -214,6 +230,63 @@ const NSString* kPresetHeight   = @"height";
             return;
         }
     }
+}
+
+
+#pragma mark - GitHubReleaseCheckerDelegate
+
+- (void)gitHubReleaseChecker:(GitHubReleaseChecker*)sender checkRelease:(NSString*)releaseName foundReleaseInfo:(NSDictionary*)releaseInfo
+{
+    NSLog(@"%@", releaseInfo);
+}
+
+
+- (void)gitHubReleaseChecker:(GitHubReleaseChecker*)sender checkRelease:(NSString*)releaseName foundNewReleaseInfo:(NSDictionary*)releaseInfo
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString* skipNewVersionInfoKey = [_bundleIdentifier stringByAppendingString:@"@newVersion"];
+    if ([[userDefaults stringForKey:skipNewVersionInfoKey] isEqualToString:releaseInfo[kGitHubReleaseCheckerNameKey]]) {
+        // The user has opted out of more alerts regarding this version.
+        return;
+    }
+
+    NSArray* assetsArray = releaseInfo[kGitHubReleaseCheckerAssetsKey];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@", @"VMware.prefPane.zip"];
+    NSDictionary* asset = [[assetsArray filteredArrayUsingPredicate:predicate] firstObject];
+    NSString* downloadUrl = asset[@"browser_download_url"];
+    if (downloadUrl == nil) {
+        return;
+    }
+
+    NSAlert* alert = [[NSAlert alloc] init];
+    alert.alertStyle = NSAlertStyleWarning;
+    alert.showsSuppressionButton = YES; // Uses default checkbox title
+    alert.messageText = NSLocalizedString(@"A new version is available", -);
+    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Version %@ is available. You are currently running %@", -),
+                             releaseInfo[kGitHubReleaseCheckerNameKey],
+                             releaseName
+                             ];
+    [alert addButtonWithTitle:NSLocalizedString(@"Download", -)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
+
+    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
+        if (alert.suppressionButton.state == NSOnState) {
+            // Suppress this alert from now on
+            [userDefaults setObject:releaseInfo[kGitHubReleaseCheckerNameKey] forKey:skipNewVersionInfoKey];
+        }
+
+        if (returnCode == NSModalResponseCancel) {
+            return;
+        }
+
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:downloadUrl]];
+    }];
+}
+
+
+- (void)gitHubReleaseChecker:(GitHubReleaseChecker *)sender checkRelease:(NSString *)releaseName failedWithError:(NSError *)error
+{
+    NSLog(@"%@", error);
 }
 
 
