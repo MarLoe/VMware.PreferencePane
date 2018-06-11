@@ -7,12 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B3183A72032E11100EFDB87 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5B3183A62032E11100EFDB87 /* README.md */; };
 		5B3A823E2030ED960062DFEF /* MainPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A823D2030ED960062DFEF /* MainPane.h */; };
 		5B3A82402030ED960062DFEF /* MainPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A823F2030ED960062DFEF /* MainPane.m */; };
 		5B3A82452030ED960062DFEF /* MainPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A82432030ED960062DFEF /* MainPane.xib */; };
 		5B3A824E2030EE720062DFEF /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3A824D2030EE720062DFEF /* PreferencePanes.framework */; };
-		5B3A825B203118790062DFEF /* VMware.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A825A203118790062DFEF /* VMware.icns */; };
 		5B3A826420312D820062DFEF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826320312D820062DFEF /* AppDelegate.m */; };
 		5B3A826720312D820062DFEF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826620312D820062DFEF /* ViewController.m */; };
 		5B3A826C20312D820062DFEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A826A20312D820062DFEF /* Main.storyboard */; };
@@ -21,8 +19,9 @@
 		5B3A827F203182440062DFEF /* IntegerValueFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A827D203182440062DFEF /* IntegerValueFormatter.h */; };
 		5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A827E203182440062DFEF /* IntegerValueFormatter.m */; };
 		5B509F9520362265001A2037 /* Presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B509F9420362265001A2037 /* Presets.plist */; };
-		5BAC02EE2032CC79005FA460 /* VMware.icns in Resources */ = {isa = PBXBuildFile; fileRef = 5BAC02ED2032CC79005FA460 /* VMware.icns */; };
 		5BB1E4BF2038498600576AAF /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB1E4BE2038498600576AAF /* SecurityInterface.framework */; };
+		6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
+		6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		778A13B215E188EAB0A35660 /* libPods-VMware.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 364631799F3A44D6882C77D1 /* libPods-VMware.a */; };
 		BFE9F02B25CD9A8BBBA27448 /* libPods-VMware.Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */; };
 /* End PBXBuildFile section */
@@ -49,7 +48,6 @@
 		5B3A82462030ED960062DFEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B3A824D2030EE720062DFEF /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = System/Library/Frameworks/PreferencePanes.framework; sourceTree = SDKROOT; };
 		5B3A8258203114AB0062DFEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		5B3A825A203118790062DFEF /* VMware.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = VMware.icns; sourceTree = "<group>"; };
 		5B3A826020312D820062DFEF /* VMware.Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VMware.Debug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B3A826220312D820062DFEF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5B3A826320312D820062DFEF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -61,7 +59,6 @@
 		5B3A827D203182440062DFEF /* IntegerValueFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntegerValueFormatter.h; sourceTree = "<group>"; };
 		5B3A827E203182440062DFEF /* IntegerValueFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntegerValueFormatter.m; sourceTree = "<group>"; };
 		5B509F9420362265001A2037 /* Presets.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Presets.plist; sourceTree = "<group>"; };
-		5BAC02ED2032CC79005FA460 /* VMware.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = VMware.icns; path = VMware/VMware.icns; sourceTree = SOURCE_ROOT; };
 		5BB1E4BE2038498600576AAF /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		5BB1E4C02038498F00576AAF /* SecurityFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityFoundation.framework; path = System/Library/Frameworks/SecurityFoundation.framework; sourceTree = SDKROOT; };
 		7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware/Pods-VMware.debug.xcconfig"; sourceTree = "<group>"; };
@@ -132,7 +129,6 @@
 				5B3A823F2030ED960062DFEF /* MainPane.m */,
 				5B3A82432030ED960062DFEF /* MainPane.xib */,
 				5B3A82462030ED960062DFEF /* Info.plist */,
-				5B3A825A203118790062DFEF /* VMware.icns */,
 				5B3A8258203114AB0062DFEF /* Assets.xcassets */,
 				5B3A827D203182440062DFEF /* IntegerValueFormatter.h */,
 				5B3A827E203182440062DFEF /* IntegerValueFormatter.m */,
@@ -155,7 +151,6 @@
 		5B3A826120312D820062DFEF /* VMware.Debug */ = {
 			isa = PBXGroup;
 			children = (
-				5BAC02ED2032CC79005FA460 /* VMware.icns */,
 				5B3A826220312D820062DFEF /* AppDelegate.h */,
 				5B3A826320312D820062DFEF /* AppDelegate.m */,
 				5B3A826520312D820062DFEF /* ViewController.h */,
@@ -229,7 +224,7 @@
 		5B3A82312030ED960062DFEF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "ML-Consulting";
 				TargetAttributes = {
 					5B3A82392030ED960062DFEF = {
@@ -265,10 +260,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B3A825B203118790062DFEF /* VMware.icns in Resources */,
-				5B3183A72032E11100EFDB87 /* README.md in Resources */,
 				5B509F9520362265001A2037 /* Presets.plist in Resources */,
 				5B3A82452030ED960062DFEF /* MainPane.xib in Resources */,
+				6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,7 +270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5BAC02EE2032CC79005FA460 /* VMware.icns in Resources */,
+				6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */,
 				5B3A826C20312D820062DFEF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +425,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -438,6 +433,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -485,6 +481,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -492,6 +489,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -522,6 +520,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 38G5P3YVC2;
@@ -538,6 +537,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1C2DDAF7AFA8257D0DFE363C /* Pods-VMware.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 38G5P3YVC2;
@@ -554,6 +554,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
@@ -568,6 +569,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35ACAACE6454C6EF5661563C /* Pods-VMware.Debug.release.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";

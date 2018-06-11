@@ -23,7 +23,7 @@
 	<key>NSMainNibFile</key>
 	<string>MainPane</string>
 	<key>NSPrefPaneIconFile</key>
-	<string>VMware.icns</string>
+	<string>AppIcon.icns</string>
 	<key>NSPrefPaneIconLabel</key>
 	<string>VMware</string>
 	<key>NSPrincipalClass</key>
