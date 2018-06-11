@@ -1,4 +1,4 @@
-VMware.PreferencePane
+![AppIcon](VMware/Assets.xcassets/AppIcon.appiconset/icon32.png) VMware.PreferencePane
 =====================
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/MarLoe/VMware.PreferencePane/blob/master/LICENSE)
