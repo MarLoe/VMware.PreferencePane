@@ -1,5 +1,5 @@
 PODS:
-  - GitHubRelease (0.3.1)
+  - GitHubRelease (0.4.3)
 
 DEPENDENCIES:
   - GitHubRelease (from `../GitHub.Release`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../GitHub.Release
 
 SPEC CHECKSUMS:
-  GitHubRelease: 54f21b4247ad99a5b0fce2fe828380e8795c2f96
+  GitHubRelease: 527dfc7221883852f481997917d3ac269caaf7ae
 
 PODFILE CHECKSUM: 80c8a44345a6aeda5bde759a18500f1e70d8aef8
 
