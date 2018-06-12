@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -254,8 +254,8 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h8h-2M-7ir">
-                                                        <rect key="frame" x="-1" y="0.0" width="26" height="23"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                        <rect key="frame" x="-1" y="-2" width="26" height="23"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                                                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="MVD-PL-hUf">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
@@ -265,8 +265,8 @@
                                                         </connections>
                                                     </button>
                                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lw6-CY-UK3">
-                                                        <rect key="frame" x="24" y="0.0" width="26" height="23"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                        <rect key="frame" x="24" y="-2" width="26" height="23"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                                                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="QFb-a0-Vkj">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system"/>
@@ -284,8 +284,8 @@
                                                         </connections>
                                                     </button>
                                                     <popUpButton verticalHuggingPriority="750" fixedFrame="YES" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hN9-Gv-qSP">
-                                                        <rect key="frame" x="48" y="0.0" width="34" height="23"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                                        <rect key="frame" x="48" y="-2" width="34" height="23"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                                                         <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="left" scrollable="YES" lineBreakMode="clipping" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" autoenablesItems="NO" altersStateOfSelectedItem="NO" id="npB-nL-98z">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="menu"/>
@@ -380,7 +380,7 @@
                     </tabView>
                     <customView toolTip="To make screen size permanet accross reboot, you must unlock" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IgJ-mo-r8R" customClass="SFAuthorizationView">
                         <rect key="frame" x="25" y="16" width="465" height="34"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </customView>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pNY-mm-gBj">
                         <rect key="frame" x="537" y="386" width="125" height="17"/>

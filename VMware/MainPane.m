@@ -11,10 +11,19 @@
 #import <SecurityInterface/SFAuthorizationView.h>
 #import <GitHubRelease/GitHubRelease.h>
 
+#if DEBUG
+const NSString* kTestReleaseName    = @"1.2.1";
+#else
+const NSString* kTestReleaseName    = nil;
+#endif
 
-const NSString* kPresetName     = @"name";
-const NSString* kPresetWidth    = @"width";
-const NSString* kPresetHeight   = @"height";
+const NSString* kPresetName         = @"name";
+const NSString* kPresetWidth        = @"width";
+const NSString* kPresetHeight       = @"height";
+
+static const NSModalResponse NSModalResponseView        = 1001;
+static const NSModalResponse NSModalResponseDownload    = 1002;
+
 
 @interface MainPane()
 
@@ -38,7 +47,7 @@ const NSString* kPresetHeight   = @"height";
 @implementation MainPane
 {
     NSString* _bundleIdentifier;
-    GitHubReleaseChecker* _releaseChecker;
+    MLGitHubReleaseChecker* _releaseChecker;
 }
 
 
@@ -52,13 +61,13 @@ const NSString* kPresetHeight   = @"height";
     
     NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
     _bundleIdentifier = [prefPaneBundle objectForInfoDictionaryKey:(NSString*)kCFBundleIdentifierKey];
-
+    
     self.version = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     
     [self applicationDidChangeScreenParametersNotification:nil];
     
     [self loadDefaultPresets:NO];
-
+    
     _stepperResX.integerValue = _currentWidth.integerValue;
     _stepperResY.integerValue = _currentHeight.integerValue;
     
@@ -75,7 +84,7 @@ const NSString* kPresetHeight   = @"height";
                                              selector:@selector(applicationDidChangeScreenParametersNotification:)
                                                  name:NSApplicationDidChangeScreenParametersNotification
                                                object:nil];
-
+    
     if ([_authorizationView.subviews count] == 0) {
         // On earlier versions (seen on Yosemite) the SFAuthorizationView does
         // not deserialieze from xib correctly, leaving it "empty".
@@ -86,7 +95,7 @@ const NSString* kPresetHeight   = @"height";
         [_authorizationView removeFromSuperview];
         _authorizationView = authView;
     }
-
+    
     // Setup security.
     AuthorizationItem items = {kAuthorizationRightExecute, 0, NULL, 0};
     AuthorizationRights rights = {1, &items};
@@ -99,11 +108,25 @@ const NSString* kPresetHeight   = @"height";
 
 - (void)didSelect
 {
+    NSString* releaseName = kTestReleaseName ?: self.version;
     if (_releaseChecker == nil) {
-        _releaseChecker = [[GitHubReleaseChecker alloc] initWithUser:@"MarLoe" andProject:@"VMware.PreferencePane"];
+        _releaseChecker = [[MLGitHubReleaseChecker alloc] initWithUser:@"MarLoe" andProject:@"VMware.PreferencePane"];
         _releaseChecker.delegate = self;
-        [_releaseChecker checkRelease:self.version];
     }
+    
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([[userDefaults stringForKey:@"skip"] isEqualToString:releaseName]) {
+        // The user has opted out of more alerts regarding this version.
+        return;
+    }
+    
+    NSDate* lastCheck = [userDefaults objectForKey:releaseName];
+    if (lastCheck != nil && [lastCheck timeIntervalSinceNow] > -24*60*60) {
+        // It has been less than 24 hours since last check
+        return;
+    }
+
+    [_releaseChecker checkReleaseWithName:releaseName];
 }
 
 
@@ -233,60 +256,91 @@ const NSString* kPresetHeight   = @"height";
 }
 
 
-#pragma mark - GitHubReleaseCheckerDelegate
-
-- (void)gitHubReleaseChecker:(GitHubReleaseChecker*)sender checkRelease:(NSString*)releaseName foundReleaseInfo:(NSDictionary*)releaseInfo
+- (void)downloadAsset:(MLGitHubAsset*)asset
 {
-    NSLog(@"%@", releaseInfo);
-}
-
-
-- (void)gitHubReleaseChecker:(GitHubReleaseChecker*)sender checkRelease:(NSString*)releaseName foundNewReleaseInfo:(NSDictionary*)releaseInfo
-{
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString* skipNewVersionInfoKey = [_bundleIdentifier stringByAppendingString:@"@newVersion"];
-    if ([[userDefaults stringForKey:skipNewVersionInfoKey] isEqualToString:releaseInfo[kGitHubReleaseCheckerNameKey]]) {
-        // The user has opted out of more alerts regarding this version.
-        return;
-    }
-
-    NSArray* assetsArray = releaseInfo[kGitHubReleaseCheckerAssetsKey];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@", @"VMware.prefPane.zip"];
-    NSDictionary* asset = [[assetsArray filteredArrayUsingPredicate:predicate] firstObject];
-    NSString* downloadUrl = asset[@"browser_download_url"];
-    if (downloadUrl == nil) {
-        return;
-    }
-
-    NSAlert* alert = [[NSAlert alloc] init];
-    alert.alertStyle = NSAlertStyleWarning;
-    alert.showsSuppressionButton = YES; // Uses default checkbox title
-    alert.messageText = NSLocalizedString(@"A new version is available", -);
-    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Version %@ is available. You are currently running %@", -),
-                             releaseInfo[kGitHubReleaseCheckerNameKey],
-                             releaseName
-                             ];
-    [alert addButtonWithTitle:NSLocalizedString(@"Download", -)];
-    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-
-    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
-        if (alert.suppressionButton.state == NSOnState) {
-            // Suppress this alert from now on
-            [userDefaults setObject:releaseInfo[kGitHubReleaseCheckerNameKey] forKey:skipNewVersionInfoKey];
-        }
-
-        if (returnCode == NSModalResponseCancel) {
-            return;
-        }
-
-        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:downloadUrl]];
+    
+    [asset downloadWithCompletionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error != nil) {
+                [self gitHubReleaseChecker:self->_releaseChecker failedWithError:error];
+                return;
+            }
+            
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDownloadsDirectory, NSUserDomainMask, YES);
+            NSSavePanel *panel = [NSSavePanel savePanel];
+            panel.title = @"Martin";
+            panel.nameFieldStringValue = asset.name;
+            panel.directoryURL = [NSURL fileURLWithPath:[paths firstObject]];
+            [panel beginSheetModalForWindow:self.mainView.window completionHandler:^(NSInteger result) {
+                if (result == NSFileHandlingPanelOKButton) {
+                    [data writeToURL:panel.URL atomically:YES];
+                }
+            }];
+        });
     }];
 }
 
 
-- (void)gitHubReleaseChecker:(GitHubReleaseChecker *)sender checkRelease:(NSString *)releaseName failedWithError:(NSError *)error
+#pragma mark - GitHubReleaseCheckerDelegate
+
+- (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundReleaseInfo:(MLGitHubRelease*)releaseInfo
+{
+    NSLog(@"%@", releaseInfo);
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:[NSDate date] forKey:releaseInfo.name];
+    [userDefaults synchronize];
+}
+
+
+- (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundNewReleaseInfo:(MLGitHubRelease*)releaseInfo
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    if (releaseInfo.htmlURL == nil) {
+        return;
+    }
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"name == %@", @"VMware.prefPane.zip"];
+    MLGitHubAsset* asset = [releaseInfo.assets filteredArrayUsingPredicate:predicate].firstObject;
+    
+    NSAlert* alert = [[NSAlert alloc] init];
+    alert.alertStyle = NSAlertStyleWarning;
+    alert.showsSuppressionButton = YES; // Uses default checkbox title
+    alert.messageText = NSLocalizedString(@"A new version is available", -);
+    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Version %@ is available.\nYou are currently running %@", -),
+                             releaseInfo.name,
+                             sender.currentRelease.name
+                             ];
+    [alert addButtonWithTitle:NSLocalizedString(@"View", -)].tag = NSModalResponseView;
+    if (asset != nil) {
+        [alert addButtonWithTitle:NSLocalizedString(@"Download", -)].tag = NSModalResponseDownload;
+    }
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
+    
+    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
+        if (alert.suppressionButton.state == NSOnState) {
+            // Suppress this alert from now on
+            [userDefaults setObject:releaseInfo.name forKey:@"skip"];
+        }
+        
+        switch (returnCode) {
+            case NSModalResponseView:
+                [[NSWorkspace sharedWorkspace] openURL:releaseInfo.htmlURL];
+                break;
+                
+            case NSModalResponseDownload:
+                [self downloadAsset:asset];
+                break;
+        }
+    }];
+}
+
+
+- (void)gitHubReleaseChecker:(MLGitHubReleaseChecker *)sender failedWithError:(NSError *)error
 {
     NSLog(@"%@", error);
+    NSAlert* alert = [NSAlert alertWithError:error];
+    [alert runModal];
 }
 
 
@@ -318,7 +372,7 @@ const NSString* kPresetHeight   = @"height";
     NSSize size = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@"@skipPrivilegedWarning"];
-
+    
     if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
         [self setScreenSize:size authorization:[_authorizationView authorization]];
     }
@@ -333,7 +387,7 @@ const NSString* kPresetHeight   = @"height";
         alert.informativeText = NSLocalizedString(@"To make the screen size change accross reboots, you must unlock the padlock before pressing \"Apply\"!", -);
         [alert addButtonWithTitle:NSLocalizedString(@"Continue", -)];
         [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-
+        
         [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
             if (returnCode == NSModalResponseCancel) {
                 return;
@@ -358,7 +412,7 @@ const NSString* kPresetHeight   = @"height";
     // back changes, we will add/remove an object :(
     // Please, anyone! Tell me how to go bout this....
     id selectedObjects = _presetsArrayController.selectedObjects;
-
+    
     NSDictionary* newPreset = @{
                                 kPresetName : @"dummy",
                                 kPresetWidth : @0,
@@ -366,7 +420,7 @@ const NSString* kPresetHeight   = @"height";
                                 };
     [_presetsArrayController addObject:newPreset];
     [_presetsArrayController removeObject:newPreset];
-
+    
     _presetsArrayController.selectedObjects = selectedObjects;
 }
 
@@ -402,7 +456,7 @@ const NSString* kPresetHeight   = @"height";
     alert.informativeText = NSLocalizedString(@"This will remove all presets and restore the defaults!", -);
     [alert addButtonWithTitle:NSLocalizedString(@"Reset", -)];
     [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-
+    
     [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseCancel) {
             return;
