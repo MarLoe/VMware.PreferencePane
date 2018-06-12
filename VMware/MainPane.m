@@ -10,6 +10,7 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <SecurityInterface/SFAuthorizationView.h>
 #import <GitHubRelease/GitHubRelease.h>
+#import "NSView+Enabled.h"
 
 #if DEBUG
 const NSString* kTestReleaseName    = @"1.2.1";
@@ -26,6 +27,9 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
 
 
 @interface MainPane()
+
+@property (nonatomic, weak) IBOutlet NSVisualEffectView* progressHud;
+
 
 @property (nonatomic, weak) IBOutlet NSTableView* presetsTableView;
 @property (nonatomic, weak) IBOutlet NSTextField* textFieldResX;
@@ -102,6 +106,8 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
     _authorizationView.delegate = self;
     [_authorizationView setAuthorizationRights:&rights];
     [_authorizationView updateStatus:nil];
+    
+    _progressHud.hidden = YES;
     
 }
 
@@ -258,9 +264,10 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
 
 - (void)downloadAsset:(MLGitHubAsset*)asset
 {
-    
+    _progressHud.hidden = self.mainView.enabled = NO;
     [asset downloadWithCompletionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            self.progressHud.hidden = self.mainView.enabled = YES;
             if (error != nil) {
                 [self gitHubReleaseChecker:self->_releaseChecker failedWithError:error];
                 return;
