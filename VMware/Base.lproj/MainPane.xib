@@ -15,6 +15,7 @@
                 <outlet property="presetsArrayController" destination="kcO-Vf-8QR" id="q2Y-WT-Ihe"/>
                 <outlet property="presetsTableView" destination="yV1-Es-Vol" id="z8Q-yn-yV0"/>
                 <outlet property="progressHud" destination="O0n-qp-Rh0" id="L7i-bz-BQp"/>
+                <outlet property="progressIndicator" destination="rxE-ub-4rg" id="dRz-21-cXz"/>
                 <outlet property="stepperResX" destination="ogO-mw-Ufl" id="kIm-q1-0I2"/>
                 <outlet property="stepperResY" destination="22A-sq-P4P" id="W8l-Rh-fFD"/>
                 <outlet property="textFieldResX" destination="N4B-s8-esC" id="BDu-oY-C5p"/>
@@ -404,17 +405,6 @@
                         <rect key="frame" x="240" y="104" width="200" height="200"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="UK9-kI-sfB">
-                                <rect key="frame" x="84" y="84" width="32" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <binding destination="-2" name="animate" keyPath="self.progressHud.hidden" id="ezi-2S-cNZ">
-                                        <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                        </dictionary>
-                                    </binding>
-                                </connections>
-                            </progressIndicator>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Hw-PB-979">
                                 <rect key="frame" x="18" y="20" width="164" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -424,6 +414,22 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="rxE-ub-4rg">
+                                <rect key="frame" x="84" y="84" width="32" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <binding destination="-2" name="animate" keyPath="self.progressHud.hidden" id="YII-fo-Xks">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                    <binding destination="-2" name="isIndeterminate" keyPath="self.progressIndicator.doubleValue" previousBinding="YII-fo-Xks" id="eAO-er-6PR">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                        </dictionary>
+                                    </binding>
+                                </connections>
+                            </progressIndicator>
                         </subviews>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">

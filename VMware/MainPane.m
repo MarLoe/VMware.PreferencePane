@@ -28,24 +28,25 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
 
 @interface MainPane()
 
-@property (nonatomic, weak) IBOutlet NSVisualEffectView* progressHud;
+@property (nonatomic, weak) IBOutlet NSVisualEffectView*    progressHud;
+@property (nonatomic, weak) IBOutlet NSProgressIndicator*   progressIndicator;
 
 
-@property (nonatomic, weak) IBOutlet NSTableView* presetsTableView;
-@property (nonatomic, weak) IBOutlet NSTextField* textFieldResX;
-@property (nonatomic, weak) IBOutlet NSStepper* stepperResX;
-@property (nonatomic, weak) IBOutlet NSTextField* textFieldResY;
-@property (nonatomic, weak) IBOutlet NSStepper* stepperResY;
+@property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
+@property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
+@property (nonatomic, weak) IBOutlet NSStepper*             stepperResX;
+@property (nonatomic, weak) IBOutlet NSTextField*           textFieldResY;
+@property (nonatomic, weak) IBOutlet NSStepper*             stepperResY;
 
-@property (nonatomic, weak) IBOutlet SFAuthorizationView* authorizationView;
-@property (nonatomic, weak) IBOutlet NSButton* buttonApply;
+@property (nonatomic, weak) IBOutlet SFAuthorizationView*   authorizationView;
+@property (nonatomic, weak) IBOutlet NSButton*              buttonApply;
 
-@property (strong) IBOutlet NSUserDefaultsController *userDefaultsController;
-@property (strong) IBOutlet NSArrayController *presetsArrayController;
+@property (strong) IBOutlet NSUserDefaultsController*       userDefaultsController;
+@property (strong) IBOutlet NSArrayController*              presetsArrayController;
 
 @end
 
-@interface MainPane(GitHubReleaseCheckerDelegate) <GitHubReleaseCheckerDelegate>
+@interface MainPane(MLGitHubRelease) <MLGitHubReleaseCheckerDelegate, MLGitHubAssetDelegate>
 @end
 
 @implementation MainPane
@@ -262,33 +263,49 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
 }
 
 
-- (void)downloadAsset:(MLGitHubAsset*)asset
+- (void)downloadAsset:(MLGitHubAsset*)asset toLocation:(NSURL*)location
 {
     _progressHud.hidden = self.mainView.enabled = NO;
-    [asset downloadWithCompletionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+    asset.delegate = self;
+    [asset downloadWithCompletionHandler:^(NSURL * _Nullable l, NSURLResponse * _Nullable r, NSError * _Nullable e) {
+        NSError* error = e;
+        if (error == nil && [r isKindOfClass:NSHTTPURLResponse.class]) {
+            NSHTTPURLResponse* response = (NSHTTPURLResponse*)r;
+            if (response.statusCode != 200) {
+                error = [NSError errorWithDomain:NSURLErrorDomain
+                                            code:response.statusCode
+                                        userInfo:@{
+                                                   NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode]
+                                                   }];
+            }
+        }
+        if (error == nil) {
+            [[NSFileManager defaultManager] replaceItemAtURL:location
+                                               withItemAtURL:l
+                                              backupItemName:nil
+                                                     options:NSFileManagerItemReplacementUsingNewMetadataOnly
+                                            resultingItemURL:nil
+                                                       error:&error];
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
             self.progressHud.hidden = self.mainView.enabled = YES;
             if (error != nil) {
-                [self gitHubReleaseChecker:self->_releaseChecker failedWithError:error];
-                return;
+                [self showError:error];
             }
-            
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDownloadsDirectory, NSUserDomainMask, YES);
-            NSSavePanel *panel = [NSSavePanel savePanel];
-            panel.title = @"Martin";
-            panel.nameFieldStringValue = asset.name;
-            panel.directoryURL = [NSURL fileURLWithPath:[paths firstObject]];
-            [panel beginSheetModalForWindow:self.mainView.window completionHandler:^(NSInteger result) {
-                if (result == NSFileHandlingPanelOKButton) {
-                    [data writeToURL:panel.URL atomically:YES];
-                }
-            }];
         });
     }];
 }
 
 
-#pragma mark - GitHubReleaseCheckerDelegate
+- (void)showError:(NSError*)error
+{
+    NSLog(@"%@", error);
+    NSAlert* alert = [NSAlert alertWithError:error];
+    [alert runModal];
+}
+
+
+#pragma mark - MLGitHubReleaseCheckerDelegate
 
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundReleaseInfo:(MLGitHubRelease*)releaseInfo
 {
@@ -330,14 +347,20 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
             [userDefaults setObject:releaseInfo.name forKey:@"skip"];
         }
         
-        switch (returnCode) {
-            case NSModalResponseView:
+        if (returnCode == NSModalResponseView) {
                 [[NSWorkspace sharedWorkspace] openURL:releaseInfo.htmlURL];
-                break;
-                
-            case NSModalResponseDownload:
-                [self downloadAsset:asset];
-                break;
+            return;
+        }
+        if (returnCode == NSModalResponseDownload) {
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDownloadsDirectory, NSUserDomainMask, YES);
+            NSSavePanel *panel = [NSSavePanel savePanel];
+            panel.nameFieldStringValue = asset.name;
+            panel.directoryURL = [NSURL fileURLWithPath:[paths firstObject]];
+            [panel beginSheetModalForWindow:self.mainView.window completionHandler:^(NSInteger result) {
+                if (result == NSFileHandlingPanelOKButton) {
+                    [self downloadAsset:asset toLocation:panel.URL];
+                }
+            }];
         }
     }];
 }
@@ -345,9 +368,19 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
 
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker *)sender failedWithError:(NSError *)error
 {
-    NSLog(@"%@", error);
-    NSAlert* alert = [NSAlert alertWithError:error];
-    [alert runModal];
+    [self showError:error];
+}
+
+
+#pragma mark - MLGitHubAssetDelegate
+
+- (BOOL)gitHubAsset:(MLGitHubAsset*)asset totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.progressIndicator.maxValue = totalBytesExpectedToWrite;
+        self.progressIndicator.doubleValue = totalBytesWritten;
+    });
+    return YES;
 }
 
 
@@ -408,7 +441,6 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
             [self setScreenSize:size authorization:nil];
         }];
     }
-    
 }
 
 
