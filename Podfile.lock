@@ -1,5 +1,5 @@
 PODS:
-  - GitHubRelease (0.4.3)
+  - GitHubRelease (0.5.1)
 
 DEPENDENCIES:
   - GitHubRelease (from `https://github.com/MarLoe/GitHub.Release`)
@@ -10,11 +10,11 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   GitHubRelease:
-    :commit: 4f9224239eceb37b717d4597d654fd46965aaa18
+    :commit: 1df872e5a17fca2b512795d5e4ddeccff90e2c63
     :git: https://github.com/MarLoe/GitHub.Release
 
 SPEC CHECKSUMS:
-  GitHubRelease: a725e2071379aaaac6108f3c1182f622811d2af5
+  GitHubRelease: 85c51d624716ffda15c0b6ba871893850c14d6cc
 
 PODFILE CHECKSUM: 64be4b10b27980c4bd3e2322c465f2fe9ef9ee9e
 
