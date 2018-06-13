@@ -9,35 +9,41 @@
 #import "ViewController.h"
 #import <PreferencePanes/PreferencePanes.h>
 
+#define RESET_SETTINGS FALSE
 
 @implementation ViewController
 {
-    NSPreferencePane *prefPaneObject;
+    NSString* _title;
+    NSPreferencePane* _prefPaneObject;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
+#if RESET_SETTINGS
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+#endif
+
     NSURL* url = [NSURL fileURLWithPath:@"VMware.prefPane"];
     NSBundle *prefBundle = [NSBundle bundleWithURL:url];
+    
+    _title = [prefBundle objectForInfoDictionaryKey:@"NSPrefPaneIconLabel"];
 
     Class prefPaneClass = [prefBundle principalClass];
-    prefPaneObject = [[prefPaneClass alloc] initWithBundle:prefBundle];
+    _prefPaneObject = [[prefPaneClass alloc] initWithBundle:prefBundle];
 
-    if ([prefPaneObject loadMainView]) {
-        [prefPaneObject willSelect];
-        self.view = [prefPaneObject mainView];
-        [prefPaneObject didSelect];
+    if ([_prefPaneObject loadMainView]) {
+        [_prefPaneObject willSelect];
+        self.view = [_prefPaneObject mainView];
+        [_prefPaneObject didSelect];
     }
 }
 
-
-- (void)setRepresentedObject:(id)representedObject {
-    [super setRepresentedObject:representedObject];
-
-    // Update the view, if already loaded.
+- (void)viewWillAppear
+{
+    [super viewWillAppear];
+    self.view.window.title = _title;
 }
-
 
 @end

@@ -1,16 +1,21 @@
 PODS:
-  - GitHubRelease (0.3.1)
+  - GitHubRelease (0.5.1)
 
 DEPENDENCIES:
-  - GitHubRelease (from `../GitHub.Release`)
+  - GitHubRelease (from `https://github.com/MarLoe/GitHub.Release`)
 
 EXTERNAL SOURCES:
   GitHubRelease:
-    :path: ../GitHub.Release
+    :git: https://github.com/MarLoe/GitHub.Release
+
+CHECKOUT OPTIONS:
+  GitHubRelease:
+    :commit: 1df872e5a17fca2b512795d5e4ddeccff90e2c63
+    :git: https://github.com/MarLoe/GitHub.Release
 
 SPEC CHECKSUMS:
-  GitHubRelease: 54f21b4247ad99a5b0fce2fe828380e8795c2f96
+  GitHubRelease: 85c51d624716ffda15c0b6ba871893850c14d6cc
 
-PODFILE CHECKSUM: 80c8a44345a6aeda5bde759a18500f1e70d8aef8
+PODFILE CHECKSUM: 64be4b10b27980c4bd3e2322c465f2fe9ef9ee9e
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3

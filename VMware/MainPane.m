@@ -9,32 +9,52 @@
 #import "MainPane.h"
 #import <CoreFoundation/CoreFoundation.h>
 #import <SecurityInterface/SFAuthorizationView.h>
+#import <GitHubRelease/GitHubRelease.h>
+#import "NSView+Enabled.h"
 
+#if DEBUG
+const NSString* kTestReleaseName    = @"1.2.1";
+#else
+const NSString* kTestReleaseName    = nil;
+#endif
 
-const NSString* kPresetName     = @"name";
-const NSString* kPresetWidth    = @"width";
-const NSString* kPresetHeight   = @"height";
+const NSString* kPresetName         = @"name";
+const NSString* kPresetWidth        = @"width";
+const NSString* kPresetHeight       = @"height";
+
+static const NSModalResponse NSModalResponseView        = 1001;
+static const NSModalResponse NSModalResponseDownload    = 1002;
+
 
 @interface MainPane()
 
-@property (nonatomic, weak) IBOutlet NSTableView* presetsTableView;
-@property (nonatomic, weak) IBOutlet NSTextField* textFieldResX;
-@property (nonatomic, weak) IBOutlet NSStepper* stepperResX;
-@property (nonatomic, weak) IBOutlet NSTextField* textFieldResY;
-@property (nonatomic, weak) IBOutlet NSStepper* stepperResY;
+@property (nonatomic, weak) IBOutlet NSVisualEffectView*    progressHud;
+@property (nonatomic, weak) IBOutlet NSProgressIndicator*   progressIndicator;
 
-@property (nonatomic, weak) IBOutlet SFAuthorizationView* authorizationView;
-@property (nonatomic, weak) IBOutlet NSButton* buttonApply;
 
-@property (strong) IBOutlet NSUserDefaultsController *userDefaultsController;
-@property (strong) IBOutlet NSArrayController *presetsArrayController;
+@property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
+@property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
+@property (nonatomic, weak) IBOutlet NSStepper*             stepperResX;
+@property (nonatomic, weak) IBOutlet NSTextField*           textFieldResY;
+@property (nonatomic, weak) IBOutlet NSStepper*             stepperResY;
 
+@property (nonatomic, weak) IBOutlet SFAuthorizationView*   authorizationView;
+@property (nonatomic, weak) IBOutlet NSButton*              buttonApply;
+
+@property (strong) IBOutlet NSUserDefaultsController*       userDefaultsController;
+@property (strong) IBOutlet NSArrayController*              presetsArrayController;
+
+@end
+
+@interface MainPane(MLGitHubRelease) <MLGitHubReleaseCheckerDelegate, MLGitHubAssetDelegate>
 @end
 
 @implementation MainPane
 {
     NSString* _bundleIdentifier;
+    MLGitHubReleaseChecker* _releaseChecker;
 }
+
 
 - (void)mainViewDidLoad
 {
@@ -46,14 +66,13 @@ const NSString* kPresetHeight   = @"height";
     
     NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
     _bundleIdentifier = [prefPaneBundle objectForInfoDictionaryKey:(NSString*)kCFBundleIdentifierKey];
-
-    NSString * versionString = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    self.version = [NSString stringWithFormat:@"Version: %@", versionString];
+    
+    self.version = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     
     [self applicationDidChangeScreenParametersNotification:nil];
     
     [self loadDefaultPresets:NO];
-
+    
     _stepperResX.integerValue = _currentWidth.integerValue;
     _stepperResY.integerValue = _currentHeight.integerValue;
     
@@ -70,7 +89,7 @@ const NSString* kPresetHeight   = @"height";
                                              selector:@selector(applicationDidChangeScreenParametersNotification:)
                                                  name:NSApplicationDidChangeScreenParametersNotification
                                                object:nil];
-
+    
     if ([_authorizationView.subviews count] == 0) {
         // On earlier versions (seen on Yosemite) the SFAuthorizationView does
         // not deserialieze from xib correctly, leaving it "empty".
@@ -81,13 +100,40 @@ const NSString* kPresetHeight   = @"height";
         [_authorizationView removeFromSuperview];
         _authorizationView = authView;
     }
-
+    
     // Setup security.
     AuthorizationItem items = {kAuthorizationRightExecute, 0, NULL, 0};
     AuthorizationRights rights = {1, &items};
     _authorizationView.delegate = self;
     [_authorizationView setAuthorizationRights:&rights];
     [_authorizationView updateStatus:nil];
+    
+    _progressHud.hidden = YES;
+    
+}
+
+
+- (void)didSelect
+{
+    NSString* releaseName = kTestReleaseName ?: self.version;
+    if (_releaseChecker == nil) {
+        _releaseChecker = [[MLGitHubReleaseChecker alloc] initWithUser:@"MarLoe" andProject:@"VMware.PreferencePane"];
+        _releaseChecker.delegate = self;
+    }
+    
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([[userDefaults stringForKey:@"skip"] isEqualToString:releaseName]) {
+        // The user has opted out of more alerts regarding this version.
+        return;
+    }
+    
+    NSDate* lastCheck = [userDefaults objectForKey:releaseName];
+    if (lastCheck != nil && [lastCheck timeIntervalSinceNow] > -24*60*60) {
+        // It has been less than 24 hours since last check
+        return;
+    }
+
+    [_releaseChecker checkReleaseWithName:releaseName];
 }
 
 
@@ -217,6 +263,127 @@ const NSString* kPresetHeight   = @"height";
 }
 
 
+- (void)downloadAsset:(MLGitHubAsset*)asset toLocation:(NSURL*)location
+{
+    _progressHud.hidden = self.mainView.enabled = NO;
+    asset.delegate = self;
+    [asset downloadWithCompletionHandler:^(NSURL * _Nullable l, NSURLResponse * _Nullable r, NSError * _Nullable e) {
+        NSError* error = e;
+        if (error == nil && [r isKindOfClass:NSHTTPURLResponse.class]) {
+            NSHTTPURLResponse* response = (NSHTTPURLResponse*)r;
+            if (response.statusCode != 200) {
+                error = [NSError errorWithDomain:NSURLErrorDomain
+                                            code:response.statusCode
+                                        userInfo:@{
+                                                   NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode]
+                                                   }];
+            }
+        }
+        if (error == nil) {
+            [[NSFileManager defaultManager] replaceItemAtURL:location
+                                               withItemAtURL:l
+                                              backupItemName:nil
+                                                     options:NSFileManagerItemReplacementUsingNewMetadataOnly
+                                            resultingItemURL:nil
+                                                       error:&error];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.progressHud.hidden = self.mainView.enabled = YES;
+            if (error != nil) {
+                [self showError:error];
+            }
+        });
+    }];
+}
+
+
+- (void)showError:(NSError*)error
+{
+    NSLog(@"%@", error);
+    NSAlert* alert = [NSAlert alertWithError:error];
+    [alert runModal];
+}
+
+
+#pragma mark - MLGitHubReleaseCheckerDelegate
+
+- (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundReleaseInfo:(MLGitHubRelease*)releaseInfo
+{
+    NSLog(@"%@", releaseInfo);
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:[NSDate date] forKey:releaseInfo.name];
+    [userDefaults synchronize];
+}
+
+
+- (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundNewReleaseInfo:(MLGitHubRelease*)releaseInfo
+{
+    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    if (releaseInfo.htmlURL == nil) {
+        return;
+    }
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"name == %@", @"VMware.prefPane.zip"];
+    MLGitHubAsset* asset = [releaseInfo.assets filteredArrayUsingPredicate:predicate].firstObject;
+    
+    NSAlert* alert = [[NSAlert alloc] init];
+    alert.alertStyle = NSAlertStyleWarning;
+    alert.showsSuppressionButton = YES; // Uses default checkbox title
+    alert.messageText = NSLocalizedString(@"A new version is available", -);
+    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Version %@ is available.\nYou are currently running %@", -),
+                             releaseInfo.name,
+                             sender.currentRelease.name
+                             ];
+    [alert addButtonWithTitle:NSLocalizedString(@"View", -)].tag = NSModalResponseView;
+    if (asset != nil) {
+        [alert addButtonWithTitle:NSLocalizedString(@"Download", -)].tag = NSModalResponseDownload;
+    }
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
+    
+    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
+        if (alert.suppressionButton.state == NSOnState) {
+            // Suppress this alert from now on
+            [userDefaults setObject:releaseInfo.name forKey:@"skip"];
+        }
+        
+        if (returnCode == NSModalResponseView) {
+                [[NSWorkspace sharedWorkspace] openURL:releaseInfo.htmlURL];
+            return;
+        }
+        if (returnCode == NSModalResponseDownload) {
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDownloadsDirectory, NSUserDomainMask, YES);
+            NSSavePanel *panel = [NSSavePanel savePanel];
+            panel.nameFieldStringValue = asset.name;
+            panel.directoryURL = [NSURL fileURLWithPath:[paths firstObject]];
+            [panel beginSheetModalForWindow:self.mainView.window completionHandler:^(NSInteger result) {
+                if (result == NSFileHandlingPanelOKButton) {
+                    [self downloadAsset:asset toLocation:panel.URL];
+                }
+            }];
+        }
+    }];
+}
+
+
+- (void)gitHubReleaseChecker:(MLGitHubReleaseChecker *)sender failedWithError:(NSError *)error
+{
+    [self showError:error];
+}
+
+
+#pragma mark - MLGitHubAssetDelegate
+
+- (BOOL)gitHubAsset:(MLGitHubAsset*)asset totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.progressIndicator.maxValue = totalBytesExpectedToWrite;
+        self.progressIndicator.doubleValue = totalBytesWritten;
+    });
+    return YES;
+}
+
+
 #pragma mark - Notification Handlers
 
 - (void)applicationDidChangeScreenParametersNotification:(NSNotification*) notification
@@ -245,7 +412,7 @@ const NSString* kPresetHeight   = @"height";
     NSSize size = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@"@skipPrivilegedWarning"];
-
+    
     if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
         [self setScreenSize:size authorization:[_authorizationView authorization]];
     }
@@ -260,7 +427,7 @@ const NSString* kPresetHeight   = @"height";
         alert.informativeText = NSLocalizedString(@"To make the screen size change accross reboots, you must unlock the padlock before pressing \"Apply\"!", -);
         [alert addButtonWithTitle:NSLocalizedString(@"Continue", -)];
         [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-
+        
         [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
             if (returnCode == NSModalResponseCancel) {
                 return;
@@ -274,7 +441,6 @@ const NSString* kPresetHeight   = @"height";
             [self setScreenSize:size authorization:nil];
         }];
     }
-    
 }
 
 
@@ -285,7 +451,7 @@ const NSString* kPresetHeight   = @"height";
     // back changes, we will add/remove an object :(
     // Please, anyone! Tell me how to go bout this....
     id selectedObjects = _presetsArrayController.selectedObjects;
-
+    
     NSDictionary* newPreset = @{
                                 kPresetName : @"dummy",
                                 kPresetWidth : @0,
@@ -293,7 +459,7 @@ const NSString* kPresetHeight   = @"height";
                                 };
     [_presetsArrayController addObject:newPreset];
     [_presetsArrayController removeObject:newPreset];
-
+    
     _presetsArrayController.selectedObjects = selectedObjects;
 }
 
@@ -329,7 +495,7 @@ const NSString* kPresetHeight   = @"height";
     alert.informativeText = NSLocalizedString(@"This will remove all presets and restore the defaults!", -);
     [alert addButtonWithTitle:NSLocalizedString(@"Reset", -)];
     [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-
+    
     [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseCancel) {
             return;
