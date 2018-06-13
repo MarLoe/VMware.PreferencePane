@@ -6,7 +6,7 @@ target 'VMware' do
   # use_frameworks!
 
   # Pods for VMware
-  pod 'GitHubRelease', :path => '../GitHub.Release'
+  pod 'GitHubRelease', :git => 'https://github.com/MarLoe/GitHub.Release'
 end
 
 target 'VMware.Debug' do

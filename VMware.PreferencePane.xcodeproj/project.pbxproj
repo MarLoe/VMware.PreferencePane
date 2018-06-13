@@ -65,6 +65,7 @@
 		5BB1E4C02038498F00576AAF /* SecurityFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityFoundation.framework; path = System/Library/Frameworks/SecurityFoundation.framework; sourceTree = SDKROOT; };
 		6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Enabled.h"; sourceTree = "<group>"; };
 		6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Enabled.m"; sourceTree = "<group>"; };
+		6DB3F5BA20D092BF0019CB79 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware/Pods-VMware.debug.xcconfig"; sourceTree = "<group>"; };
 		731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.Debug.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug.debug.xcconfig"; sourceTree = "<group>"; };
 		A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.Debug.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				5B3183A62032E11100EFDB87 /* README.md */,
+				6DB3F5BA20D092BF0019CB79 /* Podfile */,
 				5B3A823C2030ED960062DFEF /* VMware */,
 				5B3A826120312D820062DFEF /* VMware.Debug */,
 				5B3A823B2030ED960062DFEF /* Products */,
@@ -193,7 +195,6 @@
 				5B3A82362030ED960062DFEF /* Frameworks */,
 				5B3A82372030ED960062DFEF /* Headers */,
 				5B3A82382030ED960062DFEF /* Resources */,
-				85F3B58AF365DD9A357D8BA3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -212,8 +213,6 @@
 				5B3A825C20312D820062DFEF /* Sources */,
 				5B3A825D20312D820062DFEF /* Frameworks */,
 				5B3A825E20312D820062DFEF /* Resources */,
-				95F95F7300322503ABFDC233 /* [CP] Embed Pods Frameworks */,
-				6D96993AA24E17407481F9E6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -319,51 +318,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6D96993AA24E17407481F9E6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		85F3B58AF365DD9A357D8BA3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VMware/Pods-VMware-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		95F95F7300322503ABFDC233 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
