@@ -12,21 +12,21 @@
 #import <GitHubRelease/GitHubRelease.h>
 #import "NSView+Enabled.h"
 
-#if DEBUG
-const NSString* kTestReleaseName    = @"1.2.1";
-#else
-const NSString* kTestReleaseName    = nil;
+#define TEST_ENVIROMENT DEBUG && TRUE
+
+#if TEST_ENVIROMENT
+NSString* const kTestReleaseName    = @"1.2.1";
 #endif
 
-const NSString* kPresetName         = @"name";
-const NSString* kPresetWidth        = @"width";
-const NSString* kPresetHeight       = @"height";
+NSString* const kPresetName         = @"name";
+NSString* const kPresetWidth        = @"width";
+NSString* const kPresetHeight       = @"height";
 
-static const NSModalResponse NSModalResponseView        = 1001;
-static const NSModalResponse NSModalResponseDownload    = 1002;
+static NSModalResponse const NSModalResponseView        = 1001;
+static NSModalResponse const NSModalResponseDownload    = 1002;
 
 
-@interface MainPane()
+@interface MainPane() <MLGitHubReleaseCheckerDelegate, MLGitHubAssetDelegate>
 
 @property (nonatomic, weak) IBOutlet NSVisualEffectView*    progressHud;
 @property (nonatomic, weak) IBOutlet NSProgressIndicator*   progressIndicator;
@@ -44,9 +44,6 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
 @property (strong) IBOutlet NSUserDefaultsController*       userDefaultsController;
 @property (strong) IBOutlet NSArrayController*              presetsArrayController;
 
-@end
-
-@interface MainPane(MLGitHubRelease) <MLGitHubReleaseCheckerDelegate, MLGitHubAssetDelegate>
 @end
 
 @implementation MainPane
@@ -68,6 +65,9 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
     _bundleIdentifier = [prefPaneBundle objectForInfoDictionaryKey:(NSString*)kCFBundleIdentifierKey];
     
     self.version = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+#if TEST_ENVIROMENT
+    self.version = kTestReleaseName;
+#endif
     
     [self applicationDidChangeScreenParametersNotification:nil];
     
@@ -115,7 +115,7 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
 
 - (void)didSelect
 {
-    NSString* releaseName = kTestReleaseName ?: self.version;
+    NSString* releaseName = self.version;
     if (_releaseChecker == nil) {
         _releaseChecker = [[MLGitHubReleaseChecker alloc] initWithUser:@"MarLoe" andProject:@"VMware.PreferencePane"];
         _releaseChecker.delegate = self;
@@ -127,11 +127,13 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
         return;
     }
     
+#if !TEST_ENVIROMENT // <- Drop the 24 hour check interval if we are in test enviroment
     NSDate* lastCheck = [userDefaults objectForKey:releaseName];
     if (lastCheck != nil && [lastCheck timeIntervalSinceNow] > -24*60*60) {
         // It has been less than 24 hours since last check
         return;
     }
+#endif
 
     [_releaseChecker checkReleaseWithName:releaseName];
 }
