@@ -9,10 +9,11 @@
 #import "MainPane.h"
 #import <CoreFoundation/CoreFoundation.h>
 #import <SecurityInterface/SFAuthorizationView.h>
+#import <sys/xattr.h>
 #import <GitHubRelease/GitHubRelease.h>
 #import "NSView+Enabled.h"
 
-#define TEST_ENVIROMENT DEBUG && TRUE
+#define TEST_ENVIROMENT DEBUG// && TRUE
 
 #if TEST_ENVIROMENT
 NSString* const kTestReleaseName    = @"1.2.1";
@@ -301,6 +302,8 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
                                   options:NSFileManagerItemReplacementUsingNewMetadataOnly
                          resultingItemURL:nil
                                     error:&error];
+            // To avoid getting quarantiened by macOS, we must remove the xattr
+            removexattr(downloadUrl.path.UTF8String, "com.apple.quarantine", 0);
         }
         
         if (error == nil) {
