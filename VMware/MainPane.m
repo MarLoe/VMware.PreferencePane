@@ -9,28 +9,25 @@
 #import "MainPane.h"
 #import <CoreFoundation/CoreFoundation.h>
 #import <SecurityInterface/SFAuthorizationView.h>
+#import <sys/xattr.h>
 #import <GitHubRelease/GitHubRelease.h>
 #import "NSView+Enabled.h"
 
-#if DEBUG
-const NSString* kTestReleaseName    = @"1.2.1";
-#else
-const NSString* kTestReleaseName    = nil;
+#define TEST_ENVIROMENT DEBUG// && TRUE
+
+#if TEST_ENVIROMENT
+NSString* const kTestReleaseName    = @"1.2.1";
 #endif
 
-const NSString* kPresetName         = @"name";
-const NSString* kPresetWidth        = @"width";
-const NSString* kPresetHeight       = @"height";
+NSString* const kPresetName         = @"name";
+NSString* const kPresetWidth        = @"width";
+NSString* const kPresetHeight       = @"height";
 
-static const NSModalResponse NSModalResponseView        = 1001;
-static const NSModalResponse NSModalResponseDownload    = 1002;
+static NSModalResponse const NSModalResponseView        = 1001;
+static NSModalResponse const NSModalResponseDownload    = 1002;
 
 
-@interface MainPane()
-
-@property (nonatomic, weak) IBOutlet NSVisualEffectView*    progressHud;
-@property (nonatomic, weak) IBOutlet NSProgressIndicator*   progressIndicator;
-
+@interface MainPane() <MLGitHubReleaseCheckerDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
 @property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
@@ -44,9 +41,6 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
 @property (strong) IBOutlet NSUserDefaultsController*       userDefaultsController;
 @property (strong) IBOutlet NSArrayController*              presetsArrayController;
 
-@end
-
-@interface MainPane(MLGitHubRelease) <MLGitHubReleaseCheckerDelegate, MLGitHubAssetDelegate>
 @end
 
 @implementation MainPane
@@ -68,6 +62,9 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
     _bundleIdentifier = [prefPaneBundle objectForInfoDictionaryKey:(NSString*)kCFBundleIdentifierKey];
     
     self.version = [prefPaneBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+#if TEST_ENVIROMENT
+    self.version = kTestReleaseName;
+#endif
     
     [self applicationDidChangeScreenParametersNotification:nil];
     
@@ -107,15 +104,12 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
     _authorizationView.delegate = self;
     [_authorizationView setAuthorizationRights:&rights];
     [_authorizationView updateStatus:nil];
-    
-    _progressHud.hidden = YES;
-    
 }
 
 
 - (void)didSelect
 {
-    NSString* releaseName = kTestReleaseName ?: self.version;
+    NSString* releaseName = self.version;
     if (_releaseChecker == nil) {
         _releaseChecker = [[MLGitHubReleaseChecker alloc] initWithUser:@"MarLoe" andProject:@"VMware.PreferencePane"];
         _releaseChecker.delegate = self;
@@ -127,12 +121,14 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
         return;
     }
     
+#if !TEST_ENVIROMENT // <- Drop the 24 hour check interval if we are in test enviroment
     NSDate* lastCheck = [userDefaults objectForKey:releaseName];
     if (lastCheck != nil && [lastCheck timeIntervalSinceNow] > -24*60*60) {
         // It has been less than 24 hours since last check
         return;
     }
-
+#endif
+    
     [_releaseChecker checkReleaseWithName:releaseName];
 }
 
@@ -263,36 +259,65 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
 }
 
 
-- (void)downloadAsset:(MLGitHubAsset*)asset toLocation:(NSURL*)location
+- (void)downloadAsset:(MLGitHubAsset*)asset
 {
-    _progressHud.hidden = self.mainView.enabled = NO;
-    asset.delegate = self;
-    [asset downloadWithCompletionHandler:^(NSURL * _Nullable l, NSURLResponse * _Nullable r, NSError * _Nullable e) {
-        NSError* error = e;
-        if (error == nil && [r isKindOfClass:NSHTTPURLResponse.class]) {
-            NSHTTPURLResponse* response = (NSHTTPURLResponse*)r;
-            if (response.statusCode != 200) {
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSString* downloadFolder = NSSearchPathForDirectoriesInDomains(NSDownloadsDirectory, NSUserDomainMask, YES).firstObject;
+    NSURL* downloadUrl = [NSURL fileURLWithPathComponents:@[downloadFolder, asset.name]];
+    
+    // Find unique file name
+    for (int i = 1; [fileManager fileExistsAtPath:downloadUrl.path]; i++) {
+        NSString* assetName = [[NSString stringWithFormat:@"%@ (%i)", [asset.name stringByDeletingPathExtension], i] stringByAppendingPathExtension:[asset.name pathExtension]];
+        downloadUrl = [NSURL fileURLWithPathComponents:@[downloadFolder, assetName]];
+    }
+    // Create a placeholde until we are done downloading.
+    [fileManager createFileAtPath:downloadUrl.path contents:nil attributes:nil];
+    
+    [asset downloadWithProgressHandler:^(NSURLResponse* _Nullable response, NSProgress* _Nullable progress) {
+        NSLog(@"Downloading %@: %lld / %lld (%i%%)",asset.name, progress.completedUnitCount, progress.totalUnitCount, (int)(100.0 * progress.fractionCompleted));
+        if (progress.completedUnitCount == 0) {
+            // This part will activate progress in "Downloads stack" in the dock
+            progress.kind = NSProgressKindFile;
+            [progress setUserInfoObject:NSProgressFileOperationKindDownloading forKey:NSProgressFileOperationKindKey];
+            [progress setUserInfoObject:downloadUrl forKey:NSProgressFileURLKey];
+            [progress publish];
+        }
+    } andCompletionHandler:^(NSURLResponse* _Nullable response, NSProgress* _Nullable progress, NSURL* _Nullable location, NSError* _Nullable error) {
+        NSLog(@"%@", error ?: location);
+        if (error == nil && [response isKindOfClass:NSHTTPURLResponse.class]) {
+            NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+            if (httpResponse.statusCode != 200) {
                 error = [NSError errorWithDomain:NSURLErrorDomain
-                                            code:response.statusCode
+                                            code:httpResponse.statusCode
                                         userInfo:@{
-                                                   NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:response.statusCode]
+                                                   NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:httpResponse.statusCode]
                                                    }];
             }
         }
-        if (error == nil) {
-            [[NSFileManager defaultManager] replaceItemAtURL:location
-                                               withItemAtURL:l
-                                              backupItemName:nil
-                                                     options:NSFileManagerItemReplacementUsingNewMetadataOnly
-                                            resultingItemURL:nil
-                                                       error:&error];
+        
+        if (error == nil && location!= nil) {
+            [fileManager replaceItemAtURL:downloadUrl
+                            withItemAtURL:location
+                           backupItemName:nil
+                                  options:NSFileManagerItemReplacementUsingNewMetadataOnly
+                         resultingItemURL:nil
+                                    error:&error];
+            // To avoid getting quarantiened by macOS, we must remove the xattr
+            removexattr(downloadUrl.path.UTF8String, "com.apple.quarantine", 0);
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.progressHud.hidden = self.mainView.enabled = YES;
-            if (error != nil) {
-                [self showError:error];
-            }
-        });
+        
+        if (error == nil) {
+            // Make the "Downloads stack" bounce
+            [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.apple.DownloadFileFinished" object:downloadUrl.path];
+        }
+        
+        if (error != nil) {
+            // In case of error, remove our placeholder file.
+            [fileManager removeItemAtURL:downloadUrl error:nil];
+            [[NSAlert alertWithError:error] runModal];
+        }
+        
+        [progress unpublish]; // End "Downloads stack" progress
     }];
 }
 
@@ -348,19 +373,13 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
         }
         
         if (returnCode == NSModalResponseView) {
-                [[NSWorkspace sharedWorkspace] openURL:releaseInfo.htmlURL];
+            [[NSWorkspace sharedWorkspace] openURL:releaseInfo.htmlURL];
             return;
         }
+
         if (returnCode == NSModalResponseDownload) {
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDownloadsDirectory, NSUserDomainMask, YES);
-            NSSavePanel *panel = [NSSavePanel savePanel];
-            panel.nameFieldStringValue = asset.name;
-            panel.directoryURL = [NSURL fileURLWithPath:[paths firstObject]];
-            [panel beginSheetModalForWindow:self.mainView.window completionHandler:^(NSInteger result) {
-                if (result == NSFileHandlingPanelOKButton) {
-                    [self downloadAsset:asset toLocation:panel.URL];
-                }
-            }];
+            [self downloadAsset:asset];
+            return;
         }
     }];
 }
@@ -369,18 +388,6 @@ static const NSModalResponse NSModalResponseDownload    = 1002;
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker *)sender failedWithError:(NSError *)error
 {
     [self showError:error];
-}
-
-
-#pragma mark - MLGitHubAssetDelegate
-
-- (BOOL)gitHubAsset:(MLGitHubAsset*)asset totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
-{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.progressIndicator.maxValue = totalBytesExpectedToWrite;
-        self.progressIndicator.doubleValue = totalBytesWritten;
-    });
-    return YES;
 }
 
 
