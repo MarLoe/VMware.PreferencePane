@@ -1,5 +1,4 @@
-![AppIcon](VMware/Assets.xcassets/AppIcon.appiconset/icon32.png) VMware.PreferencePane
-=====================
+# ![AppIcon](VMware/Assets.xcassets/AppIcon.appiconset/icon32.png) VMware.PreferencePane
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/MarLoe/VMware.PreferencePane/blob/master/LICENSE)
 
@@ -7,16 +6,18 @@ This is a System Preferences pane to change screen resolution on your macOS gues
 
 ![VMware.prefPane](Images/VMware.prefPane.png)
 
-# Introduction
+## Introduction
+
 When running macOS as a guest on a WMware host, the way you change screen resolution is using a command line tool that comes with VMware Tools:
 
-```
+```bash
 /Library/Application Support/VMware Tools/vmware-resolutionSet <width> <height>
 ```
 
 I access my virtual macOS via [VNC Viewer](https://www.realvnc.com/en/connect/download/viewer) from different workstations with different screen sizes. This leaves me with the need to change screen size often - and for some reason I always has to [google](https://www.google.dk/search?q=vmware+osx+change+resolution) how to do this.
 
-# Installing
+## Installing
+
 Please download and unzip VMware.prefPane.zip from the [latest release](https://github.com/MarLoe/VMware.PreferencePane/releases/latest). 
 
 Then open it by double clicking it. If you get a message that "VMware.prefPane can't be opened because it is from an unidentified developer", then you can right-click "VMware.prefPane" and select open from the menu.
@@ -24,24 +25,33 @@ Then open it by double clicking it. If you get a message that "VMware.prefPane c
 You can also manually copy the VMware.prefPane to one of these locations:
 
 ### Current user
+
 ```~/Library/PreferencePanes```
+
 ```bash
 cp -r VMware.prefPane ~/Library/PreferencePanes/
 ```
+
 ### All users
+
 ```/Library/PreferencePanes```
+
 ```bash
 cp -r VMware.prefPane /Library/PreferencePanes/
 ```
 
-# Building
+## Building
+
 This project uses [cocoapods](https://cocoapods.org/). Please install cocoapods and from the terminal run this command from the project root folder:
+
 ```bash
 pod install
 ```
+
 Open the VMware.PreferencePane.xcworkspace workspace and build the project as normal.
 
-# Debugging
+## Debugging
+
 Since ["System Integration Protection"](https://developer.apple.com/library/content/documentation/Security/Conceptual/System_Integrity_Protection_Guide/Introduction/Introduction.html) was introduced in macOS it is no longer possible to debug system shipped applications.
 
 There are few workarounds for this.
@@ -57,13 +67,10 @@ Selecting the "VMware" target will launch the VMware.prePane initiating a (re)in
 >
 >![Remove VMware Preference Pane](Images/VMware.prefPane.remove.png)
 
-
-License
--------
+## License
 
 VMware.PreferencesPane is released under the [MIT License](https://github.com/MarLoe/VMware.PreferencePane/blob/master/LICENSE).
 
+## Acknowledgements
 
-Acknowledgements
-----------------
 VMware is a registered trademark of [VMware Inc.](http://vmware.com)
