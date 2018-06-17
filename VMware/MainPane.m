@@ -13,15 +13,17 @@
 #import <GitHubRelease/GitHubRelease.h>
 #import "NSView+Enabled.h"
 
-#define TEST_ENVIROMENT DEBUG// && TRUE
+#define TEST_ENVIROMENT DEBUG && FALSE
 
 #if TEST_ENVIROMENT
-NSString* const kTestReleaseName    = @"1.2.1";
+NSString* const kTestReleaseName        = @"1.2.1";
 #endif
 
-NSString* const kPresetName         = @"name";
-NSString* const kPresetWidth        = @"width";
-NSString* const kPresetHeight       = @"height";
+NSString* const kPresetName             = @"name";
+NSString* const kPresetWidth            = @"width";
+NSString* const kPresetHeight           = @"height";
+
+NSString* const kVMWarePrefsAutoHDPI    = @"enableAutoHiDPI";
 
 static NSModalResponse const NSModalResponseView        = 1001;
 static NSModalResponse const NSModalResponseDownload    = 1002;
@@ -35,6 +37,8 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
 @property (nonatomic, weak) IBOutlet NSTextField*           textFieldResY;
 @property (nonatomic, weak) IBOutlet NSStepper*             stepperResY;
 
+@property (nonatomic, weak) IBOutlet NSButton*              autoHiDPI;
+
 @property (nonatomic, weak) IBOutlet SFAuthorizationView*   authorizationView;
 @property (nonatomic, weak) IBOutlet NSButton*              buttonApply;
 
@@ -45,8 +49,10 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
 
 @implementation MainPane
 {
-    NSString* _bundleIdentifier;
-    MLGitHubReleaseChecker* _releaseChecker;
+    NSString*                   _bundleIdentifier;
+    MLGitHubReleaseChecker*     _releaseChecker;
+    NSURL*                      _vmWarePreferencesUrl;
+    NSMutableDictionary*        _vmWarePreferencesDict;
 }
 
 
@@ -81,6 +87,11 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
             break;
         }
     }
+    
+    NSString* libraryFolder = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject;
+    _vmWarePreferencesUrl = [NSURL fileURLWithPathComponents:@[libraryFolder, @"Preferences", @"com.vmware.tools.plist"]];
+    _vmWarePreferencesDict = [[NSDictionary dictionaryWithContentsOfURL:_vmWarePreferencesUrl] mutableCopy];
+    _autoHiDPI.state = [_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] boolValue] ? NSControlStateValueOn : NSControlStateValueOff;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidChangeScreenParametersNotification:)
@@ -376,7 +387,7 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
             [[NSWorkspace sharedWorkspace] openURL:releaseInfo.htmlURL];
             return;
         }
-
+        
         if (returnCode == NSModalResponseDownload) {
             [self downloadAsset:asset];
             return;
@@ -419,6 +430,12 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
     NSSize size = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@"@skipPrivilegedWarning"];
+    
+    BOOL autoHiDPIEnabled = _autoHiDPI.state == NSControlStateValueOn;
+    if (autoHiDPIEnabled != [_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] boolValue]) {
+        _vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(autoHiDPIEnabled);
+        [_vmWarePreferencesDict writeToURL:_vmWarePreferencesUrl atomically:YES];
+    }
     
     if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
         [self setScreenSize:size authorization:[_authorizationView authorization]];
