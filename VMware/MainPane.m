@@ -13,7 +13,7 @@
 #import <GitHubRelease/GitHubRelease.h>
 #import "NSView+Enabled.h"
 
-#define TEST_ENVIROMENT DEBUG && FALSE
+#define TEST_ENVIROMENT (DEBUG && FALSE)
 
 #if TEST_ENVIROMENT
 NSString* const kTestReleaseName        = @"1.2.1";
@@ -49,15 +49,31 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
 
 @implementation MainPane
 {
+    BOOL                        _forceCheckForUpdate;
     NSString*                   _bundleIdentifier;
     MLGitHubReleaseChecker*     _releaseChecker;
     NSURL*                      _vmWarePreferencesUrl;
     NSMutableDictionary*        _vmWarePreferencesDict;
 }
 
+- (instancetype)initWithBundle:(NSBundle *)bundle
+{
+    if (self = [super initWithBundle:bundle]) {
+        _forceCheckForUpdate |= [self isOptionsKeyPressed];
+    }
+    return self;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    _forceCheckForUpdate |= [self isOptionsKeyPressed];
+}
 
 - (void)mainViewDidLoad
 {
+    _forceCheckForUpdate |= [self isOptionsKeyPressed];
+    
     // Fix for size according to :
     // https://blog.timschroeder.net/2016/07/16/the-strange-case-of-the-os-x-system-preferences-window-width
     NSSize size = self.mainView.frame.size;
@@ -117,32 +133,46 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
     [_authorizationView updateStatus:nil];
 }
 
+- (void)willSelect
+{
+    _forceCheckForUpdate |= [self isOptionsKeyPressed];
+}
 
 - (void)didSelect
 {
+    _forceCheckForUpdate |= [self isOptionsKeyPressed];
+    
     NSString* releaseName = self.version;
     if (_releaseChecker == nil) {
         _releaseChecker = [[MLGitHubReleaseChecker alloc] initWithUser:@"MarLoe" andProject:@"VMware.PreferencePane"];
         _releaseChecker.delegate = self;
     }
     
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([[userDefaults stringForKey:@"skip"] isEqualToString:releaseName]) {
-        // The user has opted out of more alerts regarding this version.
-        return;
+    if (!_forceCheckForUpdate) {
+        // The standard check for update was not bypassed - so do it :)
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([[userDefaults stringForKey:@"skip"] isEqualToString:releaseName]) {
+            // The user has opted out of more alerts regarding this version.
+            return;
+        }
+        
+#if !TEST_ENVIROMENT // <- Drop the 24 hour check interval if we are in test enviroment
+        NSDate* lastCheck = [userDefaults objectForKey:releaseName];
+        if (lastCheck != nil && [lastCheck timeIntervalSinceNow] > -24*60*60) {
+            // It has been less than 24 hours since last check
+            return;
+        }
+#endif
     }
     
-#if !TEST_ENVIROMENT // <- Drop the 24 hour check interval if we are in test enviroment
-    NSDate* lastCheck = [userDefaults objectForKey:releaseName];
-    if (lastCheck != nil && [lastCheck timeIntervalSinceNow] > -24*60*60) {
-        // It has been less than 24 hours since last check
-        return;
-    }
-#endif
+    _forceCheckForUpdate = NO;
     
     [_releaseChecker checkReleaseWithName:releaseName];
 }
 
+- (void)willUnselect
+{
+}
 
 - (float)preferenceWindowWidth
 {
@@ -238,7 +268,7 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
         [file closeFile];
     }
     NSString *outputText = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog (@"SUCCESS:\n%@", outputText);
+    NSLog(@"SUCCESS:\n%@", outputText);
     
     if (authorization != nil) {
         // Make mutable copy - needed to test different extra parameters during development
@@ -285,7 +315,6 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
     [fileManager createFileAtPath:downloadUrl.path contents:nil attributes:nil];
     
     [asset downloadWithProgressHandler:^(NSURLResponse* _Nullable response, NSProgress* _Nullable progress) {
-        NSLog(@"Downloading %@: %lld / %lld (%i%%)",asset.name, progress.completedUnitCount, progress.totalUnitCount, (int)(100.0 * progress.fractionCompleted));
         if (progress.completedUnitCount == 0) {
             // This part will activate progress in "Downloads stack" in the dock
             progress.kind = NSProgressKindFile;
@@ -294,7 +323,6 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
             [progress publish];
         }
     } andCompletionHandler:^(NSURLResponse* _Nullable response, NSProgress* _Nullable progress, NSURL* _Nullable location, NSError* _Nullable error) {
-        NSLog(@"%@", error ?: location);
         if (error == nil && [response isKindOfClass:NSHTTPURLResponse.class]) {
             NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
             if (httpResponse.statusCode != 200) {
@@ -323,6 +351,7 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
         }
         
         if (error != nil) {
+            NSLog(@"ERROR: %@", error);
             // In case of error, remove our placeholder file.
             [fileManager removeItemAtURL:downloadUrl error:nil];
             [[NSAlert alertWithError:error] runModal];
@@ -333,9 +362,15 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
 }
 
 
+- (BOOL)isOptionsKeyPressed
+{
+    return ([NSEvent modifierFlags] & NSEventModifierFlagOption) == NSEventModifierFlagOption;
+}
+
+
 - (void)showError:(NSError*)error
 {
-    NSLog(@"%@", error);
+    NSLog(@"ERROR: %@", error);
     NSAlert* alert = [NSAlert alertWithError:error];
     [alert runModal];
 }

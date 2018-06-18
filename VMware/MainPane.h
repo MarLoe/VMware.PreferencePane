@@ -15,6 +15,4 @@
 @property (nonatomic, assign) IBOutlet NSNumber* currentWidth;
 @property (nonatomic, assign) IBOutlet NSNumber* currentHeight;
 
-- (void)mainViewDidLoad;
-
 @end
