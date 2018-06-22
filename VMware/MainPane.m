@@ -398,6 +398,36 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"name == %@", @"VMware.prefPane.zip"];
     MLGitHubAsset* asset = [releaseInfo.assets filteredArrayUsingPredicate:predicate].firstObject;
     
+    // Setup release note
+    NSDictionary<NSAttributedStringKey, id>* titleAttr = @{
+                                                           NSFontAttributeName : [NSFont boldSystemFontOfSize:14.0]
+                                                           };
+    NSAttributedString* releaseNote = [sender generateReleaseNoteFromRelease:sender.currentRelease
+                                                                   toRelease:sender.availableRelease
+                                                        withHeaderAttributes:titleAttr
+                                                           andBodyAttributes:nil];
+    
+    NSTextField* releaseNoteTextField;
+    if (@available(macOS 10.12, *)) {
+        releaseNoteTextField = [NSTextField labelWithAttributedString:releaseNote];
+    }
+    else {
+        // This might clip some of the bottom :(
+        // The size calculation is incorrect and neither me nor Google knows what's wrong...
+        NSRect frame = { .origin = NSZeroPoint, .size = [releaseNote size]};
+        releaseNoteTextField = [[NSTextField alloc] initWithFrame:frame];
+        releaseNoteTextField.bordered = NO;
+        releaseNoteTextField.editable = NO;
+        releaseNoteTextField.attributedStringValue = releaseNote;
+    }
+    
+    NSScrollView* releaseNoteScrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 300, 100)];
+    releaseNoteScrollView.hasVerticalScroller = YES;
+    releaseNoteScrollView.hasHorizontalScroller = YES;
+    releaseNoteScrollView.documentView = releaseNoteTextField;
+    
+
+    // Now create the alert
     NSAlert* alert = [[NSAlert alloc] init];
     alert.alertStyle = NSAlertStyleWarning;
     alert.showsSuppressionButton = YES; // Uses default checkbox title
@@ -406,6 +436,9 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
                              releaseInfo.name,
                              sender.currentRelease.name
                              ];
+    alert.accessoryView = releaseNoteScrollView;
+
+
     [alert addButtonWithTitle:NSLocalizedString(@"View", -)].tag = NSModalResponseView;
     if (asset != nil) {
         [alert addButtonWithTitle:NSLocalizedString(@"Download", -)].tag = NSModalResponseDownload;
