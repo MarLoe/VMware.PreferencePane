@@ -34,9 +34,7 @@
     _prefPaneObject = [[prefPaneClass alloc] initWithBundle:prefBundle];
 
     if ([_prefPaneObject loadMainView]) {
-        [_prefPaneObject willSelect];
-        self.view = [_prefPaneObject mainView];
-        [_prefPaneObject didSelect];
+        self.view = _prefPaneObject.mainView;
     }
 }
 
@@ -44,6 +42,26 @@
 {
     [super viewWillAppear];
     self.view.window.title = _title;
+    [_prefPaneObject willSelect];
+}
+
+- (void)viewDidAppear
+{
+    [super viewDidAppear];
+    [self.view.window makeFirstResponder:self.view];
+    [_prefPaneObject didSelect];
+}
+
+- (void)viewWillDisappear
+{
+    [super viewWillDisappear];
+    [_prefPaneObject willUnselect];
+}
+
+- (void)viewDidDisappear
+{
+    [super viewDidDisappear];
+    [_prefPaneObject didUnselect];
 }
 
 @end
