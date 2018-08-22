@@ -20,6 +20,14 @@
 		5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A827E203182440062DFEF /* IntegerValueFormatter.m */; };
 		5B509F9520362265001A2037 /* Presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B509F9420362265001A2037 /* Presets.plist */; };
 		5BB1E4BF2038498600576AAF /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB1E4BE2038498600576AAF /* SecurityInterface.framework */; };
+		6D2929D3212D898700A950AF /* MLCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2929D1212D898700A950AF /* MLCommand.h */; };
+		6D2929D4212D898700A950AF /* MLCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2929D2212D898700A950AF /* MLCommand.m */; };
+		6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2929D5212D96A200A950AF /* MLVMwareCommand.h */; };
+		6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2929D6212D96A200A950AF /* MLVMwareCommand.m */; };
+		6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2929D9212DF00400A950AF /* MLLaunchCtrlCommand.h */; };
+		6D2929DC212DF00400A950AF /* MLLaunchCtrlCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2929DA212DF00400A950AF /* MLLaunchCtrlCommand.m */; };
+		6D292A12212E128200A950AF /* MLPlistParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D292A10212E128200A950AF /* MLPlistParser.h */; };
+		6D292A13212E128200A950AF /* MLPlistParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D292A11212E128200A950AF /* MLPlistParser.m */; };
 		6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */; };
@@ -63,6 +71,15 @@
 		5B509F9420362265001A2037 /* Presets.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Presets.plist; sourceTree = "<group>"; };
 		5BB1E4BE2038498600576AAF /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		5BB1E4C02038498F00576AAF /* SecurityFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityFoundation.framework; path = System/Library/Frameworks/SecurityFoundation.framework; sourceTree = SDKROOT; };
+		6D2929D1212D898700A950AF /* MLCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLCommand.h; sourceTree = "<group>"; };
+		6D2929D2212D898700A950AF /* MLCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLCommand.m; sourceTree = "<group>"; };
+		6D2929D5212D96A200A950AF /* MLVMwareCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLVMwareCommand.h; sourceTree = "<group>"; };
+		6D2929D6212D96A200A950AF /* MLVMwareCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLVMwareCommand.m; sourceTree = "<group>"; };
+		6D2929D9212DF00400A950AF /* MLLaunchCtrlCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLLaunchCtrlCommand.h; sourceTree = "<group>"; };
+		6D2929DA212DF00400A950AF /* MLLaunchCtrlCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLLaunchCtrlCommand.m; sourceTree = "<group>"; };
+		6D292A0F212E0F4F00A950AF /* MLCommand+internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MLCommand+internal.h"; sourceTree = "<group>"; };
+		6D292A10212E128200A950AF /* MLPlistParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLPlistParser.h; sourceTree = "<group>"; };
+		6D292A11212E128200A950AF /* MLPlistParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLPlistParser.m; sourceTree = "<group>"; };
 		6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Enabled.h"; sourceTree = "<group>"; };
 		6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Enabled.m"; sourceTree = "<group>"; };
 		6DB3F5BA20D092BF0019CB79 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
@@ -130,6 +147,7 @@
 		5B3A823C2030ED960062DFEF /* VMware */ = {
 			isa = PBXGroup;
 			children = (
+				6D2929D0212D896400A950AF /* Commands */,
 				5B509F9420362265001A2037 /* Presets.plist */,
 				5B3A823D2030ED960062DFEF /* MainPane.h */,
 				5B3A823F2030ED960062DFEF /* MainPane.m */,
@@ -170,6 +188,22 @@
 			path = VMware.Debug;
 			sourceTree = "<group>";
 		};
+		6D2929D0212D896400A950AF /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				6D2929D1212D898700A950AF /* MLCommand.h */,
+				6D292A0F212E0F4F00A950AF /* MLCommand+internal.h */,
+				6D2929D2212D898700A950AF /* MLCommand.m */,
+				6D2929D5212D96A200A950AF /* MLVMwareCommand.h */,
+				6D2929D6212D96A200A950AF /* MLVMwareCommand.m */,
+				6D2929D9212DF00400A950AF /* MLLaunchCtrlCommand.h */,
+				6D2929DA212DF00400A950AF /* MLLaunchCtrlCommand.m */,
+				6D292A10212E128200A950AF /* MLPlistParser.h */,
+				6D292A11212E128200A950AF /* MLPlistParser.m */,
+			);
+			path = Commands;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -180,6 +214,10 @@
 				6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */,
 				5B3A827F203182440062DFEF /* IntegerValueFormatter.h in Headers */,
 				5B3A823E2030ED960062DFEF /* MainPane.h in Headers */,
+				6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */,
+				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
+				6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */,
+				6D2929D3212D898700A950AF /* MLCommand.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,7 +365,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D2929DC212DF00400A950AF /* MLLaunchCtrlCommand.m in Sources */,
 				5B3A82402030ED960062DFEF /* MainPane.m in Sources */,
+				6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */,
+				6D2929D4212D898700A950AF /* MLCommand.m in Sources */,
+				6D292A13212E128200A950AF /* MLPlistParser.m in Sources */,
 				6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */,
 				5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */,
 			);
