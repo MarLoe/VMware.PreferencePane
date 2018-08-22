@@ -32,6 +32,10 @@
 		6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6D914134213D217F000D7931 /* STPrivilegedTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D914132213D217F000D7931 /* STPrivilegedTask.h */; };
 		6D914135213D217F000D7931 /* STPrivilegedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D914133213D217F000D7931 /* STPrivilegedTask.m */; };
+		6D914149213DF455000D7931 /* NSTabViewItemInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D914147213DF455000D7931 /* NSTabViewItemInfo.h */; };
+		6D91414A213DF455000D7931 /* NSTabViewItemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D914148213DF455000D7931 /* NSTabViewItemInfo.m */; };
+		6D914150213DF5EB000D7931 /* NSTimeIntervalTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D91414E213DF5EB000D7931 /* NSTimeIntervalTransformer.h */; };
+		6D914151213DF5EB000D7931 /* NSTimeIntervalTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D91414F213DF5EB000D7931 /* NSTimeIntervalTransformer.m */; };
 		6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */; };
 		6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */; };
 		778A13B215E188EAB0A35660 /* libPods-VMware.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 364631799F3A44D6882C77D1 /* libPods-VMware.a */; };
@@ -84,6 +88,10 @@
 		6D292A11212E128200A950AF /* MLPlistParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLPlistParser.m; sourceTree = "<group>"; };
 		6D914132213D217F000D7931 /* STPrivilegedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPrivilegedTask.h; sourceTree = "<group>"; };
 		6D914133213D217F000D7931 /* STPrivilegedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPrivilegedTask.m; sourceTree = "<group>"; };
+		6D914147213DF455000D7931 /* NSTabViewItemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTabViewItemInfo.h; sourceTree = "<group>"; };
+		6D914148213DF455000D7931 /* NSTabViewItemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTabViewItemInfo.m; sourceTree = "<group>"; };
+		6D91414E213DF5EB000D7931 /* NSTimeIntervalTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTimeIntervalTransformer.h; sourceTree = "<group>"; };
+		6D91414F213DF5EB000D7931 /* NSTimeIntervalTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTimeIntervalTransformer.m; sourceTree = "<group>"; };
 		6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Enabled.h"; sourceTree = "<group>"; };
 		6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Enabled.m"; sourceTree = "<group>"; };
 		6DB3F5BA20D092BF0019CB79 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
@@ -153,6 +161,8 @@
 			children = (
 				6D2929D0212D896400A950AF /* Commands */,
 				6D914131213D217F000D7931 /* STPrivilegedTask */,
+				6D91413D213DF383000D7931 /* Tabs */,
+				6D91414D213DF5EB000D7931 /* ValueTransformers */,
 				5B509F9420362265001A2037 /* Presets.plist */,
 				5B3A823D2030ED960062DFEF /* MainPane.h */,
 				5B3A823F2030ED960062DFEF /* MainPane.m */,
@@ -218,6 +228,24 @@
 			path = STPrivilegedTask;
 			sourceTree = "<group>";
 		};
+		6D91413D213DF383000D7931 /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				6D914147213DF455000D7931 /* NSTabViewItemInfo.h */,
+				6D914148213DF455000D7931 /* NSTabViewItemInfo.m */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
+		6D91414D213DF5EB000D7931 /* ValueTransformers */ = {
+			isa = PBXGroup;
+			children = (
+				6D91414E213DF5EB000D7931 /* NSTimeIntervalTransformer.h */,
+				6D91414F213DF5EB000D7931 /* NSTimeIntervalTransformer.m */,
+			);
+			path = ValueTransformers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -231,8 +259,10 @@
 				6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */,
 				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
 				6D914134213D217F000D7931 /* STPrivilegedTask.h in Headers */,
+				6D914149213DF455000D7931 /* NSTabViewItemInfo.h in Headers */,
 				6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */,
 				6D2929D3212D898700A950AF /* MLCommand.h in Headers */,
+				6D914150213DF5EB000D7931 /* NSTimeIntervalTransformer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,9 +414,11 @@
 				5B3A82402030ED960062DFEF /* MainPane.m in Sources */,
 				6D914135213D217F000D7931 /* STPrivilegedTask.m in Sources */,
 				6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */,
+				6D914151213DF5EB000D7931 /* NSTimeIntervalTransformer.m in Sources */,
 				6D2929D4212D898700A950AF /* MLCommand.m in Sources */,
 				6D292A13212E128200A950AF /* MLPlistParser.m in Sources */,
 				6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */,
+				6D91414A213DF455000D7931 /* NSTabViewItemInfo.m in Sources */,
 				5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

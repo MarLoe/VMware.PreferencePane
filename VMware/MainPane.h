@@ -8,7 +8,7 @@
 
 #import <PreferencePanes/PreferencePanes.h>
 
-@interface MainPane : NSPreferencePane<NSTableViewDelegate>
+@interface MainPane : NSPreferencePane<NSTabViewDelegate, NSTableViewDelegate>
 
 @property (nonatomic, strong) IBOutlet NSString* version;
 

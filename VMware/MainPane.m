@@ -11,8 +11,10 @@
 #import <SecurityInterface/SFAuthorizationView.h>
 #import <sys/xattr.h>
 #import <GitHubRelease/GitHubRelease.h>
-#import "MLVMwareCommand.h"
 #import "STPrivilegedTask/STPrivilegedTask.h"
+#import "MLVMwareCommand.h"
+#import "MLLaunchCtrlCommand.h"
+#import "NSTabViewItemInfo.h"
 #import "NSView+Enabled.h"
 
 #define TEST_ENVIROMENT (DEBUG && FALSE)
@@ -34,6 +36,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 
 @interface MainPane() <MLGitHubReleaseCheckerDelegate>
+
+@property (nonatomic, weak) IBOutlet NSTabView*             tabView;
 
 @property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
 @property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
@@ -562,6 +566,47 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     NSRect screenSize = screen.frame;
     self.currentWidth = [NSNumber numberWithInteger:screenSize.size.width];
     self.currentHeight = [NSNumber numberWithInteger:screenSize.size.height];
+}
+
+
+#pragma mark - NSTabViewDelegate
+
+- (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(nullable NSTabViewItem *)tabViewItem
+{
+    if ([tabViewItem.identifier isEqualToString:@"tab_info"]) {
+        NSTabViewItemInfo* itemInfo = (NSTabViewItemInfo*)tabViewItem;
+        
+        MLVMwareVersionCommand* cmdVersion = [MLVMwareVersionCommand version];
+        [cmdVersion executeWithCompletion:^(NSError *error) {
+            if (error != nil) {
+                itemInfo.toolsVersion = @"N/A";
+                return;
+            }
+            itemInfo.toolsVersion = cmdVersion.version;
+        }];
+        
+        MLVMwareSessionCommand* cmdSession = [MLVMwareSessionCommand session];
+        [cmdSession executeWithCompletion:^(NSError *error) {
+            if (error != nil) {
+                itemInfo.hostVersion = @"N/A";
+                itemInfo.uptime = 0;
+                return;
+            }
+            itemInfo.hostVersion = cmdSession.session[@"version"] ?: @"N/A";
+            itemInfo.uptime = [cmdSession.session[@"uptime"][@"value"] doubleValue] / 1000000.0;
+        }];
+
+        MLLaunchCtrlCommand* cmdLaunchCtrl = [MLLaunchCtrlCommand listService:@"com.vmware.launchd.vmware-tools-userd"];
+        [cmdLaunchCtrl executeWithCompletion:^(NSError *error) {
+            NSInteger pid = [cmdLaunchCtrl.service[@"PID"] integerValue];
+            NSLog(@"%ld", (long)pid);
+        }];
+
+
+        
+//        launchctl list
+        
+    }
 }
 
 
