@@ -11,22 +11,25 @@
 #import <SecurityInterface/SFAuthorizationView.h>
 #import <sys/xattr.h>
 #import <GitHubRelease/GitHubRelease.h>
+#import "MLVMwareCommand.h"
 #import "NSView+Enabled.h"
 
 #define TEST_ENVIROMENT (DEBUG && FALSE)
 
-#if TEST_ENVIROMENT
-NSString* const kTestReleaseName        = @"1.2.1";
+#if (TEST_ENVIROMENT)
+NSString* const kTestReleaseName                            = @"1.2.1";
 #endif
 
-NSString* const kPresetName             = @"name";
-NSString* const kPresetWidth            = @"width";
-NSString* const kPresetHeight           = @"height";
+NSString* const kPresetName                                 = @"name";
+NSString* const kPresetWidth                                = @"width";
+NSString* const kPresetHeight                               = @"height";
 
-NSString* const kVMWarePrefsAutoHDPI    = @"enableAutoHiDPI";
+NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI";
 
-static NSModalResponse const NSModalResponseView        = 1001;
-static NSModalResponse const NSModalResponseDownload    = 1002;
+static const NSModalResponse NSModalResponseKeep            = (-1000);
+static const NSModalResponse NSModalResponseReset           = (-1001);
+static const NSModalResponse NSModalResponseView            = (-1002);
+static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 
 @interface MainPane() <MLGitHubReleaseCheckerDelegate>
@@ -56,6 +59,7 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
     NSMutableDictionary*        _vmWarePreferencesDict;
 }
 
+
 - (instancetype)initWithBundle:(NSBundle *)bundle
 {
     if (self = [super initWithBundle:bundle]) {
@@ -64,11 +68,13 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
     return self;
 }
 
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     _forceCheckForUpdate |= [self isOptionsKeyPressed];
 }
+
 
 - (void)mainViewDidLoad
 {
@@ -118,7 +124,7 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
         // On earlier versions (seen on Yosemite) the SFAuthorizationView does
         // not deserialieze from xib correctly, leaving it "empty".
         // If it is empty we know it failed and we can mauallyt create
-        // one to work around it - thank you Apple.
+        // one to work around it - thank you Apple :(
         SFAuthorizationView* authView = [[SFAuthorizationView alloc] initWithFrame:_authorizationView.frame];
         [_authorizationView.superview addSubview:authView];
         [_authorizationView removeFromSuperview];
@@ -133,10 +139,12 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
     [_authorizationView updateStatus:nil];
 }
 
+
 - (void)willSelect
 {
     _forceCheckForUpdate |= [self isOptionsKeyPressed];
 }
+
 
 - (void)didSelect
 {
@@ -170,9 +178,6 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
     [_releaseChecker checkReleaseWithName:releaseName];
 }
 
-- (void)willUnselect
-{
-}
 
 - (float)preferenceWindowWidth
 {
@@ -211,92 +216,85 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
 }
 
 
-- (void)setScreenSize:(NSSize)size authorization:(SFAuthorization*)authorization
+- (void)applySettingsWithRevert:(BOOL)showRevert andAuthorization:(SFAuthorization*)authorization
 {
-    NSPipe *pipeError = [NSPipe pipe];
-    NSPipe *pipeOutput = [NSPipe pipe];
+    NSSize newSize = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
+    NSSize oldSize = NSMakeSize(_currentWidth.integerValue, _currentHeight.integerValue);
     
-    NSTask *task = [[NSTask alloc] init];
-    task.currentDirectoryPath = @"/Library/Application Support/VMware Tools/";
-    task.launchPath = [task.currentDirectoryPath stringByAppendingPathComponent:@"vmware-resolutionSet"];
-    task.arguments = @[@(size.width).stringValue, @(size.height).stringValue];
-    task.standardError = pipeError;
-    task.standardOutput = pipeOutput;
+    BOOL newAutoHiDPIEnabled = _autoHiDPI.state == NSControlStateValueOn;
+    BOOL oldAutoHiDPIEnabled = [_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] boolValue];
+    if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
+        _vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(newAutoHiDPIEnabled);
+        [_vmWarePreferencesDict writeToURL:_vmWarePreferencesUrl atomically:YES];
+    }
     
-    NSError* error = nil;
+    __weak typeof(self) weakSelf = self;
+    [self setScreenSize:newSize showRevert:showRevert authorization:authorization completionHandler:^(BOOL reverted, NSError* error) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if (reverted) {
+            if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
+                strongSelf->_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(oldAutoHiDPIEnabled);
+                [strongSelf->_vmWarePreferencesDict writeToURL:strongSelf->_vmWarePreferencesUrl atomically:YES];
+                strongSelf->_autoHiDPI.state = oldAutoHiDPIEnabled ? NSControlStateValueOn : NSControlStateValueOff;
+            }
+            [[MLVMwareCommand resolutionSet:oldSize.width height:oldSize.height] executeWithCompletion:nil];
+        }
+        if (error != nil) {
+            [weakSelf showErrorSheet:error];
+        }
+    }];
     
-    if (@available(macOS 10.13, *)) {
-        if (![task launchAndReturnError:(&error)]) {
-            NSLog (@"ERROR:\n%@", error);
-            NSAlert* alert = [NSAlert alertWithError:error];
-            [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
+}
+
+
+- (void)setScreenSize:(NSSize)size showRevert:(BOOL)showRevert authorization:(SFAuthorization*)authorization completionHandler:(void (^)(BOOL reverted, NSError* error))handler
+{
+    [[MLVMwareCommand resolutionSet:size.width height:size.height] executeWithCompletion:^(NSError *error) {
+        if (error != nil) {
+            handler(NO, error);
             return;
         }
-    }
-    else {
-        [task launch];
-    }
-    
-    [task waitUntilExit];
-    
-    if (task.terminationStatus != 0) {
         
-        // ERROR
-        NSFileHandle *file = pipeError.fileHandleForReading;
-        NSData *data = [file readDataToEndOfFile];
-        [file closeFile];
-        NSString *errorText = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-        NSLog (@"ERROR (%i):\n%@", task.terminationStatus, errorText);
-        
-        error = [NSError errorWithDomain:NSPOSIXErrorDomain
-                                    code:task.terminationStatus
-                                userInfo:@{ NSLocalizedDescriptionKey: errorText }];
-        
-        NSAlert* alert = [NSAlert alertWithError:error];
-        [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
-        return;
-    }
-    
-    // SUCCESS
-    NSFileHandle* file = pipeOutput.fileHandleForReading;
-    NSData* data = [file readDataToEndOfFile];
-    [file closeFile];
-    if (data.length == 0) {
-        // vmware-resolutionSet writes its log to stderr
-        NSFileHandle *file = pipeError.fileHandleForReading;
-        data = [file readDataToEndOfFile];
-        [file closeFile];
-    }
-    NSString *outputText = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"SUCCESS:\n%@", outputText);
-    
-    if (authorization != nil) {
-        // Make mutable copy - needed to test different extra parameters during development
-        NSMutableArray* args = task.arguments.mutableCopy;
-        
-        // Convert array into void* array.
-        const char **argv = (const char **)malloc(sizeof(char *) * [args count] + 1);
-        int argvIndex = 0;
-        for (NSString *string in task.arguments) {
-            argv[argvIndex] = [string UTF8String];
-            argvIndex++;
+        void (^handlerBlock)(NSModalResponse returnCode) = ^(NSModalResponse returnCode) {
+            
+            if (returnCode == NSModalResponseCancel) {
+                handler(YES, nil);
+                return;
+            }
+            
+            if (authorization != nil) {
+                
+                const char **argv = (const char **)malloc(sizeof(char *) * (2 + 1));
+                argv[0] = [@(size.width).stringValue UTF8String];
+                argv[1] = [@(size.height).stringValue UTF8String];
+                argv[2] = nil;
+                
+                NSString* launchPath = [kVMwareToolsFolder stringByAppendingPathComponent:kVMwareToolsResolutionSet];
+                
+                // This is depricated - but if it works, it works - and if it works, don't fix it
+                // Anyway, someday I might look a bit more int SMJobBless
+                OSErr processError = AuthorizationExecuteWithPrivileges([authorization authorizationRef],
+                                                                        [launchPath UTF8String],
+                                                                        kAuthorizationFlagDefaults,
+                                                                        (char *const *)argv,
+                                                                        NULL);
+                
+                free(argv);
+                
+                if (processError != errAuthorizationSuccess) {
+                    NSLog(@"Error: %d", processError);
+                }
+            }
+            
+            handler(NO, nil);
+        };
+        if (!showRevert) {
+            handlerBlock(NSModalResponseKeep);
         }
-        argv[argvIndex] = nil;
-        
-        // This is depricated - but if it works, it works - and if it works, don't fix it
-        // Anyway, someday I might look a bit more int SMJobBless
-        OSErr processError = AuthorizationExecuteWithPrivileges([authorization authorizationRef],
-                                                                [task.launchPath UTF8String],
-                                                                kAuthorizationFlagDefaults,
-                                                                (char *const *)argv,
-                                                                NULL);
-        free(argv);
-        
-        if (processError != errAuthorizationSuccess) {
-            NSLog(@"Error: %d", processError);
-            return;
+        else {
+            [self showKeepChangesWithCompletionHandler:handlerBlock];
         }
-    }
+    }];
 }
 
 
@@ -351,14 +349,19 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
         }
         
         if (error != nil) {
-            NSLog(@"ERROR: %@", error);
             // In case of error, remove our placeholder file.
             [fileManager removeItemAtURL:downloadUrl error:nil];
-            [[NSAlert alertWithError:error] runModal];
+            [self showErrorSheet:error];
         }
         
         [progress unpublish]; // End "Downloads stack" progress
     }];
+}
+
+
+- (BOOL)isShiftKeyPressed
+{
+    return ([NSEvent modifierFlags] & NSEventModifierFlagShift) == NSEventModifierFlagShift;
 }
 
 
@@ -368,11 +371,147 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
 }
 
 
+#pragma mark - Alerts
+
+- (void)showResetPresetsWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler
+{
+    NSAlert* alert = [[NSAlert alloc] init];
+    alert.alertStyle = NSAlertStyleWarning;
+    alert.messageText = NSLocalizedString(@"Reset all presets?", -);
+    alert.informativeText = NSLocalizedString(@"This will remove all presets and restore the defaults!", -);
+    [alert addButtonWithTitle:NSLocalizedString(@"Reset", -)].tag = NSModalResponseReset;
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
+    
+    [alert beginSheetModalForWindow:self.mainView.window completionHandler:handler];
+}
+
+
+- (void)showNewVersionAvailableWithCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset))handler
+{
+    // Setup release note
+    NSDictionary<NSAttributedStringKey, id>* titleAttr = @{
+                                                           NSFontAttributeName : [NSFont boldSystemFontOfSize:14.0]
+                                                           };
+    NSAttributedString* releaseNote = [_releaseChecker generateReleaseNoteFromRelease:_releaseChecker.currentRelease
+                                                                            toRelease:_releaseChecker.availableRelease
+                                                                 withHeaderAttributes:titleAttr
+                                                                    andBodyAttributes:nil];
+    
+    NSTextField* releaseNoteTextField;
+    if (@available(macOS 10.12, *)) {
+        releaseNoteTextField = [NSTextField labelWithAttributedString:releaseNote];
+    }
+    else {
+        // This might clip some of the bottom :(
+        // The size calculation is incorrect and neither me nor Google knows what's wrong...
+        NSRect frame = { .origin = NSZeroPoint, .size = [releaseNote size]};
+        releaseNoteTextField = [[NSTextField alloc] initWithFrame:frame];
+        releaseNoteTextField.bordered = NO;
+        releaseNoteTextField.editable = NO;
+        releaseNoteTextField.attributedStringValue = releaseNote;
+    }
+    
+    NSScrollView* releaseNoteScrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 300, 100)];
+    releaseNoteScrollView.hasVerticalScroller = YES;
+    releaseNoteScrollView.hasHorizontalScroller = YES;
+    releaseNoteScrollView.documentView = releaseNoteTextField;
+    
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"name == %@", @"VMware.prefPane.zip"];
+    MLGitHubAsset* asset = [_releaseChecker.availableRelease.assets filteredArrayUsingPredicate:predicate].firstObject;
+    
+    
+    NSAlert* alert = [[NSAlert alloc] init];
+    alert.alertStyle = NSAlertStyleWarning;
+    alert.showsSuppressionButton = YES; // Uses default checkbox title
+    alert.messageText = NSLocalizedString(@"A new version is available", -);
+    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Version %@ is available.\nYou are currently running %@", -),
+                             _releaseChecker.availableRelease.name,
+                             _releaseChecker.currentRelease.name
+                             ];
+    alert.accessoryView = releaseNoteScrollView;
+    
+    
+    [alert addButtonWithTitle:NSLocalizedString(@"View", -)].tag = NSModalResponseView;
+    if (asset != nil) {
+        [alert addButtonWithTitle:NSLocalizedString(@"Download", -)].tag = NSModalResponseDownload;
+    }
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
+    
+    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
+        handler(returnCode, alert.suppressionButton.state, asset);
+    }];
+}
+
+
+- (void)showPrivilegedWarningWithCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState))handler
+{
+    NSAlert* alert = [[NSAlert alloc] init];
+    alert.alertStyle = NSAlertStyleWarning;
+    alert.showsSuppressionButton = YES; // Uses default checkbox title
+    alert.messageText = NSLocalizedString(@"This is not permanent!", -);
+    alert.informativeText = NSLocalizedString(@"To make the screen size change accross reboots, you must unlock the padlock before pressing \"Apply\"!", -);
+    [alert addButtonWithTitle:NSLocalizedString(@"Continue", -)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
+    
+    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
+        handler(returnCode, alert.suppressionButton.state);
+    }];
+}
+
+
+- (void)showKeepChangesWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler
+{
+    static dispatch_source_t timer = NULL;
+    
+    if (timer != NULL) {
+        dispatch_source_cancel(timer);
+        timer = nil;
+    }
+    
+    // Show timer for reverting back to previous screen size
+    NSInteger __block countDown = 15;
+    NSString* informativeText = NSLocalizedString(@"Reverting to previous resolution in %@ seconds.", -);
+    NSAlert* alert = [[NSAlert alloc] init];
+    alert.alertStyle = NSAlertStyleInformational;
+    alert.messageText = NSLocalizedString(@"Will you keep this display resolution?", -);
+    alert.informativeText = [NSString stringWithFormat:informativeText, @(countDown)];
+    [alert addButtonWithTitle:NSLocalizedString(@"Keep", -)].tag = NSModalResponseKeep;
+    NSButton* revertButton = [alert addButtonWithTitle:NSLocalizedString(@"Revert", -)];
+    revertButton.tag = NSModalResponseCancel;
+    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
+        if (timer != NULL) {
+            dispatch_source_cancel(timer);
+            timer = nil;
+        }
+        handler(returnCode);
+    }];
+    
+    timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
+    dispatch_source_set_event_handler(timer, ^{
+        if (countDown < 0) {
+            [revertButton performClick:self];
+        }
+        alert.informativeText = [NSString stringWithFormat:informativeText, @(countDown)];
+        countDown -= 1;
+    });
+    dispatch_resume(timer);
+}
+
+
 - (void)showError:(NSError*)error
 {
     NSLog(@"ERROR: %@", error);
     NSAlert* alert = [NSAlert alertWithError:error];
     [alert runModal];
+}
+
+
+- (void)showErrorSheet:(NSError*)error
+{
+    NSLog (@"ERROR:\n%@", error);
+    NSAlert* alert = [NSAlert alertWithError:error];
+    [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
 }
 
 
@@ -395,58 +534,9 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
         return;
     }
     
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"name == %@", @"VMware.prefPane.zip"];
-    MLGitHubAsset* asset = [releaseInfo.assets filteredArrayUsingPredicate:predicate].firstObject;
-    
-    // Setup release note
-    NSDictionary<NSAttributedStringKey, id>* titleAttr = @{
-                                                           NSFontAttributeName : [NSFont boldSystemFontOfSize:14.0]
-                                                           };
-    NSAttributedString* releaseNote = [sender generateReleaseNoteFromRelease:sender.currentRelease
-                                                                   toRelease:sender.availableRelease
-                                                        withHeaderAttributes:titleAttr
-                                                           andBodyAttributes:nil];
-    
-    NSTextField* releaseNoteTextField;
-    if (@available(macOS 10.12, *)) {
-        releaseNoteTextField = [NSTextField labelWithAttributedString:releaseNote];
-    }
-    else {
-        // This might clip some of the bottom :(
-        // The size calculation is incorrect and neither me nor Google knows what's wrong...
-        NSRect frame = { .origin = NSZeroPoint, .size = [releaseNote size]};
-        releaseNoteTextField = [[NSTextField alloc] initWithFrame:frame];
-        releaseNoteTextField.bordered = NO;
-        releaseNoteTextField.editable = NO;
-        releaseNoteTextField.attributedStringValue = releaseNote;
-    }
-    
-    NSScrollView* releaseNoteScrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 300, 100)];
-    releaseNoteScrollView.hasVerticalScroller = YES;
-    releaseNoteScrollView.hasHorizontalScroller = YES;
-    releaseNoteScrollView.documentView = releaseNoteTextField;
-    
-
     // Now create the alert
-    NSAlert* alert = [[NSAlert alloc] init];
-    alert.alertStyle = NSAlertStyleWarning;
-    alert.showsSuppressionButton = YES; // Uses default checkbox title
-    alert.messageText = NSLocalizedString(@"A new version is available", -);
-    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Version %@ is available.\nYou are currently running %@", -),
-                             releaseInfo.name,
-                             sender.currentRelease.name
-                             ];
-    alert.accessoryView = releaseNoteScrollView;
-
-
-    [alert addButtonWithTitle:NSLocalizedString(@"View", -)].tag = NSModalResponseView;
-    if (asset != nil) {
-        [alert addButtonWithTitle:NSLocalizedString(@"Download", -)].tag = NSModalResponseDownload;
-    }
-    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-    
-    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
-        if (alert.suppressionButton.state == NSOnState) {
+    [self showNewVersionAvailableWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset) {
+        if (suppressionState == NSOnState) {
             // Suppress this alert from now on
             [userDefaults setObject:releaseInfo.name forKey:@"skip"];
         }
@@ -495,42 +585,26 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
 
 - (IBAction)apply:(id)sender
 {
-    NSSize size = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
+    BOOL optionsKeyPressed = [self isOptionsKeyPressed];
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@"@skipPrivilegedWarning"];
     
-    BOOL autoHiDPIEnabled = _autoHiDPI.state == NSControlStateValueOn;
-    if (autoHiDPIEnabled != [_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] boolValue]) {
-        _vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(autoHiDPIEnabled);
-        [_vmWarePreferencesDict writeToURL:_vmWarePreferencesUrl atomically:YES];
-    }
-    
     if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
-        [self setScreenSize:size authorization:[_authorizationView authorization]];
+        [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:[_authorizationView authorization]];
     }
     else if ([userDefaults boolForKey:skipPrivilegedWarningKey]) {
-        [self setScreenSize:size authorization:nil];
+        [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:nil];
     }
     else {
-        NSAlert* alert = [[NSAlert alloc] init];
-        alert.alertStyle = NSAlertStyleWarning;
-        alert.showsSuppressionButton = YES; // Uses default checkbox title
-        alert.messageText = NSLocalizedString(@"This is not permanent!", -);
-        alert.informativeText = NSLocalizedString(@"To make the screen size change accross reboots, you must unlock the padlock before pressing \"Apply\"!", -);
-        [alert addButtonWithTitle:NSLocalizedString(@"Continue", -)];
-        [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-        
-        [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
+        [self showPrivilegedWarningWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState) {
             if (returnCode == NSModalResponseCancel) {
                 return;
             }
-            
-            if (alert.suppressionButton.state == NSOnState) {
+            if (suppressionState == NSOnState) {
                 // Suppress this alert from now on
                 [userDefaults setBool:YES forKey:skipPrivilegedWarningKey];
             }
-            
-            [self setScreenSize:size authorization:nil];
+            [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:nil];
         }];
     }
 }
@@ -581,18 +655,10 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
 
 - (IBAction)presetReset:(id)sender
 {
-    NSAlert* alert = [[NSAlert alloc] init];
-    alert.alertStyle = NSAlertStyleWarning;
-    alert.messageText = NSLocalizedString(@"Reset all presets?", -);
-    alert.informativeText = NSLocalizedString(@"This will remove all presets and restore the defaults!", -);
-    [alert addButtonWithTitle:NSLocalizedString(@"Reset", -)];
-    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-    
-    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
-        if (returnCode == NSModalResponseCancel) {
-            return;
+    [self showResetPresetsWithCompletionHandler:^(NSModalResponse returnCode) {
+        if (returnCode == NSModalResponseReset) {
+            [self loadDefaultPresets:YES];
         }
-        [self loadDefaultPresets:YES];
     }];
 }
 
