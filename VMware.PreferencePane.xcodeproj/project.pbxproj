@@ -30,6 +30,8 @@
 		6D292A13212E128200A950AF /* MLPlistParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D292A11212E128200A950AF /* MLPlistParser.m */; };
 		6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
+		6D914134213D217F000D7931 /* STPrivilegedTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D914132213D217F000D7931 /* STPrivilegedTask.h */; };
+		6D914135213D217F000D7931 /* STPrivilegedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D914133213D217F000D7931 /* STPrivilegedTask.m */; };
 		6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */; };
 		6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */; };
 		778A13B215E188EAB0A35660 /* libPods-VMware.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 364631799F3A44D6882C77D1 /* libPods-VMware.a */; };
@@ -80,6 +82,8 @@
 		6D292A0F212E0F4F00A950AF /* MLCommand+internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MLCommand+internal.h"; sourceTree = "<group>"; };
 		6D292A10212E128200A950AF /* MLPlistParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLPlistParser.h; sourceTree = "<group>"; };
 		6D292A11212E128200A950AF /* MLPlistParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLPlistParser.m; sourceTree = "<group>"; };
+		6D914132213D217F000D7931 /* STPrivilegedTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPrivilegedTask.h; sourceTree = "<group>"; };
+		6D914133213D217F000D7931 /* STPrivilegedTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPrivilegedTask.m; sourceTree = "<group>"; };
 		6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Enabled.h"; sourceTree = "<group>"; };
 		6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Enabled.m"; sourceTree = "<group>"; };
 		6DB3F5BA20D092BF0019CB79 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
@@ -148,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				6D2929D0212D896400A950AF /* Commands */,
+				6D914131213D217F000D7931 /* STPrivilegedTask */,
 				5B509F9420362265001A2037 /* Presets.plist */,
 				5B3A823D2030ED960062DFEF /* MainPane.h */,
 				5B3A823F2030ED960062DFEF /* MainPane.m */,
@@ -204,6 +209,15 @@
 			path = Commands;
 			sourceTree = "<group>";
 		};
+		6D914131213D217F000D7931 /* STPrivilegedTask */ = {
+			isa = PBXGroup;
+			children = (
+				6D914132213D217F000D7931 /* STPrivilegedTask.h */,
+				6D914133213D217F000D7931 /* STPrivilegedTask.m */,
+			);
+			path = STPrivilegedTask;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -216,6 +230,7 @@
 				5B3A823E2030ED960062DFEF /* MainPane.h in Headers */,
 				6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */,
 				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
+				6D914134213D217F000D7931 /* STPrivilegedTask.h in Headers */,
 				6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */,
 				6D2929D3212D898700A950AF /* MLCommand.h in Headers */,
 			);
@@ -367,6 +382,7 @@
 			files = (
 				6D2929DC212DF00400A950AF /* MLLaunchCtrlCommand.m in Sources */,
 				5B3A82402030ED960062DFEF /* MainPane.m in Sources */,
+				6D914135213D217F000D7931 /* STPrivilegedTask.m in Sources */,
 				6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */,
 				6D2929D4212D898700A950AF /* MLCommand.m in Sources */,
 				6D292A13212E128200A950AF /* MLPlistParser.m in Sources */,
