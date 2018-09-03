@@ -55,6 +55,8 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
     MLGitHubReleaseChecker*     _releaseChecker;
     NSURL*                      _vmWarePreferencesUrl;
     NSMutableDictionary*        _vmWarePreferencesDict;
+    
+    dispatch_source_t           _revertAlertTimer;
 }
 
 
@@ -177,6 +179,15 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
 }
 
 
+- (void)willUnselect
+{
+    if (_revertAlertTimer) {
+        dispatch_source_cancel(self->_revertAlertTimer);
+        _revertAlertTimer = nil;
+    }
+}
+
+
 - (float)preferenceWindowWidth
 {
     float result = 668.0; // default in case something goes wrong
@@ -216,36 +227,75 @@ static NSModalResponse const NSModalResponseDownload    = 1002;
 
 - (void)setScreenSize:(NSSize)size authorization:(SFAuthorization*)authorization
 {
+    NSInteger oldWidth = _currentWidth.integerValue;
+    NSInteger oldHeight = _currentHeight.integerValue;
+    
+    
     [[MLVMwareCommand resolutionSet:size.width height:size.height] executeWithCompletion:^(NSError *error) {
         if (error != nil) {
             [self showErrorSheet:error];
             return;
         }
         
-        if (authorization != nil) {
+        // Show timer for reverting back to previous screen size
+        NSInteger __block countDown = 15;
+        NSString* informativeText = NSLocalizedString(@"Reverting to previous resolution in %@ seconds.", -);
+        NSAlert* alert = [[NSAlert alloc] init];
+        alert.alertStyle = NSAlertStyleInformational;
+        alert.messageText = NSLocalizedString(@"Will you keep this display resolution?", -);
+        alert.informativeText = [NSString stringWithFormat:informativeText, @(countDown)];
+        [alert addButtonWithTitle:NSLocalizedString(@"Keep", -)].tag = NSModalResponseOK;
+        NSButton* revertButton = [alert addButtonWithTitle:NSLocalizedString(@"Revert", -)];
+        revertButton.tag = NSModalResponseCancel;
+        [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
             
-            const char **argv = (const char **)malloc(sizeof(char *) * (2 + 1));
-            argv[0] = [@(size.width).stringValue UTF8String];
-            argv[1] = [@(size.height).stringValue UTF8String];
-            argv[2] = nil;
+            if (self->_revertAlertTimer) {
+                dispatch_source_cancel(self->_revertAlertTimer);
+                self->_revertAlertTimer = nil;
+            }
             
-            NSString* launchPath = [kVMwareToolsFolder stringByAppendingPathComponent:kVMwareToolsResolutionSet];
-            
-            // This is depricated - but if it works, it works - and if it works, don't fix it
-            // Anyway, someday I might look a bit more int SMJobBless
-            OSErr processError = AuthorizationExecuteWithPrivileges([authorization authorizationRef],
-                                                                    [launchPath UTF8String],
-                                                                    kAuthorizationFlagDefaults,
-                                                                    (char *const *)argv,
-                                                                    NULL);
-            
-            free(argv);
-            
-            if (processError != errAuthorizationSuccess) {
-                NSLog(@"Error: %d", processError);
+            if (returnCode == NSModalResponseCancel) {
+                [[MLVMwareCommand resolutionSet:oldWidth height:oldHeight] executeWithCompletion:nil];
                 return;
             }
-        }
+            
+            if (authorization != nil) {
+                
+                const char **argv = (const char **)malloc(sizeof(char *) * (2 + 1));
+                argv[0] = [@(size.width).stringValue UTF8String];
+                argv[1] = [@(size.height).stringValue UTF8String];
+                argv[2] = nil;
+                
+                NSString* launchPath = [kVMwareToolsFolder stringByAppendingPathComponent:kVMwareToolsResolutionSet];
+                
+                // This is depricated - but if it works, it works - and if it works, don't fix it
+                // Anyway, someday I might look a bit more int SMJobBless
+                OSErr processError = AuthorizationExecuteWithPrivileges([authorization authorizationRef],
+                                                                        [launchPath UTF8String],
+                                                                        kAuthorizationFlagDefaults,
+                                                                        (char *const *)argv,
+                                                                        NULL);
+                
+                free(argv);
+                
+                if (processError != errAuthorizationSuccess) {
+                    NSLog(@"Error: %d", processError);
+                    return;
+                }
+            }
+        }];
+        
+        self->_revertAlertTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
+        dispatch_source_set_timer(self->_revertAlertTimer, DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
+        dispatch_source_set_event_handler(self->_revertAlertTimer, ^{
+            if (countDown < 0) {
+                [revertButton performClick:self];
+            }
+            alert.informativeText = [NSString stringWithFormat:informativeText, @(countDown)];
+            countDown -= 1;
+        });
+        dispatch_resume(self->_revertAlertTimer);
+        
     }];
 }
 
