@@ -26,9 +26,10 @@ NSString* const kPresetHeight                               = @"height";
 
 NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI";
 
-static const NSModalResponse NSModalResponseReset           = (-1000);
-static const NSModalResponse NSModalResponseView            = (-1001);
-static const NSModalResponse NSModalResponseDownload        = (-1002);
+static const NSModalResponse NSModalResponseKeep            = (-1000);
+static const NSModalResponse NSModalResponseReset           = (-1001);
+static const NSModalResponse NSModalResponseView            = (-1002);
+static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 
 @interface MainPane() <MLGitHubReleaseCheckerDelegate>
@@ -215,20 +216,20 @@ static const NSModalResponse NSModalResponseDownload        = (-1002);
 }
 
 
-- (void)applySettingsWithAuthorization:(SFAuthorization*)authorization
+- (void)applySettingsWithRevert:(BOOL)showRevert andAuthorization:(SFAuthorization*)authorization
 {
     NSSize newSize = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
     NSSize oldSize = NSMakeSize(_currentWidth.integerValue, _currentHeight.integerValue);
-
+    
     BOOL newAutoHiDPIEnabled = _autoHiDPI.state == NSControlStateValueOn;
     BOOL oldAutoHiDPIEnabled = [_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] boolValue];
     if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
         _vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(newAutoHiDPIEnabled);
         [_vmWarePreferencesDict writeToURL:_vmWarePreferencesUrl atomically:YES];
     }
-
+    
     __weak typeof(self) weakSelf = self;
-    [self setScreenSize:newSize authorization:authorization completionHandler:^(BOOL reverted, NSError* error) {
+    [self setScreenSize:newSize showRevert:showRevert authorization:authorization completionHandler:^(BOOL reverted, NSError* error) {
         __strong typeof(self) strongSelf = weakSelf;
         if (reverted) {
             if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
@@ -242,11 +243,11 @@ static const NSModalResponse NSModalResponseDownload        = (-1002);
             [weakSelf showErrorSheet:error];
         }
     }];
-
+    
 }
 
 
-- (void)setScreenSize:(NSSize)size authorization:(SFAuthorization*)authorization completionHandler:(void (^)(BOOL reverted, NSError* error))handler
+- (void)setScreenSize:(NSSize)size showRevert:(BOOL)showRevert authorization:(SFAuthorization*)authorization completionHandler:(void (^)(BOOL reverted, NSError* error))handler
 {
     [[MLVMwareCommand resolutionSet:size.width height:size.height] executeWithCompletion:^(NSError *error) {
         if (error != nil) {
@@ -254,7 +255,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1002);
             return;
         }
         
-        [self showKeepChangesWithCompletionHandler:^(NSModalResponse returnCode) {
+        void (^handlerBlock)(NSModalResponse returnCode) = ^(NSModalResponse returnCode) {
             
             if (returnCode == NSModalResponseCancel) {
                 handler(YES, nil);
@@ -286,7 +287,13 @@ static const NSModalResponse NSModalResponseDownload        = (-1002);
             }
             
             handler(NO, nil);
-        }];
+        };
+        if (!showRevert) {
+            handlerBlock(NSModalResponseKeep);
+        }
+        else {
+            [self showKeepChangesWithCompletionHandler:handlerBlock];
+        }
     }];
 }
 
@@ -411,7 +418,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1002);
     
     NSPredicate* predicate = [NSPredicate predicateWithFormat:@"name == %@", @"VMware.prefPane.zip"];
     MLGitHubAsset* asset = [_releaseChecker.availableRelease.assets filteredArrayUsingPredicate:predicate].firstObject;
-
+    
     
     NSAlert* alert = [[NSAlert alloc] init];
     alert.alertStyle = NSAlertStyleWarning;
@@ -468,7 +475,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1002);
     alert.alertStyle = NSAlertStyleInformational;
     alert.messageText = NSLocalizedString(@"Will you keep this display resolution?", -);
     alert.informativeText = [NSString stringWithFormat:informativeText, @(countDown)];
-    [alert addButtonWithTitle:NSLocalizedString(@"Keep", -)].tag = NSModalResponseOK;
+    [alert addButtonWithTitle:NSLocalizedString(@"Keep", -)].tag = NSModalResponseKeep;
     NSButton* revertButton = [alert addButtonWithTitle:NSLocalizedString(@"Revert", -)];
     revertButton.tag = NSModalResponseCancel;
     [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
@@ -578,14 +585,15 @@ static const NSModalResponse NSModalResponseDownload        = (-1002);
 
 - (IBAction)apply:(id)sender
 {
+    BOOL optionsKeyPressed = [self isOptionsKeyPressed];
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@"@skipPrivilegedWarning"];
     
     if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
-        [self applySettingsWithAuthorization:[_authorizationView authorization]];
+        [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:[_authorizationView authorization]];
     }
     else if ([userDefaults boolForKey:skipPrivilegedWarningKey]) {
-        [self applySettingsWithAuthorization:nil];
+        [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:nil];
     }
     else {
         [self showPrivilegedWarningWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState) {
@@ -596,7 +604,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1002);
                 // Suppress this alert from now on
                 [userDefaults setBool:YES forKey:skipPrivilegedWarningKey];
             }
-            [self applySettingsWithAuthorization:nil];
+            [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:nil];
         }];
     }
 }
