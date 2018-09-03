@@ -12,6 +12,7 @@
 #import <sys/xattr.h>
 #import <GitHubRelease/GitHubRelease.h>
 #import "MLVMwareCommand.h"
+#import "STPrivilegedTask/STPrivilegedTask.h"
 #import "NSView+Enabled.h"
 
 #define TEST_ENVIROMENT (DEBUG && FALSE)
@@ -249,7 +250,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (void)setScreenSize:(NSSize)size showRevert:(BOOL)showRevert authorization:(SFAuthorization*)authorization completionHandler:(void (^)(BOOL reverted, NSError* error))handler
 {
-    [[MLVMwareCommand resolutionSet:size.width height:size.height] executeWithCompletion:^(NSError *error) {
+    MLVMwareCommand* cmd = [MLVMwareCommand resolutionSet:size.width height:size.height];
+    [cmd executeWithCompletion:^(NSError *error) {
         if (error != nil) {
             handler(NO, error);
             return;
@@ -263,25 +265,17 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
             }
             
             if (authorization != nil) {
-                
-                const char **argv = (const char **)malloc(sizeof(char *) * (2 + 1));
-                argv[0] = [@(size.width).stringValue UTF8String];
-                argv[1] = [@(size.height).stringValue UTF8String];
-                argv[2] = nil;
-                
-                NSString* launchPath = [kVMwareToolsFolder stringByAppendingPathComponent:kVMwareToolsResolutionSet];
-                
-                // This is depricated - but if it works, it works - and if it works, don't fix it
-                // Anyway, someday I might look a bit more int SMJobBless
-                OSErr processError = AuthorizationExecuteWithPrivileges([authorization authorizationRef],
-                                                                        [launchPath UTF8String],
-                                                                        kAuthorizationFlagDefaults,
-                                                                        (char *const *)argv,
-                                                                        NULL);
-                
-                free(argv);
-                
+                STPrivilegedTask* privTask = [[STPrivilegedTask alloc] initWithLaunchPath:cmd.command
+                                                                                arguments:cmd.arguments];
+                OSStatus processError = [privTask launchWithAuthorization:[authorization authorizationRef]];
                 if (processError != errAuthorizationSuccess) {
+                    handler(NO, [NSError errorWithDomain:NSOSStatusErrorDomain code:processError userInfo:nil]);
+                    return;
+                }
+                
+                [privTask waitUntilExit];
+                
+                if (privTask.terminationStatus != errAuthorizationSuccess) {
                     NSLog(@"Error: %d", processError);
                 }
             }
