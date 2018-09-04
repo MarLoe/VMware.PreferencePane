@@ -13,7 +13,7 @@
  #     * Neither the name of the copyright holder nor that of any other
  #       contributors may be used to endorse or promote products
  #       derived from this software without specific prior written permission.
- # 
+ #
  # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  # ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  # WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -24,7 +24,7 @@
  # ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #import "STPrivilegedTask.h"
 
@@ -142,6 +142,18 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
     return task;
 }
 
++ (STPrivilegedTask *)launchedPrivilegedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)args currentDirectory:(NSString *)cwd authorization:(AuthorizationRef)authorization
+{
+    STPrivilegedTask *task = [[STPrivilegedTask alloc] initWithLaunchPath:path arguments:args currentDirectory:cwd];
+#if !__has_feature(objc_arc)
+    [task autorelease];
+#endif
+    
+    [task launchWithAuthorization:authorization];
+    [task waitUntilExit];
+    return task;
+}
+
 # pragma mark -
 
 // return 0 for success
@@ -181,7 +193,7 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
     }
     
     // OK, at this point we have received authorization for the task.
-    err =  [self launchWithAuthorization:authorizationRef];
+    err = [self launchWithAuthorization:authorizationRef];
     
     // free the auth ref
     AuthorizationFree(authorizationRef, kAuthorizationFlagDefaults);
@@ -203,7 +215,7 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
     
     // Assuming the authorization is valid for the task.
     // Let's prepare to launch it
-
+    
     NSArray *arguments = self.arguments;
     NSUInteger numberOfArguments = [arguments count];
     char *args[numberOfArguments + 1];
@@ -250,7 +262,7 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
     
     // start monitoring task
     _checkStatusTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(checkTaskStatus) userInfo:nil repeats:YES];
-        
+    
     return err;
 }
 
@@ -298,9 +310,9 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
         }
     }
 }
-    
+
 #pragma mark -
-    
+
 + (BOOL)authorizationFunctionAvailable
 {
     if (!_AuthExecuteWithPrivsFn) {
@@ -324,5 +336,5 @@ static OSStatus (*_AuthExecuteWithPrivsFn)(AuthorizationRef authorization, const
     
     return [[super description] stringByAppendingFormat:@" %@", commandDescription];
 }
-    
+
 @end
