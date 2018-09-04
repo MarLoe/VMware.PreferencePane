@@ -34,6 +34,7 @@
 		6D914135213D217F000D7931 /* STPrivilegedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D914133213D217F000D7931 /* STPrivilegedTask.m */; };
 		6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */; };
 		6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */; };
+		6DD6407A213E731300962088 /* VMware.searchTerms in Resources */ = {isa = PBXBuildFile; fileRef = 6DD64079213E731300962088 /* VMware.searchTerms */; };
 		778A13B215E188EAB0A35660 /* libPods-VMware.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 364631799F3A44D6882C77D1 /* libPods-VMware.a */; };
 		BFE9F02B25CD9A8BBBA27448 /* libPods-VMware.Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */; };
 /* End PBXBuildFile section */
@@ -87,6 +88,7 @@
 		6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Enabled.h"; sourceTree = "<group>"; };
 		6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Enabled.m"; sourceTree = "<group>"; };
 		6DB3F5BA20D092BF0019CB79 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		6DD64079213E731300962088 /* VMware.searchTerms */ = {isa = PBXFileReference; explicitFileType = text.plist; path = VMware.searchTerms; sourceTree = "<group>"; };
 		7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware/Pods-VMware.debug.xcconfig"; sourceTree = "<group>"; };
 		731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.Debug.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug.debug.xcconfig"; sourceTree = "<group>"; };
 		A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.Debug.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -163,6 +165,7 @@
 				5B3A827E203182440062DFEF /* IntegerValueFormatter.m */,
 				6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */,
 				6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */,
+				6DD64079213E731300962088 /* VMware.searchTerms */,
 			);
 			path = VMware;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DD6407A213E731300962088 /* VMware.searchTerms in Resources */,
 				5B509F9520362265001A2037 /* Presets.plist in Resources */,
 				5B3A82452030ED960062DFEF /* MainPane.xib in Resources */,
 				6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */,
