@@ -7,6 +7,7 @@ target 'VMware' do
 
   # Pods for VMware
   pod 'GitHubRelease', :git => 'https://github.com/MarLoe/GitHub.Release'
+  pod 'STPrivilegedTask', :git => 'https://github.com/sveinbjornt/STPrivilegedTask'
 end
 
 target 'VMware.Debug' do
