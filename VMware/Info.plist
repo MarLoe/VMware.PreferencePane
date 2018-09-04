@@ -26,6 +26,8 @@
 	<string>AppIcon.icns</string>
 	<key>NSPrefPaneIconLabel</key>
 	<string>VMware</string>
+	<key>NSPrefPaneSearchParameters</key>
+	<string>VMware</string>
 	<key>NSPrincipalClass</key>
 	<string>MainPane</string>
 </dict>

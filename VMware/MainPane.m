@@ -145,6 +145,11 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 }
 
 
+- (void)revealElementForKey:(NSString*)key
+{
+}
+
+
 - (void)willSelect
 {
     _forceCheckForUpdate |= [self isOptionsKeyPressed];
