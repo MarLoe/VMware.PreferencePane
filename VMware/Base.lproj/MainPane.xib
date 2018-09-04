@@ -43,7 +43,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="176" y="715" width="680" height="409"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="745"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="680" height="409"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -54,7 +54,7 @@
                         <font key="font" metaFont="system"/>
                         <tabViewItems>
                             <tabViewItem label="Display" identifier="tab_display" id="9Kb-4t-mB1">
-                                <view key="view" id="5G4-7z-Up1">
+                                <view key="view" ambiguous="YES" id="5G4-7z-Up1">
                                     <rect key="frame" x="10" y="33" width="634" height="294"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -68,7 +68,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N4B-s8-esC">
-                                            <rect key="frame" x="324" y="247" width="60" height="22"/>
+                                            <rect key="frame" x="328" y="247" width="60" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" usesSingleLineMode="YES" id="mGt-66-PVf">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="r4S-Oc-Yz1" customClass="IntegerValueFormatter">
@@ -102,7 +102,7 @@
                                             </connections>
                                         </stepper>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cSP-Gc-jxM">
-                                            <rect key="frame" x="405" y="250" width="11" height="17"/>
+                                            <rect key="frame" x="402" y="250" width="11" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="x" id="1VZ-Cj-xEN">
                                                 <font key="font" metaFont="system"/>
@@ -111,7 +111,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0w8-gU-ovm">
-                                            <rect key="frame" x="430" y="247" width="60" height="22"/>
+                                            <rect key="frame" x="434" y="247" width="60" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" usesSingleLineMode="YES" id="xdl-Ih-fOe">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="MP8-mg-Bby">
@@ -145,14 +145,14 @@
                                             </connections>
                                         </stepper>
                                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Smz-cM-XLV">
-                                            <rect key="frame" x="18" y="24" width="178" height="267"/>
+                                            <rect key="frame" x="18" y="28" width="178" height="263"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                                             <clipView key="contentView" ambiguous="YES" id="NCE-gF-4bI">
-                                                <rect key="frame" x="1" y="1" width="176" height="265"/>
+                                                <rect key="frame" x="1" y="1" width="176" height="261"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="34" rowSizeStyle="automatic" viewBased="YES" id="yV1-Es-Vol">
-                                                        <rect key="frame" x="0.0" y="0.0" width="176" height="265"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="176" height="261"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -240,7 +240,7 @@
                                                 </subviews>
                                             </clipView>
                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="5yY-Kq-kAi">
-                                                <rect key="frame" x="1" y="-14" width="0.0" height="15"/>
+                                                <rect key="frame" x="1" y="-15" width="0.0" height="16"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="ugt-zl-hW0">
@@ -330,7 +330,6 @@
                                             </view>
                                             <color key="borderColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <font key="titleFont" metaFont="message" size="11"/>
                                         </box>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ew-TP-RYp">
                                             <rect key="frame" x="542" y="1" width="81" height="32"/>
@@ -394,7 +393,7 @@
                                 </view>
                             </tabViewItem>
                             <tabViewItem label="Info" identifier="tab_info" id="rf4-ZH-5aB" customClass="NSTabViewItemInfo">
-                                <view key="view" ambiguous="YES" id="DFU-Oj-vgZ">
+                                <view key="view" id="DFU-Oj-vgZ">
                                     <rect key="frame" x="10" y="33" width="634" height="294"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -484,7 +483,6 @@
                                                 </subviews>
                                             </view>
                                             <size key="contentViewMargins" width="5" height="5"/>
-                                            <font key="titleFont" metaFont="message" size="11"/>
                                         </box>
                                     </subviews>
                                 </view>

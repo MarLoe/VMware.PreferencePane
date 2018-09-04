@@ -147,6 +147,13 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (void)revealElementForKey:(NSString*)key
 {
+    @try {
+        [_tabView selectTabViewItemWithIdentifier:[NSString stringWithFormat:@"tab_%@", key]];
+    }
+    @catch (NSException* ex) {
+        NSLog(@"Error: Tab with identifier %@ was not found", key);
+        [_tabView selectFirstTabViewItem:self];
+    }
 }
 
 

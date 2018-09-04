@@ -16,5 +16,19 @@
 			</dict>
 		</array>
 	</dict>
+	<key>info</key>
+	<dict>
+		<key>localizableStrings</key>
+		<array>
+			<dict>
+				<key>comments</key>
+				<string>Localizable index words</string>
+				<key>index</key>
+				<string>vmware, esxi, tools, host, version, info, information</string>
+				<key>title</key>
+				<string>VMware Tools</string>
+			</dict>
+		</array>
+	</dict>
 </dict>
 </plist>
