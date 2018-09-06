@@ -64,10 +64,15 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
             
             self.isExecuting = YES;
             @try {
-                NSError* error = [self execute];
-                [self callCompletion:completion withError:error];
+                [self executeUserModeWithCompletion:^(NSError *error) {
+                    if (error != nil) {
+                        NSLog(@"ERROR:\n%@", error);
+                    }
+                    self.isExecuting = NO;
+                    [self callCompletion:completion withError:error];
+                }];
             }
-            @finally {
+            @catch (NSException* e) {
                 self.isExecuting = NO;
             }
         });
@@ -86,64 +91,71 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
 }
 
 
-- (NSError*)execute
+- (void)executeUserModeWithCompletion:(completion_block_t)completion
 {
     NSError* error;
     
-    NSPipe *pipeError = [NSPipe pipe];
+    NSMutableData* dataOutput = [NSMutableData data];
     NSPipe *pipeOutput = [NSPipe pipe];
+    pipeOutput.fileHandleForReading.readabilityHandler = ^(NSFileHandle * _Nonnull fh) {
+        [dataOutput appendData:[fh readDataToEndOfFile]];
+    };
     
+    NSMutableData* dataError = [NSMutableData data];
+    NSPipe *pipeError = [NSPipe pipe];
+    pipeError.fileHandleForReading.readabilityHandler = ^(NSFileHandle * _Nonnull fh) {
+        [dataError appendData:[fh readDataToEndOfFile]];
+    };
+
     NSTask *task = [[NSTask alloc] init];
     task.currentDirectoryPath = _path;
     task.launchPath = _command;
     task.arguments = _arguments;
     task.standardError = pipeError;
     task.standardOutput = pipeOutput;
+    task.terminationHandler = ^(NSTask * _Nonnull _task) {
+        
+        [pipeOutput.fileHandleForReading closeFile];
+        [pipeError.fileHandleForReading closeFile];
+
+        NSError* error;
+        
+        self.terminationStatus = _task.terminationStatus;
+        
+        // Handle Output
+        self.standardOutput = [[NSString alloc] initWithData:dataOutput encoding:NSUTF8StringEncoding];
+        if (![self parseStandardOutput:self.standardOutput error:&error]) {
+            completion(error);
+            return;
+        }
+
+        // Handle Error
+        self.standardError = [[NSString alloc] initWithData:dataError encoding:NSUTF8StringEncoding];
+        if (![self parseStandardError:self.standardError error:&error]) {
+            completion(error);
+            return;
+        }
+        
+        if (_task.terminationStatus != 0) {
+            error = [NSError errorWithDomain:NSPOSIXErrorDomain
+                                        code:_task.terminationStatus
+                                    userInfo:@{ NSLocalizedDescriptionKey: self.standardError }];
+            completion(error);
+            return;
+        }
+        
+        completion(nil);
+    };
     
     if (@available(macOS 10.13, *)) {
         if (![task launchAndReturnError:(&error)]) {
-            NSLog(@"ERROR:\n%@", error);
-            return error;
+            completion(error);
+            return;
         }
     }
     else {
         [task launch];
     }
-    
-    [task waitUntilExit];
-    
-    self.standardOutput = [self readAndClosePipe:pipeOutput];
-    self.standardError = [self readAndClosePipe:pipeError];
-
-    if (![self parseStandardOutput:_standardOutput error:&error]) {
-        NSLog(@"ERROR:\n%@", error);
-        return error;
-    }
-    
-    if (![self parseStandardError:_standardError error:&error]) {
-        NSLog(@"ERROR:\n%@", error);
-        return error;
-    }
-    
-    if (task.terminationStatus != 0) {
-        error = [NSError errorWithDomain:NSPOSIXErrorDomain
-                                    code:task.terminationStatus
-                                userInfo:@{ NSLocalizedDescriptionKey: _standardError }];
-        NSLog(@"ERROR:\n%@", error);
-        return error;
-    }
-    
-    return nil;
-}
-
-
-- (NSString*)readAndClosePipe:(NSPipe*)pipe
-{
-    NSFileHandle *file = pipe.fileHandleForReading;
-    NSData *data = [file readDataToEndOfFile];
-    [file closeFile];
-    
-    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 

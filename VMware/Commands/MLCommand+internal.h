@@ -14,6 +14,8 @@
 
 @property (nonatomic, strong) NSString*           standardOutput;
 @property (nonatomic, strong) NSString*           standardError;
+@property (nonatomic, assign) int                 terminationStatus;
+
 
 - (BOOL)parseStandardOutput:(NSString*)stdOutput error:(out NSError **_Nullable)error;
 - (BOOL)parseStandardError:(NSString*)stdError error:(out NSError **_Nullable)error;

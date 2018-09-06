@@ -24,6 +24,7 @@ typedef void (^completion_block_t)(NSError* error);
 
 @property (nonatomic, readonly, strong) NSString*           standardOutput;
 @property (nonatomic, readonly, strong) NSString*           standardError;
+@property (nonatomic, readonly, assign) int                 terminationStatus;
 
 
 - (instancetype)initCommand:(NSString*)command;
