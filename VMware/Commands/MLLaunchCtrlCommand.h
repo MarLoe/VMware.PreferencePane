@@ -10,8 +10,15 @@
 
 @interface MLLaunchCtrlCommand : MLCommand
 
-@property (nonatomic, readonly, strong) NSDictionary* service;
+@property (nonatomic, readonly, strong) NSString*       serviceName;
+@property (nonatomic, readonly, strong) NSString*       domainName;
 
-+ (instancetype)listService:(NSString*)service;
+@property (nonatomic, readonly, strong) NSDictionary*   service;
+
+@property (nonatomic, readonly, assign) NSString*       state;
+@property (nonatomic, readonly, assign) BOOL            isRunning;
+@property (nonatomic, readonly, assign) NSInteger       pid;
+
++ (instancetype)printService:(NSString*)service inDomain:(NSString*)domain;
 
 @end
