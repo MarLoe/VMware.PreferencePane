@@ -50,7 +50,7 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
 
 - (void)executeWithCompletion:(completion_block_t)completion
 {
-    dispatch_queue_t queue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^(void) {
         
         dispatch_barrier_sync(queue, ^{
@@ -68,8 +68,8 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
                     if (error != nil) {
                         NSLog(@"ERROR:\n%@", error);
                     }
-                    self.isExecuting = NO;
                     [self callCompletion:completion withError:error];
+                    self.isExecuting = NO;
                 }];
             }
             @catch (NSException* e) {
@@ -95,42 +95,57 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
 {
     NSError* error;
     
-    NSMutableData* dataOutput = [NSMutableData data];
-    NSPipe *pipeOutput = [NSPipe pipe];
-    pipeOutput.fileHandleForReading.readabilityHandler = ^(NSFileHandle * _Nonnull fh) {
-        [dataOutput appendData:[fh readDataToEndOfFile]];
-    };
-    
-    NSMutableData* dataError = [NSMutableData data];
-    NSPipe *pipeError = [NSPipe pipe];
-    pipeError.fileHandleForReading.readabilityHandler = ^(NSFileHandle * _Nonnull fh) {
-        [dataError appendData:[fh readDataToEndOfFile]];
-    };
-
     NSTask *task = [[NSTask alloc] init];
     task.currentDirectoryPath = _path;
     task.launchPath = _command;
     task.arguments = _arguments;
-    task.standardError = pipeError;
+
+    NSMutableData* dataOutput = [NSMutableData data];
+    NSPipe *pipeOutput = [NSPipe pipe];
+    pipeOutput.fileHandleForReading.readabilityHandler = ^(NSFileHandle * _Nonnull fh) {
+        @synchronized(dataOutput) {
+            [dataOutput appendData:[fh readDataToEndOfFile]];
+        }
+    };
     task.standardOutput = pipeOutput;
+
+    NSMutableData* dataError = [NSMutableData data];
+    NSPipe *pipeError = [NSPipe pipe];
+    pipeError.fileHandleForReading.readabilityHandler = ^(NSFileHandle * _Nonnull fh) {
+        @synchronized(dataError) {
+            [dataError appendData:[fh readDataToEndOfFile]];
+        }
+    };
+    task.standardError = pipeError;
+
     task.terminationHandler = ^(NSTask * _Nonnull _task) {
         
-        [pipeOutput.fileHandleForReading closeFile];
-        [pipeError.fileHandleForReading closeFile];
-
         NSError* error;
-        
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+
         self.terminationStatus = _task.terminationStatus;
-        
+ 
         // Handle Output
-        self.standardOutput = [[NSString alloc] initWithData:dataOutput encoding:NSUTF8StringEncoding];
+        dispatch_sync(queue, ^{
+            @synchronized(dataOutput) {
+                [dataOutput appendData:[pipeOutput.fileHandleForReading readDataToEndOfFile]];
+                [pipeOutput.fileHandleForReading closeFile];
+                self.standardOutput = [[NSString alloc] initWithData:dataOutput encoding:NSUTF8StringEncoding];
+            }
+        });
         if (![self parseStandardOutput:self.standardOutput error:&error]) {
             completion(error);
             return;
         }
 
         // Handle Error
-        self.standardError = [[NSString alloc] initWithData:dataError encoding:NSUTF8StringEncoding];
+        dispatch_sync(queue, ^{
+            @synchronized(dataError) {
+                [dataError appendData:[pipeError.fileHandleForReading readDataToEndOfFile]];
+                [pipeError.fileHandleForReading closeFile];
+                self.standardError = [[NSString alloc] initWithData:dataError encoding:NSUTF8StringEncoding];
+            }
+        });
         if (![self parseStandardError:self.standardError error:&error]) {
             completion(error);
             return;
