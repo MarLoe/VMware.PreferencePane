@@ -18,6 +18,7 @@
                 <outlet property="stepperResX" destination="ogO-mw-Ufl" id="kIm-q1-0I2"/>
                 <outlet property="stepperResY" destination="22A-sq-P4P" id="W8l-Rh-fFD"/>
                 <outlet property="tabView" destination="8hv-iW-oT2" id="nky-zl-7Vv"/>
+                <outlet property="tabViewItemInfo" destination="rf4-ZH-5aB" id="Xf5-Qt-hqf"/>
                 <outlet property="textFieldResX" destination="N4B-s8-esC" id="BDu-oY-C5p"/>
                 <outlet property="textFieldResY" destination="0w8-gU-ovm" id="0p1-h1-rdA"/>
                 <outlet property="userDefaultsController" destination="Xs9-rl-isb" id="Y9W-Q4-4b3"/>
@@ -55,11 +56,11 @@
                         <tabViewItems>
                             <tabViewItem label="Display" identifier="tab_display" id="9Kb-4t-mB1">
                                 <view key="view" id="5G4-7z-Up1">
-                                    <rect key="frame" x="10" y="33" width="120" height="0.0"/>
+                                    <rect key="frame" x="10" y="33" width="634" height="294"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mTz-ak-k4V">
-                                            <rect key="frame" x="3" y="-46" width="111" height="17"/>
+                                            <rect key="frame" x="174" y="248" width="111" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Resolution:" id="oDD-7w-Gp6">
                                                 <font key="font" metaFont="system"/>
@@ -68,7 +69,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N4B-s8-esC">
-                                            <rect key="frame" x="34" y="-47" width="60" height="22"/>
+                                            <rect key="frame" x="325" y="247" width="60" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" usesSingleLineMode="YES" id="mGt-66-PVf">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="r4S-Oc-Yz1" customClass="IntegerValueFormatter">
@@ -89,7 +90,7 @@
                                             </connections>
                                         </textField>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ogO-mw-Ufl">
-                                            <rect key="frame" x="63" y="-49" width="19" height="27"/>
+                                            <rect key="frame" x="383" y="245" width="19" height="27"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <stepperCell key="cell" continuous="YES" alignment="left" id="y0x-xP-D1x">
                                                 <connections>
@@ -102,7 +103,7 @@
                                             </connections>
                                         </stepper>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cSP-Gc-jxM">
-                                            <rect key="frame" x="70" y="-44" width="11" height="17"/>
+                                            <rect key="frame" x="400" y="250" width="11" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="x" id="1VZ-Cj-xEN">
                                                 <font key="font" metaFont="system"/>
@@ -111,7 +112,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0w8-gU-ovm">
-                                            <rect key="frame" x="45" y="-47" width="60" height="22"/>
+                                            <rect key="frame" x="430" y="247" width="60" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" usesSingleLineMode="YES" id="xdl-Ih-fOe">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="MP8-mg-Bby">
@@ -132,7 +133,7 @@
                                             </connections>
                                         </textField>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="22A-sq-P4P">
-                                            <rect key="frame" x="80" y="-49" width="19" height="27"/>
+                                            <rect key="frame" x="487" y="245" width="19" height="27"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <stepperCell key="cell" continuous="YES" alignment="left" minValue="768" maxValue="8192" doubleValue="768" id="s5L-mm-3i4">
                                                 <connections>
@@ -145,14 +146,14 @@
                                             </connections>
                                         </stepper>
                                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Smz-cM-XLV">
-                                            <rect key="frame" x="18" y="28" width="178" height="0.0"/>
+                                            <rect key="frame" x="18" y="28" width="178" height="294"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                                             <clipView key="contentView" ambiguous="YES" id="NCE-gF-4bI">
-                                                <rect key="frame" x="1" y="1" width="176" height="1"/>
+                                                <rect key="frame" x="1" y="1" width="176" height="292"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="34" rowSizeStyle="automatic" viewBased="YES" id="yV1-Es-Vol">
-                                                        <rect key="frame" x="0.0" y="0.0" width="176" height="1"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="176" height="292"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -332,7 +333,7 @@
                                             <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </box>
                                         <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ew-TP-RYp">
-                                            <rect key="frame" x="28" y="1" width="81" height="32"/>
+                                            <rect key="frame" x="542" y="1" width="81" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                             <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="URL-Ew-FAp">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -373,7 +374,7 @@
                                             </connections>
                                         </textField>
                                         <button toolTip="If your screen automatically reverts to half the screen size you set, you might want to try and disable auto HiDPI " verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="egh-w0-HZH">
-                                            <rect key="frame" x="325" y="-96" width="22" height="18"/>
+                                            <rect key="frame" x="325" y="198" width="22" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="kKk-ey-CKR">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -381,7 +382,7 @@
                                             </buttonCell>
                                         </button>
                                         <textField toolTip="If your screen automatically reverts to half the screen size you set, you might want to try and disable auto HiDPI " horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NOH-Mi-vZa">
-                                            <rect key="frame" x="3" y="-94" width="111" height="17"/>
+                                            <rect key="frame" x="174" y="200" width="111" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Auto HiDPI:" id="Me5-k6-41c">
                                                 <font key="font" metaFont="system"/>
@@ -525,6 +526,15 @@
                                                         </buttonCell>
                                                         <connections>
                                                             <action selector="startService:" target="rf4-ZH-5aB" id="dUY-z1-sQF"/>
+                                                            <binding destination="rf4-ZH-5aB" name="enabled2" keyPath="self.authorization" previousBinding="5us-Iz-VS5" id="7Um-zR-pA0">
+                                                                <dictionary key="options">
+                                                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                                                    <integer key="NSNullPlaceholder" value="-1"/>
+                                                                    <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                </dictionary>
+                                                            </binding>
                                                             <binding destination="rf4-ZH-5aB" name="enabled" keyPath="self.serviceRunning" id="5us-Iz-VS5">
                                                                 <dictionary key="options">
                                                                     <string key="NSValueTransformerName">NSNegateBoolean</string>
@@ -541,6 +551,15 @@
                                                         </buttonCell>
                                                         <connections>
                                                             <action selector="stopService:" target="rf4-ZH-5aB" id="NDa-4v-eaa"/>
+                                                            <binding destination="rf4-ZH-5aB" name="enabled2" keyPath="self.authorization" previousBinding="250-ue-MtG" id="Jby-e0-IH9">
+                                                                <dictionary key="options">
+                                                                    <integer key="NSMultipleValuesPlaceholder" value="-1"/>
+                                                                    <integer key="NSNoSelectionPlaceholder" value="-1"/>
+                                                                    <integer key="NSNotApplicablePlaceholder" value="-1"/>
+                                                                    <integer key="NSNullPlaceholder" value="-1"/>
+                                                                    <string key="NSValueTransformerName">NSIsNotNil</string>
+                                                                </dictionary>
+                                                            </binding>
                                                             <binding destination="rf4-ZH-5aB" name="enabled" keyPath="self.serviceRunning" id="250-ue-MtG"/>
                                                         </connections>
                                                     </button>

@@ -37,6 +37,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 @interface MainPane() <MLGitHubReleaseCheckerDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTabView*             tabView;
+@property (nonatomic, weak) IBOutlet NSTabViewItemInfo*     tabViewItemInfo;
 
 @property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
 @property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
@@ -524,6 +525,30 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 }
 
 
+#pragma mark - Notification Handlers
+
+- (void)applicationDidChangeScreenParametersNotification:(NSNotification*) notification
+{
+    NSScreen* screen = NSScreen.mainScreen;
+    NSRect screenSize = screen.frame;
+    self.currentWidth = [NSNumber numberWithInteger:screenSize.size.width];
+    self.currentHeight = [NSNumber numberWithInteger:screenSize.size.height];
+}
+
+#pragma mark - SFAuthorizationViewDelegate
+
+- (void)authorizationViewDidAuthorize:(SFAuthorizationView *)view
+{
+    _tabViewItemInfo.authorization = view.authorization;
+}
+
+
+- (void)authorizationViewDidDeauthorize:(SFAuthorizationView *)view
+{
+    _tabViewItemInfo.authorization = nil;
+}
+
+
 #pragma mark - MLGitHubReleaseCheckerDelegate
 
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundReleaseInfo:(MLGitHubRelease*)releaseInfo
@@ -569,24 +594,12 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 }
 
 
-#pragma mark - Notification Handlers
-
-- (void)applicationDidChangeScreenParametersNotification:(NSNotification*) notification
-{
-    NSScreen* screen = NSScreen.mainScreen;
-    NSRect screenSize = screen.frame;
-    self.currentWidth = [NSNumber numberWithInteger:screenSize.size.width];
-    self.currentHeight = [NSNumber numberWithInteger:screenSize.size.height];
-}
-
-
 #pragma mark - NSTabViewDelegate
 
 - (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(nullable NSTabViewItem *)tabViewItem
 {
-    if ([tabViewItem.identifier isEqualToString:@"tab_info"]) {
-        NSTabViewItemInfo* itemInfo = (NSTabViewItemInfo*)tabViewItem;
-        [itemInfo refresh];
+    if (tabViewItem == _tabViewItemInfo) {
+        [_tabViewItemInfo refresh];
     }
 }
 

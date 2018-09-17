@@ -7,15 +7,18 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <SecurityInterface/SFAuthorizationView.h>
 
 @interface NSTabViewItemInfo : NSTabViewItem
 
-@property (nonatomic, strong)   NSString* hostVersion;
-@property (nonatomic, strong)   NSString* toolsVersion;
-@property (nonatomic, assign)   NSTimeInterval uptime;
+@property (nonatomic, assign)   SFAuthorization*    authorization;
 
-@property (nonatomic, assign)   BOOL serviceRunning;
-@property (nonatomic, strong)   NSString* serviceState;
+@property (nonatomic, strong)   NSString*           hostVersion;
+@property (nonatomic, strong)   NSString*           toolsVersion;
+@property (nonatomic, assign)   NSTimeInterval      uptime;
+
+@property (nonatomic, assign)   BOOL                serviceRunning;
+@property (nonatomic, strong)   NSString*           serviceState;
 
 - (void)refresh;
 
