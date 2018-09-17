@@ -13,7 +13,6 @@
 #import <GitHubRelease/GitHubRelease.h>
 #import "STPrivilegedTask/STPrivilegedTask.h"
 #import "MLVMwareCommand.h"
-#import "MLLaunchCtrlCommand.h"
 #import "NSTabViewItemInfo.h"
 #import "NSView+Enabled.h"
 
@@ -587,37 +586,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 {
     if ([tabViewItem.identifier isEqualToString:@"tab_info"]) {
         NSTabViewItemInfo* itemInfo = (NSTabViewItemInfo*)tabViewItem;
-        
-        MLVMwareVersionCommand* cmdVersion = [MLVMwareVersionCommand version];
-        [cmdVersion executeWithCompletion:^(NSError *error) {
-            if (error != nil) {
-                itemInfo.toolsVersion = @"N/A";
-                return;
-            }
-            itemInfo.toolsVersion = cmdVersion.version;
-        }];
-        
-        MLVMwareSessionCommand* cmdSession = [MLVMwareSessionCommand session];
-        [cmdSession executeWithCompletion:^(NSError *error) {
-            if (error != nil) {
-                itemInfo.hostVersion = @"N/A";
-                itemInfo.uptime = 0;
-                return;
-            }
-            itemInfo.hostVersion = cmdSession.session[@"version"] ?: @"N/A";
-            itemInfo.uptime = [cmdSession.session[@"uptime"][@"value"] doubleValue] / 1000000.0;
-        }];
-
-        MLLaunchCtrlCommand* cmdLaunchCtrl = [MLLaunchCtrlCommand listService:@"com.vmware.launchd.vmware-tools-userd"];
-        [cmdLaunchCtrl executeWithCompletion:^(NSError *error) {
-            NSInteger pid = [cmdLaunchCtrl.service[@"PID"] integerValue];
-            NSLog(@"%ld", (long)pid);
-        }];
-
-
-        
-//        launchctl list
-        
+        [itemInfo refresh];
     }
 }
 

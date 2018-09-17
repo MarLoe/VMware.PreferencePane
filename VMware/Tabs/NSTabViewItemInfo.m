@@ -7,6 +7,18 @@
 //
 
 #import "NSTabViewItemInfo.h"
+#import "MLVMwareCommand.h"
+#import "MLLaunchCtrlCommand.h"
+
+@interface NSTabViewItemInfo ()
+
+@property (nonatomic, weak) IBOutlet NSButton*              start;
+@property (nonatomic, weak) IBOutlet NSButton*              stop;
+
+- (IBAction)startService:(id)sender;
+- (IBAction)stopService:(id)sender;
+
+@end
 
 @implementation NSTabViewItemInfo
 {
@@ -56,5 +68,52 @@
         _uptime = uptime;
     }
 }
+
+- (void)refresh
+{
+    [self refreshVersion];
+    [self refreshService];
+}
+
+- (void)refreshVersion
+{
+    MLVMwareVersionCommand* cmdVersion = [MLVMwareVersionCommand version];
+    [cmdVersion executeWithCompletion:^(NSError *error) {
+        self.toolsVersion = error == nil ? cmdVersion.version : @"N/A";
+        
+        MLVMwareSessionCommand* cmdSession = [MLVMwareSessionCommand session];
+        [cmdSession executeWithCompletion:^(NSError *error) {
+            self.hostVersion = cmdSession.session[@"version"] ?: @"N/A";
+            self.uptime = [cmdSession.session[@"uptime"][@"value"] doubleValue] / 1000000.0;
+        }];
+    }];
+}
+
+- (void)refreshService
+{
+    MLLaunchCtrlCommand* cmdLaunchCtrl = [MLLaunchCtrlCommand printService:@"com.vmware.launchd.tools" inDomain:@"system"];
+    [cmdLaunchCtrl executeWithCompletion:^(NSError *error) {
+        if (cmdLaunchCtrl.state == nil) {
+            NSLog(@"Service Error: %@", error);
+            NSLog(@"Service State: %@", cmdLaunchCtrl.state);
+            NSLog(@"Service Running: %@", @(cmdLaunchCtrl.isRunning));
+        }
+        self.serviceState = cmdLaunchCtrl.state;
+        self.serviceRunning = cmdLaunchCtrl.isRunning;
+    }];
+}
+
+#pragma mark - Interace Builder Action
+
+- (IBAction)startService:(id)sender
+{
+    [self refreshService];
+}
+
+- (IBAction)stopService:(id)sender
+{
+    [self refreshService];
+}
+
 
 @end

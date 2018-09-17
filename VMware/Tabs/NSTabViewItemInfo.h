@@ -14,4 +14,9 @@
 @property (nonatomic, strong)   NSString* toolsVersion;
 @property (nonatomic, assign)   NSTimeInterval uptime;
 
+@property (nonatomic, assign)   BOOL serviceRunning;
+@property (nonatomic, strong)   NSString* serviceState;
+
+- (void)refresh;
+
 @end
