@@ -10,12 +10,12 @@
 
 @interface MLCommand ()
 
-@property (nonatomic, assign) BOOL                isExecuting;
+@property (nonatomic, assign) BOOL                  isExecuting;
 
-@property (nonatomic, strong) NSString*           standardOutput;
-@property (nonatomic, strong) NSString*           standardError;
+@property (nullable, nonatomic, strong) NSString*   standardOutput;
+@property (nullable, nonatomic, strong) NSString*   standardError;
 
-- (BOOL)parseStandardOutput:(NSString*)stdOutput error:(out NSError **_Nullable)error;
-- (BOOL)parseStandardError:(NSString*)stdError error:(out NSError **_Nullable)error;
+- (BOOL)parseStandardOutput:(nonnull NSString*)stdOutput error:(out NSError *_Nullable*_Nullable)error;
+- (BOOL)parseStandardError:(nonnull NSString*)stdError error:(out NSError *_Nullable*_Nullable)error;
 
 @end
