@@ -79,11 +79,11 @@
 {
     MLVMwareVersionCommand* cmdVersion = [MLVMwareVersionCommand version];
     [cmdVersion executeWithCompletion:^(NSError *error) {
-        self.toolsVersion = error == nil ? cmdVersion.version : @"N/A";
+        self.toolsVersion = error == nil ? cmdVersion.version : NSLocalizedString(@"N/A", -);
         
         MLVMwareSessionCommand* cmdSession = [MLVMwareSessionCommand session];
         [cmdSession executeWithCompletion:^(NSError *error) {
-            self.hostVersion = cmdSession.session[@"version"] ?: @"N/A";
+            self.hostVersion = cmdSession.session[@"version"] ?: NSLocalizedString(@"N/A", -);
             self.uptime = [cmdSession.session[@"uptime"][@"value"] doubleValue] / 1000000.0;
         }];
     }];

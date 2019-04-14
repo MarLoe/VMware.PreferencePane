@@ -14,7 +14,7 @@
 {
     NSTimeInterval timeInterval = [value doubleValue];
     if (timeInterval <= 0) {
-        return @"N/A";
+        return NSLocalizedString(@"N/A", -);
     }
     
     NSDateComponentsFormatter *formatter = [[NSDateComponentsFormatter alloc] init];

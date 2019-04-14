@@ -58,7 +58,7 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
             if (self.isExecuting) {
                 NSError* error = [NSError errorWithDomain:MLCommandErrorDomain
                                                      code:1
-                                                 userInfo:@{ NSLocalizedDescriptionKey: @"Execution in progress" }];
+                                                 userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Execution in progress", -) }];
                 [self callCompletion:completion withError:error];
             }
             
