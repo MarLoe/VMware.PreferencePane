@@ -535,7 +535,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     
     // Now create the alert
     [self showNewVersionAvailableWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset) {
-        if (suppressionState == NSOnState) {
+        if (suppressionState == NSControlStateValueOn) {
             // Suppress this alert from now on
             [userDefaults setObject:releaseInfo.name forKey:@"skip"];
         }
@@ -599,7 +599,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
             if (returnCode == NSModalResponseCancel) {
                 return;
             }
-            if (suppressionState == NSOnState) {
+            if (suppressionState == NSControlStateValueOn) {
                 // Suppress this alert from now on
                 [userDefaults setBool:YES forKey:skipPrivilegedWarningKey];
             }
