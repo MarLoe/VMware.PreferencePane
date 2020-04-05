@@ -85,6 +85,8 @@
 		6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Enabled.m"; sourceTree = "<group>"; };
 		6DB3F5BA20D092BF0019CB79 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6DD64079213E731300962088 /* VMware.searchTerms */ = {isa = PBXFileReference; explicitFileType = text.plist; path = VMware.searchTerms; sourceTree = "<group>"; };
+		6DFDDA3C2439B11C00CB0FE8 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		6DFDDA3E2439B13D00CB0FE8 /* Package */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Package; sourceTree = "<group>"; };
 		7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware/Pods-VMware.debug.xcconfig"; sourceTree = "<group>"; };
 		731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.Debug.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug.debug.xcconfig"; sourceTree = "<group>"; };
 		A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.Debug.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,8 +129,10 @@
 		5B3A82302030ED960062DFEF = {
 			isa = PBXGroup;
 			children = (
+				6DFDDA3C2439B11C00CB0FE8 /* LICENSE */,
 				5B3183A62032E11100EFDB87 /* README.md */,
 				6DB3F5BA20D092BF0019CB79 /* Podfile */,
+				6DFDDA3E2439B13D00CB0FE8 /* Package */,
 				5B3A823C2030ED960062DFEF /* VMware */,
 				5B3A826120312D820062DFEF /* VMware.Debug */,
 				5B3A823B2030ED960062DFEF /* Products */,
@@ -529,16 +533,18 @@
 			baseConfigurationReference = 7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 63;
-				DEVELOPMENT_TEAM = 38G5P3YVC2;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = .;
 				INFOPLIST_FILE = "$(SRCROOT)/VMware/Info.plist";
 				INSTALL_PATH = "$(HOME)/Library/PreferencePanes";
 				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lobger.VMware.PreferencePane;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = prefPane;
 			};
 			name = Debug;
@@ -548,7 +554,8 @@
 			baseConfigurationReference = 1C2DDAF7AFA8257D0DFE363C /* Pods-VMware.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Apple Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 63;
 				DEVELOPMENT_TEAM = 38G5P3YVC2;
@@ -558,6 +565,7 @@
 				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lobger.VMware.PreferencePane;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = prefPane;
 			};
 			name = Release;

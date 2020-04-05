@@ -56,6 +56,14 @@ It will most likely result in an error message saying:
 
 ![VMware.prefPane](Images/VMware.prefPane-Catalina03.png)
 
+Alternatively to all this, you could just remove the quarantine Extended Attribute on the file from ther terminal:
+
+```bash
+sudo xattr -d com.apple.quarantine /Library/PreferencePanes/VMware.prefPane
+```
+
+Thanks to [melmaninga](https://github.com/melmaninga) for suggesting this.
+
 ## Building
 
 This project uses [cocoapods](https://cocoapods.org/). Please install cocoapods and from the terminal run this command from the project root folder:
