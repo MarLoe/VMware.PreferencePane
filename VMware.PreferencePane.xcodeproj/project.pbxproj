@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B3A823E2030ED960062DFEF /* MainPane.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A823D2030ED960062DFEF /* MainPane.h */; };
-		5B3A82402030ED960062DFEF /* MainPane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A823F2030ED960062DFEF /* MainPane.m */; };
-		5B3A82452030ED960062DFEF /* MainPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A82432030ED960062DFEF /* MainPane.xib */; };
+		5B3A823E2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A823D2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h */; };
+		5B3A82402030ED960062DFEF /* ComLobgerVMwarePreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A823F2030ED960062DFEF /* ComLobgerVMwarePreferencePane.m */; };
+		5B3A82452030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A82432030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib */; };
 		5B3A824E2030EE720062DFEF /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3A824D2030EE720062DFEF /* PreferencePanes.framework */; };
 		5B3A826420312D820062DFEF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826320312D820062DFEF /* AppDelegate.m */; };
 		5B3A826720312D820062DFEF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826620312D820062DFEF /* ViewController.m */; };
@@ -53,9 +53,9 @@
 		364631799F3A44D6882C77D1 /* libPods-VMware.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B3183A62032E11100EFDB87 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5B3A823A2030ED960062DFEF /* VMware.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VMware.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B3A823D2030ED960062DFEF /* MainPane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainPane.h; sourceTree = "<group>"; };
-		5B3A823F2030ED960062DFEF /* MainPane.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainPane.m; sourceTree = "<group>"; };
-		5B3A82442030ED960062DFEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainPane.xib; sourceTree = "<group>"; };
+		5B3A823D2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComLobgerVMwarePreferencePane.h; sourceTree = "<group>"; };
+		5B3A823F2030ED960062DFEF /* ComLobgerVMwarePreferencePane.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComLobgerVMwarePreferencePane.m; sourceTree = "<group>"; };
+		5B3A82442030ED960062DFEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ComLobgerVMwarePreferencePane.xib; sourceTree = "<group>"; };
 		5B3A82462030ED960062DFEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B3A824D2030EE720062DFEF /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = System/Library/Frameworks/PreferencePanes.framework; sourceTree = SDKROOT; };
 		5B3A8258203114AB0062DFEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -151,9 +151,9 @@
 			children = (
 				6D2929D0212D896400A950AF /* Commands */,
 				5B509F9420362265001A2037 /* Presets.plist */,
-				5B3A823D2030ED960062DFEF /* MainPane.h */,
-				5B3A823F2030ED960062DFEF /* MainPane.m */,
-				5B3A82432030ED960062DFEF /* MainPane.xib */,
+				5B3A823D2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h */,
+				5B3A823F2030ED960062DFEF /* ComLobgerVMwarePreferencePane.m */,
+				5B3A82432030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib */,
 				5B3A82462030ED960062DFEF /* Info.plist */,
 				5B3A8258203114AB0062DFEF /* Assets.xcassets */,
 				5B3A827D203182440062DFEF /* IntegerValueFormatter.h */,
@@ -216,7 +216,7 @@
 			files = (
 				6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */,
 				5B3A827F203182440062DFEF /* IntegerValueFormatter.h in Headers */,
-				5B3A823E2030ED960062DFEF /* MainPane.h in Headers */,
+				5B3A823E2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h in Headers */,
 				6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */,
 				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
 				6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */,
@@ -309,7 +309,7 @@
 			files = (
 				6DD6407A213E731300962088 /* VMware.searchTerms in Resources */,
 				5B509F9520362265001A2037 /* Presets.plist in Resources */,
-				5B3A82452030ED960062DFEF /* MainPane.xib in Resources */,
+				5B3A82452030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib in Resources */,
 				6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -370,7 +370,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D2929DC212DF00400A950AF /* MLLaunchCtrlCommand.m in Sources */,
-				5B3A82402030ED960062DFEF /* MainPane.m in Sources */,
+				5B3A82402030ED960062DFEF /* ComLobgerVMwarePreferencePane.m in Sources */,
 				6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */,
 				6D2929D4212D898700A950AF /* MLCommand.m in Sources */,
 				6D292A13212E128200A950AF /* MLPlistParser.m in Sources */,
@@ -400,12 +400,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		5B3A82432030ED960062DFEF /* MainPane.xib */ = {
+		5B3A82432030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				5B3A82442030ED960062DFEF /* Base */,
 			);
-			name = MainPane.xib;
+			name = ComLobgerVMwarePreferencePane.xib;
 			sourceTree = "<group>";
 		};
 		5B3A826A20312D820062DFEF /* Main.storyboard */ = {

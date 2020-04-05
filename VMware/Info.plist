@@ -25,15 +25,15 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2018 ML-Consulting. All rights reserved.</string>
 	<key>NSMainNibFile</key>
-	<string>MainPane</string>
+	<string>ComLobgerVMwarePreferencePane</string>
 	<key>NSPrefPaneIconFile</key>
 	<string>AppIcon.icns</string>
 	<key>NSPrefPaneIconLabel</key>
 	<string>VMware</string>
 	<key>NSPrefPaneSearchParameters</key>
-	<string>VMware Screen Resolution</string>
+	<string>VMware</string>
 	<key>NSPrincipalClass</key>
-	<string>MainPane</string>
+	<string>ComLobgerVMwarePreferencePane</string>
 	<key>NSRequiresAquaSystemAppearance</key>
 	<string>false</string>
 	<key>NSSupportsSuddenTermination</key>

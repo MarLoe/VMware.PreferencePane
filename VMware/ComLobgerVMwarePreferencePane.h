@@ -1,5 +1,5 @@
 //
-//  MainPane.h
+//  ComLobgerVMwarePreferencePane.h
 //  VMware Screen Resulution
 //
 //  Created by Martin Løbger on 11/02/2018.
@@ -8,7 +8,7 @@
 
 #import <PreferencePanes/PreferencePanes.h>
 
-@interface MainPane : NSPreferencePane<NSTableViewDelegate>
+@interface ComLobgerVMwarePreferencePane : NSPreferencePane<NSTableViewDelegate>
 
 @property (nonatomic, strong) IBOutlet NSString* version;
 

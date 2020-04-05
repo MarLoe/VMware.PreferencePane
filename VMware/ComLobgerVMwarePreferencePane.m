@@ -1,12 +1,12 @@
 //
-//  MainPane.m
+//  ComLobgerVMwarePreferencePane.m
 //  VMware Screen Resulution
 //
 //  Created by Martin Løbger on 11/02/2018.
 //  Copyright © 2018 ML-Consulting. All rights reserved.
 //
 
-#import "MainPane.h"
+#import "ComLobgerVMwarePreferencePane.h"
 #import <CoreFoundation/CoreFoundation.h>
 #import <SecurityInterface/SFAuthorizationView.h>
 #import <sys/xattr.h>
@@ -33,7 +33,7 @@ static const NSModalResponse NSModalResponseView            = (-1002);
 static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 
-@interface MainPane() <MLGitHubReleaseCheckerDelegate>
+@interface ComLobgerVMwarePreferencePane() <MLGitHubReleaseCheckerDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
 @property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
@@ -51,7 +51,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 @end
 
-@implementation MainPane
+@implementation ComLobgerVMwarePreferencePane
 {
     BOOL                        _forceCheckForUpdate;
     NSString*                   _bundleIdentifier;
