@@ -73,6 +73,21 @@ sudo xattr -d com.apple.quarantine /Library/PreferencePanes/VMware.prefPane
 
 Thanks to [melmaninga](https://github.com/melmaninga) for suggesting this.
 
+## Uninstall
+
+Right-click on the VMware icon in System Preferences.
+
+![Remove VMware Preference Pane](Images/VMware.prefPane.remove.png)
+
+You can also delete it manually by removing the "VMware.prefPane" file from either  
+
+```~/Library/PreferencePanes```
+
+or
+
+```/Library/PreferencePanes```
+
+
 ## Building
 
 This project uses [cocoapods](https://cocoapods.org/). Please install cocoapods and from the terminal run this command from the project root folder:
