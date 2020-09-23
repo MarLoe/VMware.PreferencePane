@@ -1,12 +1,12 @@
 //
-//  MainPane.m
+//  ComLobgerVMwarePreferencePane.m
 //  VMware Screen Resulution
 //
 //  Created by Martin Løbger on 11/02/2018.
 //  Copyright © 2018 ML-Consulting. All rights reserved.
 //
 
-#import "MainPane.h"
+#import "ComLobgerVMwarePreferencePane.h"
 #import <CoreFoundation/CoreFoundation.h>
 #import <SecurityInterface/SFAuthorizationView.h>
 #import <sys/xattr.h>
@@ -34,7 +34,7 @@ static const NSModalResponse NSModalResponseView            = (-1002);
 static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 
-@interface MainPane() <MLGitHubReleaseCheckerDelegate>
+@interface ComLobgerVMwarePreferencePane() <MLGitHubReleaseCheckerDelegate>
 
 @property (nonatomic, weak) IBOutlet NSTabView*             tabView;
 @property (nonatomic, weak) IBOutlet NSTabViewItemInfo*     tabViewItemInfo;
@@ -55,7 +55,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 @end
 
-@implementation MainPane
+@implementation ComLobgerVMwarePreferencePane
 {
     BOOL                        _forceCheckForUpdate;
     NSString*                   _bundleIdentifier;
@@ -570,7 +570,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     
     // Now create the alert
     [self showNewVersionAvailableWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset) {
-        if (suppressionState == NSOnState) {
+        if (suppressionState == NSControlStateValueOn) {
             // Suppress this alert from now on
             [userDefaults setObject:releaseInfo.name forKey:@"skip"];
         }
@@ -633,7 +633,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
             if (returnCode == NSModalResponseCancel) {
                 return;
             }
-            if (suppressionState == NSOnState) {
+            if (suppressionState == NSControlStateValueOn) {
                 // Suppress this alert from now on
                 [userDefaults setBool:YES forKey:skipPrivilegedWarningKey];
             }

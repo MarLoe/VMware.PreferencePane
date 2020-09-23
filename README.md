@@ -16,9 +16,19 @@ When running macOS as a guest on a WMware host, the way you change screen resolu
 
 I access my virtual macOS via [VNC Viewer](https://www.realvnc.com/en/connect/download/viewer) from different workstations with different screen sizes. This leaves me with the need to change screen size often - and for some reason I always has to [google](https://www.google.dk/search?q=vmware+osx+change+resolution) how to do this.
 
-## Installing
+## Installing - Using The Installer
 
-Please download and unzip VMware.prefPane.zip from the [latest release](https://github.com/MarLoe/VMware.PreferencePane/releases/latest). 
+Download [VMware.prefPane.pkg](https://github.com/MarLoe/VMware.PreferencePane/releases/latest/download/VMware.prefPane.pkg
+) and run it.
+
+You might have to right click and select "Open" from the popup menu.
+
+NOTE: The installer is only able to install the VMware Preferene Pane for all users.
+
+## Installing - Manual
+
+Please download and unzip [VMware.prefPane.zip](https://github.com/MarLoe/VMware.PreferencePane/releases/latest/download/VMware.prefPane.zip
+) from the [latest release](https://github.com/MarLoe/VMware.PreferencePane/releases/latest).
 
 Then open it by double clicking it. If you get a message that "VMware.prefPane can't be opened because it is from an unidentified developer", then you can right-click "VMware.prefPane" and select open from the menu.
 
@@ -39,6 +49,44 @@ cp -r VMware.prefPane ~/Library/PreferencePanes/
 ```bash
 cp -r VMware.prefPane /Library/PreferencePanes/
 ```
+
+### **macOS** Catalina
+
+On macOS Catalina it seems to be even harder to run an unsigned custom preference pane. But here is how. Once you have installed the VMWare preference pane, try to start it. You might get this error message:
+
+![VMware.prefPane](Images/VMware.prefPane-Catalina01.png)
+
+If this happens, you should go to "Security & Privacy" and click the "Open Anyway" button:
+
+![VMware.prefPane](Images/VMware.prefPane-Catalina02.png)
+
+It will most likely result in an error message saying:
+**"Could not load VMware preference pane."** That is not a problem, just press Ok. Now you should quit the System Preferences aand the open it again. Now when you select the VMWare preference pane, you should get the old familiar warning where you can select "Open":
+
+![VMware.prefPane](Images/VMware.prefPane-Catalina03.png)
+
+Alternatively to all this, you could just remove the quarantine Extended Attribute on the file from ther terminal:
+
+```bash
+sudo xattr -d com.apple.quarantine /Library/PreferencePanes/VMware.prefPane
+```
+
+Thanks to [melmaninga](https://github.com/melmaninga) for suggesting this.
+
+## Uninstall
+
+Right-click on the VMware icon in System Preferences.
+
+![Remove VMware Preference Pane](Images/VMware.prefPane.remove.png)
+
+You can also delete it manually by removing the "VMware.prefPane" file from either  
+
+```~/Library/PreferencePanes```
+
+or
+
+```/Library/PreferencePanes```
+
 
 ## Building
 
@@ -66,6 +114,11 @@ Selecting the "VMware" target will launch the VMware.prePane initiating a (re)in
 > Sometimes it can be neccessary to remove the existing instalation from the "System Preferences" application first.
 >
 >![Remove VMware Preference Pane](Images/VMware.prefPane.remove.png)
+
+## TL;DR
+
+Download [VMware.prefPane.pkg](https://github.com/MarLoe/VMware.PreferencePane/releases/latest/download/VMware.prefPane.pkg
+) and run it!
 
 ## License
 
