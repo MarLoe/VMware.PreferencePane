@@ -1,6 +1,6 @@
 PODS:
   - GitHubRelease (0.5.4)
-  - STPrivilegedTask (1.0.7)
+  - STPrivilegedTask (1.0.8)
 
 DEPENDENCIES:
   - GitHubRelease (from `https://github.com/MarLoe/GitHub.Release`)
@@ -17,13 +17,13 @@ CHECKOUT OPTIONS:
     :commit: 2cd9d7fe0957dfaa81b576e4648bb0383fb0e6a1
     :git: https://github.com/MarLoe/GitHub.Release
   STPrivilegedTask:
-    :commit: 21e005bd51818e9cc8de6da248a6d1794ca8254e
+    :commit: 482fc3c7c56a9121c8a69e98aa03f17b190f7be7
     :git: https://github.com/sveinbjornt/STPrivilegedTask
 
 SPEC CHECKSUMS:
   GitHubRelease: 97068305c99f5870c4f77a7c35c7d7527207a9ec
-  STPrivilegedTask: 56c3397238a1ec07720fb877a044898373cd2c68
+  STPrivilegedTask: 3a3f6add7c567b1be8c326328eb3dd6dc5daed91
 
 PODFILE CHECKSUM: 2669c6ca175093d6e3f8d1c686ebd02c05b9f16e
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3
