@@ -8,7 +8,19 @@
 
 #import "MLCommand.h"
 
+@class MLLaunchCtrlPrintCommand;
+
 @interface MLLaunchCtrlCommand : MLCommand
+
++ (MLLaunchCtrlCommand*)loadService:(NSString*)service;
+
++ (MLLaunchCtrlCommand*)unloadService:(NSString*)service;
+
++ (MLLaunchCtrlPrintCommand*)printService:(NSString*)service inDomain:(NSString*)domain;
+
+@end
+
+@interface MLLaunchCtrlPrintCommand : MLLaunchCtrlCommand
 
 @property (nonatomic, readonly, strong) NSString*       serviceName;
 @property (nonatomic, readonly, strong) NSString*       domainName;
@@ -18,7 +30,5 @@
 @property (nonatomic, readonly, assign) NSString*       state;
 @property (nonatomic, readonly, assign) BOOL            isRunning;
 @property (nonatomic, readonly, assign) NSInteger       pid;
-
-+ (instancetype)printService:(NSString*)service inDomain:(NSString*)domain;
 
 @end

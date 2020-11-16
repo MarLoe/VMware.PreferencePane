@@ -11,7 +11,7 @@
 #import <SecurityInterface/SFAuthorizationView.h>
 #import <sys/xattr.h>
 #import <GitHubRelease/GitHubRelease.h>
-#import "STPrivilegedTask/STPrivilegedTask.h"
+#import <STPrivilegedTask/STPrivilegedTask.h>
 #import "MLVMwareCommand.h"
 #import "NSTabViewItemInfo.h"
 #import "NSView+Enabled.h"
@@ -248,16 +248,16 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     __weak typeof(self) weakSelf = self;
     [self setScreenSize:newSize showRevert:showRevert authorization:authorization completionHandler:^(BOOL reverted, NSError* error) {
         __strong typeof(self) strongSelf = weakSelf;
-        if (reverted) {
+        if (reverted && strongSelf != nil) {
             if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
                 strongSelf->_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(oldAutoHiDPIEnabled);
                 [strongSelf->_vmWarePreferencesDict writeToURL:strongSelf->_vmWarePreferencesUrl atomically:YES];
-                strongSelf->_autoHiDPI.state = oldAutoHiDPIEnabled ? NSControlStateValueOn : NSControlStateValueOff;
+                strongSelf.autoHiDPI.state = oldAutoHiDPIEnabled ? NSControlStateValueOn : NSControlStateValueOff;
             }
             [[MLVMwareCommand resolutionSet:oldSize.width height:oldSize.height] executeWithCompletion:nil];
         }
         if (error != nil) {
-            [weakSelf showErrorSheet:error];
+            [strongSelf showErrorSheet:error];
         }
     }];
     

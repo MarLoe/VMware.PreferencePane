@@ -9,6 +9,7 @@
 #import "NSTabViewItemInfo.h"
 #import "MLVMwareCommand.h"
 #import "MLLaunchCtrlCommand.h"
+#import <STPrivilegedTask/STPrivilegedTask.h>
 
 @interface NSTabViewItemInfo ()
 
@@ -91,15 +92,16 @@
 
 - (void)refreshService
 {
-    MLLaunchCtrlCommand* cmdLaunchCtrl = [MLLaunchCtrlCommand printService:@"com.vmware.launchd.tools" inDomain:@"system"];
-    [cmdLaunchCtrl executeWithCompletion:^(NSError *error) {
-        if (cmdLaunchCtrl.state == nil) {
+    MLLaunchCtrlPrintCommand* cmd = [MLLaunchCtrlCommand printService:@"com.vmware.launchd.tools" inDomain:@"system"];
+    [cmd executeWithCompletion:^(NSError *error) {
+        if (error != nil) {
             NSLog(@"Service Error: %@", error);
-            NSLog(@"Service State: %@", cmdLaunchCtrl.state);
-            NSLog(@"Service Running: %@", @(cmdLaunchCtrl.isRunning));
+            self.serviceState = NSLocalizedString(@"N/A", -);
+            self.serviceRunning = false;
+            return;
         }
-        self.serviceState = cmdLaunchCtrl.state;
-        self.serviceRunning = cmdLaunchCtrl.isRunning;
+        self.serviceState = cmd.state;
+        self.serviceRunning = cmd.isRunning;
     }];
 }
 
@@ -107,11 +109,39 @@
 
 - (IBAction)startService:(id)sender
 {
-    [self refreshService];
+    MLLaunchCtrlCommand* cmd = [MLLaunchCtrlCommand loadService:@"com.vmware.launchd.tools"];
+    [cmd executeWithCompletion:^(NSError *error) {
+        [self refreshService];
+    }];
 }
 
 - (IBAction)stopService:(id)sender
 {
+//    MLLaunchCtrlCommand* cmd = [MLLaunchCtrlCommand unloadService:@"com.vmware.launchd.tools"];
+//    [cmd executeWithCompletion:^(NSError *error) {
+//        NSLog(@"%*", cmd);
+//        [self refreshService];
+//    }];
+    NSArray* arguments = @[
+                           @"unload",
+                           @"/Library/LaunchDaemons/com.vmware.launchd.tools.plist"
+                           ];
+    STPrivilegedTask* privTask = [[STPrivilegedTask alloc] initWithLaunchPath:@"/bin/launchctl"
+                                                                    arguments:arguments];
+//    privTask.currentDirectoryPath = @"/Library/Application Support/VMware Tools";
+    OSStatus processError = [privTask launchWithAuthorization:[self.authorization authorizationRef]];
+    if (processError != errAuthorizationSuccess) {
+//        handler(NO, [NSError errorWithDomain:NSOSStatusErrorDomain code:processError userInfo:nil]);
+        NSLog(@"Error: %d", processError);
+        return;
+    }
+    
+    [privTask waitUntilExit];
+    
+    if (privTask.terminationStatus != errAuthorizationSuccess) {
+        NSLog(@"Error: %d", privTask.terminationStatus);
+    }
+    
     [self refreshService];
 }
 
