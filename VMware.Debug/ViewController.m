@@ -25,7 +25,9 @@
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
 #endif
 
-    NSURL* url = [NSURL fileURLWithPath:@"VMware.prefPane"];
+    NSBundle* mainBundle = [NSBundle mainBundle];
+    NSURL* mainUrl = [mainBundle.bundleURL URLByDeletingLastPathComponent];
+    NSURL* url = [mainUrl URLByAppendingPathComponent:@"VMware.prefPane"];
     NSBundle *prefBundle = [NSBundle bundleWithURL:url];
     
     _title = [prefBundle objectForInfoDictionaryKey:@"NSPrefPaneIconLabel"];
