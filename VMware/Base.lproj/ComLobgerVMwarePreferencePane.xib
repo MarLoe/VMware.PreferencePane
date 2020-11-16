@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17506"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -41,7 +41,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="176" y="715" width="680" height="409"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1792" height="1097"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="999"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="680" height="409"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -156,7 +156,7 @@
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn width="173" minWidth="100" maxWidth="3.4028234663852886e+38" id="vce-Bl-xz4">
+                                                            <tableColumn width="164" minWidth="100" maxWidth="3.4028234663852886e+38" id="vce-Bl-xz4">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -287,7 +287,7 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                                                         <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="left" scrollable="YES" lineBreakMode="clipping" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" autoenablesItems="NO" altersStateOfSelectedItem="NO" id="npB-nL-98z">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                            <font key="font" metaFont="system"/>
+                                                            <font key="font" metaFont="menu"/>
                                                             <menu key="menu" autoenablesItems="NO" id="bll-pg-SXC">
                                                                 <items>
                                                                     <menuItem state="on" image="NSActionTemplate" hidden="YES" id="bvj-Vr-4ni"/>
@@ -421,9 +421,9 @@
         <userDefaultsController representsSharedInstance="YES" id="Xs9-rl-isb"/>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSActionTemplate" width="15" height="15"/>
+        <image name="NSAddTemplate" width="15" height="13"/>
         <image name="NSComputer" width="32" height="32"/>
-        <image name="NSRemoveTemplate" width="11" height="11"/>
+        <image name="NSRemoveTemplate" width="15" height="4"/>
     </resources>
 </document>
