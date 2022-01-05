@@ -1,4 +1,4 @@
-	//
+//
 //  MLCommand.m
 //  VMware
 //
@@ -60,6 +60,7 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
                                                      code:1
                                                  userInfo:@{ NSLocalizedDescriptionKey: @"Execution in progress" }];
                 [self callCompletion:completion withError:error];
+                return;
             }
             
             self.isExecuting = YES;
