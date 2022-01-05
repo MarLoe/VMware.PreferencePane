@@ -16,13 +16,6 @@
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
-    NSArray *args = [[NSProcessInfo processInfo] arguments];
-    if ([args containsObject:@"--reset"]) {
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        for (NSString* key in [userDefaults dictionaryRepresentation].allKeys) {
-            [userDefaults removeObjectForKey:key];
-        }
-    }
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
