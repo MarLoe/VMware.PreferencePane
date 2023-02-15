@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09E84BBFF3BAB9E8EEE1AFBD /* libPods-VMware.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B86B177D56FDDFF1F44D175A /* libPods-VMware.a */; };
+		353B75E5B3910684607640CB /* libPods-VMware.Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E8EB8967E63DD5F3D86BC2F /* libPods-VMware.Debug.a */; };
 		5B3A823E2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A823D2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h */; };
 		5B3A82402030ED960062DFEF /* ComLobgerVMwarePreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A823F2030ED960062DFEF /* ComLobgerVMwarePreferencePane.m */; };
 		5B3A82452030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A82432030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib */; };
@@ -33,8 +35,6 @@
 		6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */; };
 		6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */; };
 		6DD6407A213E731300962088 /* VMware.searchTerms in Resources */ = {isa = PBXBuildFile; fileRef = 6DD64079213E731300962088 /* VMware.searchTerms */; };
-		778A13B215E188EAB0A35660 /* libPods-VMware.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 364631799F3A44D6882C77D1 /* libPods-VMware.a */; };
-		BFE9F02B25CD9A8BBBA27448 /* libPods-VMware.Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,9 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1C2DDAF7AFA8257D0DFE363C /* Pods-VMware.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.release.xcconfig"; path = "Pods/Target Support Files/Pods-VMware/Pods-VMware.release.xcconfig"; sourceTree = "<group>"; };
-		35ACAACE6454C6EF5661563C /* Pods-VMware.Debug.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.Debug.release.xcconfig"; path = "Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug.release.xcconfig"; sourceTree = "<group>"; };
-		364631799F3A44D6882C77D1 /* libPods-VMware.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E8EB8967E63DD5F3D86BC2F /* libPods-VMware.Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.Debug.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5175EB2C23389E39AC073BFE /* Pods-VMware.Debug.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.Debug.debug.xcconfig"; path = "Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug.debug.xcconfig"; sourceTree = "<group>"; };
 		5B3183A62032E11100EFDB87 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5B3A823A2030ED960062DFEF /* VMware.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VMware.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B3A823D2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComLobgerVMwarePreferencePane.h; sourceTree = "<group>"; };
@@ -87,9 +86,10 @@
 		6DD64079213E731300962088 /* VMware.searchTerms */ = {isa = PBXFileReference; explicitFileType = text.plist; path = VMware.searchTerms; sourceTree = "<group>"; };
 		6DFDDA3C2439B11C00CB0FE8 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6DFDDA3E2439B13D00CB0FE8 /* Package */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Package; sourceTree = "<group>"; };
-		7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware/Pods-VMware.debug.xcconfig"; sourceTree = "<group>"; };
-		731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.Debug.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug.debug.xcconfig"; sourceTree = "<group>"; };
-		A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.Debug.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		813B5373A4B957136F72F264 /* Pods-VMware.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.debug.xcconfig"; path = "Target Support Files/Pods-VMware/Pods-VMware.debug.xcconfig"; sourceTree = "<group>"; };
+		A28A2078499282211B68C2CB /* Pods-VMware.Debug.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.Debug.release.xcconfig"; path = "Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug.release.xcconfig"; sourceTree = "<group>"; };
+		B784E464BB58024B941D2D38 /* Pods-VMware.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.release.xcconfig"; path = "Target Support Files/Pods-VMware/Pods-VMware.release.xcconfig"; sourceTree = "<group>"; };
+		B86B177D56FDDFF1F44D175A /* libPods-VMware.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +99,7 @@
 			files = (
 				5BB1E4BF2038498600576AAF /* SecurityInterface.framework in Frameworks */,
 				5B3A824E2030EE720062DFEF /* PreferencePanes.framework in Frameworks */,
-				778A13B215E188EAB0A35660 /* libPods-VMware.a in Frameworks */,
+				09E84BBFF3BAB9E8EEE1AFBD /* libPods-VMware.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,24 +108,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				5B3A827420312E340062DFEF /* PreferencePanes.framework in Frameworks */,
-				BFE9F02B25CD9A8BBBA27448 /* libPods-VMware.Debug.a in Frameworks */,
+				353B75E5B3910684607640CB /* libPods-VMware.Debug.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		10538781C0A6092A9F8D39D8 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */,
-				1C2DDAF7AFA8257D0DFE363C /* Pods-VMware.release.xcconfig */,
-				731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */,
-				35ACAACE6454C6EF5661563C /* Pods-VMware.Debug.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		5B3A82302030ED960062DFEF = {
 			isa = PBXGroup;
 			children = (
@@ -137,7 +126,7 @@
 				5B3A826120312D820062DFEF /* VMware.Debug */,
 				5B3A823B2030ED960062DFEF /* Products */,
 				5B3A824C2030EE720062DFEF /* Frameworks */,
-				10538781C0A6092A9F8D39D8 /* Pods */,
+				C077CD66E110BD15E581CBC6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -175,8 +164,8 @@
 				5BB1E4C02038498F00576AAF /* SecurityFoundation.framework */,
 				5BB1E4BE2038498600576AAF /* SecurityInterface.framework */,
 				5B3A824D2030EE720062DFEF /* PreferencePanes.framework */,
-				364631799F3A44D6882C77D1 /* libPods-VMware.a */,
-				A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */,
+				B86B177D56FDDFF1F44D175A /* libPods-VMware.a */,
+				2E8EB8967E63DD5F3D86BC2F /* libPods-VMware.Debug.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -211,6 +200,18 @@
 			path = Commands;
 			sourceTree = "<group>";
 		};
+		C077CD66E110BD15E581CBC6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				813B5373A4B957136F72F264 /* Pods-VMware.debug.xcconfig */,
+				B784E464BB58024B941D2D38 /* Pods-VMware.release.xcconfig */,
+				5175EB2C23389E39AC073BFE /* Pods-VMware.Debug.debug.xcconfig */,
+				A28A2078499282211B68C2CB /* Pods-VMware.Debug.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -235,7 +236,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5B3A82492030ED960062DFEF /* Build configuration list for PBXNativeTarget "VMware" */;
 			buildPhases = (
-				635FCF93C2C14E09EAB97C43 /* [CP] Check Pods Manifest.lock */,
+				50895F0C6F0A34F7FBA5ECBF /* [CP] Check Pods Manifest.lock */,
 				5B3A82352030ED960062DFEF /* Sources */,
 				5B3A82362030ED960062DFEF /* Frameworks */,
 				5B3A82372030ED960062DFEF /* Headers */,
@@ -254,7 +255,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5B3A827120312D820062DFEF /* Build configuration list for PBXNativeTarget "VMware.Debug" */;
 			buildPhases = (
-				1C72F52CFDDCD52AF77CB610 /* [CP] Check Pods Manifest.lock */,
+				36BF6157E5A2F365FBBEB49C /* [CP] Check Pods Manifest.lock */,
 				5B3A825C20312D820062DFEF /* Sources */,
 				5B3A825D20312D820062DFEF /* Frameworks */,
 				5B3A825E20312D820062DFEF /* Resources */,
@@ -330,16 +331,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1C72F52CFDDCD52AF77CB610 /* [CP] Check Pods Manifest.lock */ = {
+		36BF6157E5A2F365FBBEB49C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-VMware.Debug-checkManifestLockResult.txt",
 			);
@@ -348,16 +353,20 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		635FCF93C2C14E09EAB97C43 /* [CP] Check Pods Manifest.lock */ = {
+		50895F0C6F0A34F7FBA5ECBF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-VMware-checkManifestLockResult.txt",
 			);
@@ -534,7 +543,7 @@
 		};
 		5B3A824A2030ED960062DFEF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */;
+			baseConfigurationReference = 813B5373A4B957136F72F264 /* Pods-VMware.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
@@ -557,7 +566,7 @@
 		};
 		5B3A824B2030ED960062DFEF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1C2DDAF7AFA8257D0DFE363C /* Pods-VMware.release.xcconfig */;
+			baseConfigurationReference = B784E464BB58024B941D2D38 /* Pods-VMware.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
@@ -580,7 +589,7 @@
 		};
 		5B3A827220312D820062DFEF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */;
+			baseConfigurationReference = 5175EB2C23389E39AC073BFE /* Pods-VMware.Debug.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
@@ -599,7 +608,7 @@
 		};
 		5B3A827320312D820062DFEF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35ACAACE6454C6EF5661563C /* Pods-VMware.Debug.release.xcconfig */;
+			baseConfigurationReference = A28A2078499282211B68C2CB /* Pods-VMware.Debug.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "-";
