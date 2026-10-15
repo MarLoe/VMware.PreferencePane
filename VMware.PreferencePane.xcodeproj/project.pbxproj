@@ -3,36 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B3A823E2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A823D2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h */; };
-		5B3A82402030ED960062DFEF /* ComLobgerVMwarePreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A823F2030ED960062DFEF /* ComLobgerVMwarePreferencePane.m */; };
-		5B3A82452030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A82432030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib */; };
 		5B3A824E2030EE720062DFEF /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3A824D2030EE720062DFEF /* PreferencePanes.framework */; };
-		5B3A826420312D820062DFEF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826320312D820062DFEF /* AppDelegate.m */; };
-		5B3A826720312D820062DFEF /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826620312D820062DFEF /* ViewController.m */; };
-		5B3A826C20312D820062DFEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A826A20312D820062DFEF /* Main.storyboard */; };
-		5B3A826F20312D820062DFEF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A826E20312D820062DFEF /* main.m */; };
 		5B3A827420312E340062DFEF /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B3A824D2030EE720062DFEF /* PreferencePanes.framework */; };
-		5B3A827F203182440062DFEF /* IntegerValueFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3A827D203182440062DFEF /* IntegerValueFormatter.h */; };
-		5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A827E203182440062DFEF /* IntegerValueFormatter.m */; };
-		5B509F9520362265001A2037 /* Presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B509F9420362265001A2037 /* Presets.plist */; };
 		5BB1E4BF2038498600576AAF /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB1E4BE2038498600576AAF /* SecurityInterface.framework */; };
-		6D2929D3212D898700A950AF /* MLCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2929D1212D898700A950AF /* MLCommand.h */; };
-		6D2929D4212D898700A950AF /* MLCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2929D2212D898700A950AF /* MLCommand.m */; };
-		6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2929D5212D96A200A950AF /* MLVMwareCommand.h */; };
-		6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2929D6212D96A200A950AF /* MLVMwareCommand.m */; };
-		6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2929D9212DF00400A950AF /* MLLaunchCtrlCommand.h */; };
-		6D2929DC212DF00400A950AF /* MLLaunchCtrlCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2929DA212DF00400A950AF /* MLLaunchCtrlCommand.m */; };
-		6D292A12212E128200A950AF /* MLPlistParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D292A10212E128200A950AF /* MLPlistParser.h */; };
-		6D292A13212E128200A950AF /* MLPlistParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D292A11212E128200A950AF /* MLPlistParser.m */; };
-		6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
-		6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
-		6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */; };
-		6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */; };
-		6DD6407A213E731300962088 /* VMware.searchTerms in Resources */ = {isa = PBXBuildFile; fileRef = 6DD64079213E731300962088 /* VMware.searchTerms */; };
 		778A13B215E188EAB0A35660 /* libPods-VMware.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 364631799F3A44D6882C77D1 /* libPods-VMware.a */; };
 		BFE9F02B25CD9A8BBBA27448 /* libPods-VMware.Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */; };
 /* End PBXBuildFile section */
@@ -53,44 +30,47 @@
 		364631799F3A44D6882C77D1 /* libPods-VMware.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B3183A62032E11100EFDB87 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5B3A823A2030ED960062DFEF /* VMware.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VMware.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B3A823D2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComLobgerVMwarePreferencePane.h; sourceTree = "<group>"; };
-		5B3A823F2030ED960062DFEF /* ComLobgerVMwarePreferencePane.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComLobgerVMwarePreferencePane.m; sourceTree = "<group>"; };
-		5B3A82442030ED960062DFEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/ComLobgerVMwarePreferencePane.xib; sourceTree = "<group>"; };
-		5B3A82462030ED960062DFEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B3A824D2030EE720062DFEF /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = System/Library/Frameworks/PreferencePanes.framework; sourceTree = SDKROOT; };
-		5B3A8258203114AB0062DFEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5B3A826020312D820062DFEF /* VMware.Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VMware.Debug.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B3A826220312D820062DFEF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		5B3A826320312D820062DFEF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		5B3A826520312D820062DFEF /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		5B3A826620312D820062DFEF /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		5B3A826B20312D820062DFEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		5B3A826D20312D820062DFEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5B3A826E20312D820062DFEF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		5B3A827D203182440062DFEF /* IntegerValueFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntegerValueFormatter.h; sourceTree = "<group>"; };
-		5B3A827E203182440062DFEF /* IntegerValueFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntegerValueFormatter.m; sourceTree = "<group>"; };
-		5B509F9420362265001A2037 /* Presets.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Presets.plist; sourceTree = "<group>"; };
 		5BB1E4BE2038498600576AAF /* SecurityInterface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityInterface.framework; path = System/Library/Frameworks/SecurityInterface.framework; sourceTree = SDKROOT; };
 		5BB1E4C02038498F00576AAF /* SecurityFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SecurityFoundation.framework; path = System/Library/Frameworks/SecurityFoundation.framework; sourceTree = SDKROOT; };
-		6D2929D1212D898700A950AF /* MLCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLCommand.h; sourceTree = "<group>"; };
-		6D2929D2212D898700A950AF /* MLCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLCommand.m; sourceTree = "<group>"; };
-		6D2929D5212D96A200A950AF /* MLVMwareCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLVMwareCommand.h; sourceTree = "<group>"; };
-		6D2929D6212D96A200A950AF /* MLVMwareCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLVMwareCommand.m; sourceTree = "<group>"; };
-		6D2929D9212DF00400A950AF /* MLLaunchCtrlCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLLaunchCtrlCommand.h; sourceTree = "<group>"; };
-		6D2929DA212DF00400A950AF /* MLLaunchCtrlCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLLaunchCtrlCommand.m; sourceTree = "<group>"; };
-		6D292A0F212E0F4F00A950AF /* MLCommand+internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MLCommand+internal.h"; sourceTree = "<group>"; };
-		6D292A10212E128200A950AF /* MLPlistParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLPlistParser.h; sourceTree = "<group>"; };
-		6D292A11212E128200A950AF /* MLPlistParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLPlistParser.m; sourceTree = "<group>"; };
-		6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Enabled.h"; sourceTree = "<group>"; };
-		6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Enabled.m"; sourceTree = "<group>"; };
 		6DB3F5BA20D092BF0019CB79 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		6DD64079213E731300962088 /* VMware.searchTerms */ = {isa = PBXFileReference; explicitFileType = text.plist; path = VMware.searchTerms; sourceTree = "<group>"; };
 		6DFDDA3C2439B11C00CB0FE8 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6DFDDA3E2439B13D00CB0FE8 /* Package */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Package; sourceTree = "<group>"; };
 		7249EB30CD2C1412B8DADE41 /* Pods-VMware.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware/Pods-VMware.debug.xcconfig"; sourceTree = "<group>"; };
 		731C4F79D6F7323456A2D75D /* Pods-VMware.Debug.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VMware.Debug.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VMware.Debug/Pods-VMware.Debug.debug.xcconfig"; sourceTree = "<group>"; };
 		A082B8D5AD70ADA31D60045A /* libPods-VMware.Debug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VMware.Debug.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6DE7726D30810CE700B99099 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Commands/MLCommand+internal.h",
+				Info.plist,
+			);
+			target = 5B3A82392030ED960062DFEF /* VMware */;
+		};
+		6DE7726E30810CE700B99099 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = 5B3A825F20312D820062DFEF /* VMware.Debug */;
+		};
+		6DE7727D30810CEE00B99099 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5B3A825F20312D820062DFEF /* VMware.Debug */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		6DE7725730810CE600B99099 /* VMware */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (6DE7726D30810CE700B99099 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 6DE7726E30810CE700B99099 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {VMware.searchTerms = text.plist; }; explicitFolders = (); path = VMware; sourceTree = "<group>"; };
+		6DE7727730810CED00B99099 /* VMware.Debug */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (6DE7727D30810CEE00B99099 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = VMware.Debug; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		5B3A82362030ED960062DFEF /* Frameworks */ = {
@@ -133,8 +113,8 @@
 				5B3183A62032E11100EFDB87 /* README.md */,
 				6DB3F5BA20D092BF0019CB79 /* Podfile */,
 				6DFDDA3E2439B13D00CB0FE8 /* Package */,
-				5B3A823C2030ED960062DFEF /* VMware */,
-				5B3A826120312D820062DFEF /* VMware.Debug */,
+				6DE7725730810CE600B99099 /* VMware */,
+				6DE7727730810CED00B99099 /* VMware.Debug */,
 				5B3A823B2030ED960062DFEF /* Products */,
 				5B3A824C2030EE720062DFEF /* Frameworks */,
 				10538781C0A6092A9F8D39D8 /* Pods */,
@@ -150,25 +130,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5B3A823C2030ED960062DFEF /* VMware */ = {
-			isa = PBXGroup;
-			children = (
-				6D2929D0212D896400A950AF /* Commands */,
-				5B509F9420362265001A2037 /* Presets.plist */,
-				5B3A823D2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h */,
-				5B3A823F2030ED960062DFEF /* ComLobgerVMwarePreferencePane.m */,
-				5B3A82432030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib */,
-				5B3A82462030ED960062DFEF /* Info.plist */,
-				5B3A8258203114AB0062DFEF /* Assets.xcassets */,
-				5B3A827D203182440062DFEF /* IntegerValueFormatter.h */,
-				5B3A827E203182440062DFEF /* IntegerValueFormatter.m */,
-				6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */,
-				6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */,
-				6DD64079213E731300962088 /* VMware.searchTerms */,
-			);
-			path = VMware;
-			sourceTree = "<group>";
-		};
 		5B3A824C2030EE720062DFEF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,36 +142,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5B3A826120312D820062DFEF /* VMware.Debug */ = {
-			isa = PBXGroup;
-			children = (
-				5B3A826220312D820062DFEF /* AppDelegate.h */,
-				5B3A826320312D820062DFEF /* AppDelegate.m */,
-				5B3A826520312D820062DFEF /* ViewController.h */,
-				5B3A826620312D820062DFEF /* ViewController.m */,
-				5B3A826A20312D820062DFEF /* Main.storyboard */,
-				5B3A826D20312D820062DFEF /* Info.plist */,
-				5B3A826E20312D820062DFEF /* main.m */,
-			);
-			path = VMware.Debug;
-			sourceTree = "<group>";
-		};
-		6D2929D0212D896400A950AF /* Commands */ = {
-			isa = PBXGroup;
-			children = (
-				6D2929D1212D898700A950AF /* MLCommand.h */,
-				6D292A0F212E0F4F00A950AF /* MLCommand+internal.h */,
-				6D2929D2212D898700A950AF /* MLCommand.m */,
-				6D2929D5212D96A200A950AF /* MLVMwareCommand.h */,
-				6D2929D6212D96A200A950AF /* MLVMwareCommand.m */,
-				6D2929D9212DF00400A950AF /* MLLaunchCtrlCommand.h */,
-				6D2929DA212DF00400A950AF /* MLLaunchCtrlCommand.m */,
-				6D292A10212E128200A950AF /* MLPlistParser.h */,
-				6D292A11212E128200A950AF /* MLPlistParser.m */,
-			);
-			path = Commands;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -218,13 +149,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */,
-				5B3A827F203182440062DFEF /* IntegerValueFormatter.h in Headers */,
-				5B3A823E2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h in Headers */,
-				6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */,
-				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
-				6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */,
-				6D2929D3212D898700A950AF /* MLCommand.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +169,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				6DE7725730810CE600B99099 /* VMware */,
+			);
 			name = VMware;
 			productName = "VMware Screen Resulution";
 			productReference = 5B3A823A2030ED960062DFEF /* VMware.prefPane */;
@@ -263,6 +190,9 @@
 			);
 			dependencies = (
 				5B3A827620312FA20062DFEF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				6DE7727730810CED00B99099 /* VMware.Debug */,
 			);
 			name = VMware.Debug;
 			productName = Test;
@@ -311,10 +241,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DD6407A213E731300962088 /* VMware.searchTerms in Resources */,
-				5B509F9520362265001A2037 /* Presets.plist in Resources */,
-				5B3A82452030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib in Resources */,
-				6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,8 +248,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */,
-				5B3A826C20312D820062DFEF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,13 +297,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6D2929DC212DF00400A950AF /* MLLaunchCtrlCommand.m in Sources */,
-				5B3A82402030ED960062DFEF /* ComLobgerVMwarePreferencePane.m in Sources */,
-				6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */,
-				6D2929D4212D898700A950AF /* MLCommand.m in Sources */,
-				6D292A13212E128200A950AF /* MLPlistParser.m in Sources */,
-				6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */,
-				5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,9 +304,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B3A826720312D820062DFEF /* ViewController.m in Sources */,
-				5B3A826F20312D820062DFEF /* main.m in Sources */,
-				5B3A826420312D820062DFEF /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,25 +316,6 @@
 			targetProxy = 5B3A827520312FA20062DFEF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		5B3A82432030ED960062DFEF /* ComLobgerVMwarePreferencePane.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5B3A82442030ED960062DFEF /* Base */,
-			);
-			name = ComLobgerVMwarePreferencePane.xib;
-			sourceTree = "<group>";
-		};
-		5B3A826A20312D820062DFEF /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5B3A826B20312D820062DFEF /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		5B3A82472030ED960062DFEF /* Debug */ = {
@@ -582,7 +477,10 @@
 				CURRENT_PROJECT_VERSION = 51;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/VMware.Debug/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lobger.VMware.PreferencePane.Debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -599,7 +497,10 @@
 				CURRENT_PROJECT_VERSION = 51;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/VMware.Debug/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MARKETING_VERSION = 1.7.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.lobger.VMware.PreferencePane.Debug;
 				PRODUCT_NAME = "$(TARGET_NAME)";
