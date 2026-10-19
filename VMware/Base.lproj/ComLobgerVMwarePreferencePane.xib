@@ -30,7 +30,7 @@
                 <string>height</string>
             </declaredKeys>
             <connections>
-                <binding destination="Xs9-rl-isb" name="contentArray" keyPath="values.com.lobger.VMware.PreferencePane@presets" id="52G-vL-FIS">
+                <binding destination="Xs9-rl-isb" name="contentArray" keyPath="values.com.lobger.VMware.PreferencePane.presets" id="5Xa-q1-awL">
                     <dictionary key="options">
                         <bool key="NSHandlesContentAsCompoundValue" value="YES"/>
                     </dictionary>

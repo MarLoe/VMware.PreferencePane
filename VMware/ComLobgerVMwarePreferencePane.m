@@ -156,7 +156,6 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 {
     _forceCheckForUpdate |= [self isOptionsKeyPressed];
     
-    NSString* releaseName = self.version;
     if (_releaseChecker == nil) {
         _releaseChecker = [[MLGitHubReleaseChecker alloc] initWithUser:@"MarLoe" andProject:@"VMware.PreferencePane"];
         _releaseChecker.delegate = self;
@@ -164,14 +163,16 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     
     if (!_forceCheckForUpdate) {
         // The standard check for update was not bypassed - so do it :)
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        if ([[userDefaults stringForKey:@"skip"] isEqualToString:releaseName]) {
+        NSUserDefaults* userDefaults = _userDefaultsController.defaults;
+        NSString* skipKey = [_bundleIdentifier stringByAppendingString:@".skip"];
+        NSString* releaseKey = [_bundleIdentifier stringByAppendingFormat:@".(%@)", self.version];
+        if ([[userDefaults stringForKey:skipKey] isEqualToString:releaseKey]) {
             // The user has opted out of more alerts regarding this version.
             return;
         }
         
 #if !TEST_ENVIROMENT // <- Drop the 24 hour check interval if we are in test enviroment
-        NSDate* lastCheck = [userDefaults objectForKey:releaseName];
+        NSDate* lastCheck = [userDefaults objectForKey:releaseKey];
         if (lastCheck != nil && [lastCheck timeIntervalSinceNow] > -24*60*60) {
             // It has been less than 24 hours since last check
             return;
@@ -181,7 +182,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     
     _forceCheckForUpdate = NO;
     
-    [_releaseChecker checkReleaseWithName:releaseName];
+    [_releaseChecker checkReleaseWithName:self.version];
 }
 
 
@@ -206,13 +207,13 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (void)loadDefaultPresets:(bool)reset
 {
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString* presetsKey = [_bundleIdentifier stringByAppendingString:@"@presets"];
+    NSUserDefaults* userDefaults = _userDefaultsController.defaults;
+    NSString* presetsKey = [_bundleIdentifier stringByAppendingString:@".presets"];
     if (reset) {
         [_presetsArrayController removeObjects:_presetsArrayController.arrangedObjects];
         [userDefaults removeObjectForKey:presetsKey];
     }
-    if ( [userDefaults arrayForKey:presetsKey].count == 0) {
+    if ([userDefaults arrayForKey:presetsKey].count == 0) {
         NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
         NSURL* presetsUrl = [prefPaneBundle URLForResource:@"Presets" withExtension:@"plist"];
         NSArray* presets = [NSArray arrayWithContentsOfURL:presetsUrl];
@@ -519,25 +520,26 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundReleaseInfo:(MLGitHubRelease*)releaseInfo
 {
     NSLog(@"%@", releaseInfo);
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:[NSDate date] forKey:releaseInfo.name];
-    [userDefaults synchronize];
+    NSUserDefaults* userDefaults = _userDefaultsController.defaults;
+    NSString* releaseKey = [_bundleIdentifier stringByAppendingFormat:@".(%@)", releaseInfo.name];
+    [userDefaults setObject:[NSDate date] forKey:releaseKey];
 }
 
 
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundNewReleaseInfo:(MLGitHubRelease*)releaseInfo
 {
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    
+    NSUserDefaults* userDefaults = _userDefaultsController.defaults;
+    NSString* skipKey = [_bundleIdentifier stringByAppendingString:@".skip"];
+
     if (releaseInfo.htmlURL == nil) {
         return;
     }
-    
+
     // Now create the alert
     [self showNewVersionAvailableWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset) {
         if (suppressionState == NSControlStateValueOn) {
             // Suppress this alert from now on
-            [userDefaults setObject:releaseInfo.name forKey:@"skip"];
+            [userDefaults setObject:releaseInfo.name forKey:skipKey];
         }
         
         if (returnCode == NSModalResponseView) {
@@ -585,8 +587,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 - (IBAction)apply:(id)sender
 {
     BOOL optionsKeyPressed = [self isOptionsKeyPressed];
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@"@skipPrivilegedWarning"];
+    NSUserDefaults* userDefaults = _userDefaultsController.defaults;
+    NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@".skipPrivilegedWarning"];
     
     if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
         [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:[_authorizationView authorization]];
