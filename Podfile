@@ -17,3 +17,13 @@ target 'VMware.Debug' do
   # Pods for VMware.Debug
 
 end
+
+# Some pods (e.g. STPrivilegedTask) declare a deployment target older than the
+# minimum the current Xcode supports. Lift them to the project's minimum.
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['MACOSX_DEPLOYMENT_TARGET'] = '12.0'
+    end
+  end
+end
