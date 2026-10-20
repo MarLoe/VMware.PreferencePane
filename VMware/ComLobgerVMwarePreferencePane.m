@@ -124,7 +124,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     if ([_authorizationView.subviews count] == 0) {
         // On earlier versions (seen on Yosemite) the SFAuthorizationView does
         // not deserialieze from xib correctly, leaving it "empty".
-        // If it is empty we know it failed and we can mauallyt create
+        // If it is empty we know it failed and we can maually create
         // one to work around it - thank you Apple :(
         SFAuthorizationView* authView = [[SFAuthorizationView alloc] initWithFrame:_authorizationView.frame];
         [_authorizationView.superview addSubview:authView];
@@ -326,9 +326,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
             if (httpResponse.statusCode != 200) {
                 error = [NSError errorWithDomain:NSURLErrorDomain
                                             code:httpResponse.statusCode
-                                        userInfo:@{
-                                                   NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:httpResponse.statusCode]
-                                                   }];
+                                        userInfo:@{ NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:httpResponse.statusCode] }];
             }
         }
         
@@ -390,8 +388,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 {
     // Setup release note
     NSDictionary<NSAttributedStringKey, id>* titleAttr = @{
-                                                           NSFontAttributeName : [NSFont boldSystemFontOfSize:14.0]
-                                                           };
+        NSFontAttributeName : [NSFont boldSystemFontOfSize:14.0]
+    };
     NSAttributedString* releaseNote = [_releaseChecker generateReleaseNoteFromRelease:_releaseChecker.currentRelease
                                                                             toRelease:_releaseChecker.availableRelease
                                                                  withHeaderAttributes:titleAttr
@@ -426,8 +424,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     alert.messageText = NSLocalizedString(@"A new version is available", -);
     alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Version %@ is available.\nYou are currently running %@", -),
                              _releaseChecker.availableRelease.name,
-                             _releaseChecker.currentRelease.name
-                             ];
+                             _releaseChecker.currentRelease.name];
     alert.accessoryView = releaseNoteScrollView;
     
     
@@ -530,11 +527,11 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 {
     NSUserDefaults* userDefaults = _userDefaultsController.defaults;
     NSString* skipKey = [_bundleIdentifier stringByAppendingString:@".skip"];
-
+    
     if (releaseInfo.htmlURL == nil) {
         return;
     }
-
+    
     // Now create the alert
     [self showNewVersionAvailableWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset) {
         if (suppressionState == NSControlStateValueOn) {
@@ -613,31 +610,28 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (IBAction)presetNameAction:(id)sender
 {
-    // The ugliest hack ever:
-    // In order to trigger NSArrayController to write
-    // back changes, we will add/remove an object :(
-    // Please, anyone! Tell me how to go bout this....
-    id selectedObjects = _presetsArrayController.selectedObjects;
-    
-    NSDictionary* newPreset = @{
-                                kPresetName : @"dummy",
-                                kPresetWidth : @0,
-                                kPresetHeight : @0
-                                };
-    [_presetsArrayController addObject:newPreset];
-    [_presetsArrayController removeObject:newPreset];
-    
-    _presetsArrayController.selectedObjects = selectedObjects;
+    // Binding is not triggered when bound properties are set
+    NSDictionary *bindingInfo = [_presetsArrayController infoForBinding:@"contentArray"];
+    if (bindingInfo) {
+        NSObject *object = [bindingInfo objectForKey:NSObservedObjectKey];
+        NSString *keyPath = [bindingInfo objectForKey:NSObservedKeyPathKey];
+        
+        // Ignoring options to apply value transformer, placeholder, etc. to value
+        // NSDictionary *options = [bindingInfo objectForKey:NSOptionsKey];
+        
+        // Tell the model or controller object the new value
+        [object setValue:_presetsArrayController.content forKeyPath:keyPath];
+    }
 }
 
 
 - (IBAction)presetsAdd:(id)sender
 {
     NSDictionary* newPreset = @{
-                                kPresetName : @"New Screen Size",
-                                kPresetWidth : @(_textFieldResX.integerValue),
-                                kPresetHeight : @(_textFieldResY.integerValue)
-                                };
+        kPresetName : @"New Screen Size",
+        kPresetWidth : @(_textFieldResX.integerValue),
+        kPresetHeight : @(_textFieldResY.integerValue),
+    };
     [_presetsArrayController addObject:newPreset];
 }
 
