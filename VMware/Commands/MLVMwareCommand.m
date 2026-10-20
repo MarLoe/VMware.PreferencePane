@@ -9,32 +9,22 @@
 #import "MLVMwareCommand.h"
 
 NSString* const kVMwareToolsFolder          = @"/Library/Application Support/VMware Tools/";
-NSString* const kVMwareToolsResolutionSet   = @"vmware-resolutionSet";
 NSString* const kVMwareToolsCmdLineIntf     = @"vmware-tools-cli";
 
 
 @implementation MLVMwareCommand
 
-- (instancetype)initCommand:(NSString *)command withArguments:(NSArray<NSString *> *)arguments
+- (instancetype)initWithArguments:(NSArray<NSString *> *)arguments
 {
-    return [super initCommand:[kVMwareToolsFolder stringByAppendingPathComponent:command]
+    return [super initCommand:[kVMwareToolsFolder stringByAppendingPathComponent:kVMwareToolsCmdLineIntf]
                        atPath:kVMwareToolsFolder
                 withArguments:arguments];
 }
 
 
-+ (instancetype)resolutionSet:(NSInteger)width height:(NSInteger)height
-{
-    NSArray* arguments = @[@(width).stringValue, @(height).stringValue];
-    return [[MLVMwareCommand alloc] initCommand:kVMwareToolsResolutionSet
-                                  withArguments:arguments];
-}
-
-
 + (instancetype)toolsCli:(NSArray<NSString*>*)arguments
 {
-    return [[MLVMwareCommand alloc] initCommand:kVMwareToolsCmdLineIntf
-                                  withArguments:arguments];
+    return [[MLVMwareCommand alloc] initWithArguments:arguments];
 }
 
 @end
@@ -50,8 +40,7 @@ NSString* const kVMwareToolsCmdLineIntf     = @"vmware-tools-cli";
 
 - (instancetype)init
 {
-    return self = [super initCommand:kVMwareToolsCmdLineIntf
-                       withArguments:@[@"--version"]];
+    return self = [super initWithArguments:@[@"--version"]];
 }
 
 + (instancetype)version
@@ -79,8 +68,7 @@ NSString* const kVMwareToolsCmdLineIntf     = @"vmware-tools-cli";
 - (instancetype)init
 {
     NSArray* arguments = @[@"stat", @"raw", @"json", @"session"];
-    return self = [super initCommand:kVMwareToolsCmdLineIntf
-                       withArguments:arguments];
+    return self = [super initWithArguments:arguments];
 }
 
 + (instancetype)session

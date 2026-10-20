@@ -6,17 +6,13 @@
 //  Copyright © 2018 ML-Consulting. All rights reserved.
 //
 
-#import "MLCommand.h"
-
-extern NSString* const kVMwareToolsFolder;
-extern NSString* const kVMwareToolsResolutionSet;
-extern NSString* const kVMwareToolsCmdLineIntf;
+#import "MLShellCommand.h"
 
 #pragma mark - MLVMwareCommand
 
-@interface MLVMwareCommand : MLCommand
+@interface MLVMwareCommand : MLShellCommand
 
-+ (instancetype)resolutionSet:(NSInteger)width height:(NSInteger)height;
+- (instancetype)initWithArguments:(NSArray<NSString *> *)arguments;
 
 @end
 
