@@ -20,6 +20,8 @@
 @property (nonatomic, readonly, strong) NSString*           standardError;
 
 
+- (instancetype)init NS_UNAVAILABLE;
+
 - (instancetype)initCommand:(NSString*)command;
 
 - (instancetype)initCommand:(NSString*)command atPath:(NSString*)path;

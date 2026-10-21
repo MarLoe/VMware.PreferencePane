@@ -22,13 +22,6 @@
 
 @implementation MLShellCommand
 
-- (instancetype)init
-{
-    assert("This initializer cannot be used");
-    return [self initCommand:nil];
-}
-
-
 - (instancetype)initCommand:(NSString*)command
 {
     if (self = [self initCommand:command atPath:nil]) {
