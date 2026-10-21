@@ -1,14 +1,12 @@
 //
-//  MLVMwareResolutionCommand.m
+//  MLVMwareGfxCommand.m
 //  VMware
 //
 //  Created by Martin Løbger on 04/01/2022.
 //  Copyright © 2022 ML-Consulting. All rights reserved.
 //
 
-#import "MLVMwareResolutionCommand.h"
-
-NSString* const kVMwareToolsResolutionSet   = @"vmware-resolutionSet";
+#import "MLVMwareGfxCommand.h"
 
 typedef struct
 {
@@ -18,29 +16,19 @@ typedef struct
 } SetResReq;
 
 
-//@interface MLVMwareResolutionCommand ()
-//@end
+@interface MLVMwareGfxResolutionCommand ()
 
-@implementation MLVMwareResolutionCommand
-{
-    NSUInteger _width;
-    NSUInteger _height;
-}
+@property (nonatomic, assign) NSUInteger    flags;
+@property (nonatomic, assign) NSUInteger    width;
+@property (nonatomic, assign) NSUInteger    height;
 
-- (instancetype)init:(NSUInteger)width height:(NSUInteger)height
-{
-    NSArray* arguments = @[@(width).stringValue, @(height).stringValue];
-    if (self = [super initWithArguments:arguments])
-    {
-        _width = width;
-        _height = height;
-    }
-    return self;
-}
+@end
 
-+ (instancetype)resolutionSet:(NSUInteger)width height:(NSUInteger)height
-{
-    return [[MLVMwareResolutionCommand alloc] init:width height:height];
+
+@implementation MLVMwareGfxResolutionCommand
+
+- (instancetype)init {
+    return  self = [super init];
 }
 
 - (NSError*)execute
@@ -60,9 +48,9 @@ typedef struct
     }
     
     SetResReq req = {
-        .screen = 1,
+        .screen = (uint32_t)_flags,
         .width = (uint32_t)_width,
-        .height = (uint32_t)_height
+        .height = (uint32_t)_height,
     };
     size_t szReq = sizeof(req);
     
@@ -80,6 +68,46 @@ typedef struct
     }
     
     return nil;
+}
+@end
+
+
+@implementation MLVMwareGfxGetResolutionCommand
+
+- (instancetype)init {
+    if (self = [super init]) {
+        self.flags = 0;
+        self.width = 0;
+        self.height = 0;
+        return self;
+    }
+    
+    return nil;
+}
+
++ (instancetype)getResolution {
+    return [[MLVMwareGfxGetResolutionCommand alloc] init];
+}
+
+@end
+
+
+@implementation MLVMwareGfxSetResolutionCommand
+
+- (instancetype)init:(NSUInteger)width height:(NSUInteger)height
+{
+    if (self = [super init])
+    {
+        self.flags = 1;
+        self.width = width;
+        self.height = height;
+    }
+    return self;
+}
+
++ (instancetype)resolutionSet:(NSUInteger)width height:(NSUInteger)height
+{
+    return [[MLVMwareGfxSetResolutionCommand alloc] init:width height:height];
 }
 
 @end

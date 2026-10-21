@@ -33,8 +33,8 @@
 		6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6D8F8C313087D96900713904 /* MLCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F8C303087D96900713904 /* MLCommand.m */; };
-		6D8F8C353087E50500713904 /* MLVMwareResolutionCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D8F8C333087E50500713904 /* MLVMwareResolutionCommand.h */; };
-		6D8F8C363087E50500713904 /* MLVMwareResolutionCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F8C343087E50500713904 /* MLVMwareResolutionCommand.m */; };
+		6D8F8C353087E50500713904 /* MLVMwareGfxCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D8F8C333087E50500713904 /* MLVMwareGfxCommand.h */; };
+		6D8F8C363087E50500713904 /* MLVMwareGfxCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F8C343087E50500713904 /* MLVMwareGfxCommand.m */; };
 		6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */; };
 		6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */; };
 		6DD6407A213E731300962088 /* VMware.searchTerms in Resources */ = {isa = PBXBuildFile; fileRef = 6DD64079213E731300962088 /* VMware.searchTerms */; };
@@ -85,8 +85,8 @@
 		6D292A11212E128200A950AF /* MLPlistParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLPlistParser.m; sourceTree = "<group>"; };
 		6D8F8C2F3087D84D00713904 /* MLCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLCommand.h; sourceTree = "<group>"; };
 		6D8F8C303087D96900713904 /* MLCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLCommand.m; sourceTree = "<group>"; };
-		6D8F8C333087E50500713904 /* MLVMwareResolutionCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLVMwareResolutionCommand.h; sourceTree = "<group>"; };
-		6D8F8C343087E50500713904 /* MLVMwareResolutionCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLVMwareResolutionCommand.m; sourceTree = "<group>"; };
+		6D8F8C333087E50500713904 /* MLVMwareGfxCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLVMwareGfxCommand.h; sourceTree = "<group>"; };
+		6D8F8C343087E50500713904 /* MLVMwareGfxCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLVMwareGfxCommand.m; sourceTree = "<group>"; };
 		6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Enabled.h"; sourceTree = "<group>"; };
 		6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Enabled.m"; sourceTree = "<group>"; };
 		6DB3F5BA20D092BF0019CB79 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -204,8 +204,8 @@
 				6D2929DA212DF00400A950AF /* MLLaunchCtrlCommand.m */,
 				6D2929D5212D96A200A950AF /* MLVMwareCommand.h */,
 				6D2929D6212D96A200A950AF /* MLVMwareCommand.m */,
-				6D8F8C333087E50500713904 /* MLVMwareResolutionCommand.h */,
-				6D8F8C343087E50500713904 /* MLVMwareResolutionCommand.m */,
+				6D8F8C333087E50500713904 /* MLVMwareGfxCommand.h */,
+				6D8F8C343087E50500713904 /* MLVMwareGfxCommand.m */,
 			);
 			path = Commands;
 			sourceTree = "<group>";
@@ -244,7 +244,7 @@
 				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
 				6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */,
 				6D2929D3212D898700A950AF /* MLShellCommand.h in Headers */,
-				6D8F8C353087E50500713904 /* MLVMwareResolutionCommand.h in Headers */,
+				6D8F8C353087E50500713904 /* MLVMwareGfxCommand.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,7 +408,7 @@
 				6D2929D4212D898700A950AF /* MLShellCommand.m in Sources */,
 				6D292A13212E128200A950AF /* MLPlistParser.m in Sources */,
 				6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */,
-				6D8F8C363087E50500713904 /* MLVMwareResolutionCommand.m in Sources */,
+				6D8F8C363087E50500713904 /* MLVMwareGfxCommand.m in Sources */,
 				5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
