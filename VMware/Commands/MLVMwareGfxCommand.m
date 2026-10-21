@@ -10,7 +10,7 @@
 
 typedef struct
 {
-    uint32_t screen :32;
+    uint32_t flags  :32;
     uint32_t width  :32;
     uint32_t height :32;
 } SetResReq;
@@ -26,10 +26,6 @@ typedef struct
 
 
 @implementation MLVMwareGfxResolutionCommand
-
-- (instancetype)init {
-    return  self = [super init];
-}
 
 - (NSError*)execute
 {
@@ -48,7 +44,7 @@ typedef struct
     }
     
     SetResReq req = {
-        .screen = (uint32_t)_flags,
+        .flags = (uint32_t)_flags,
         .width = (uint32_t)_width,
         .height = (uint32_t)_height,
     };
@@ -75,7 +71,7 @@ typedef struct
 @implementation MLVMwareGfxGetResolutionCommand
 
 - (instancetype)init {
-    if (self = [super init]) {
+    if (self = [super initCommand:kVMwareToolsResolutionSet withArguments:nil]) {
         self.flags = 0;
         self.width = 0;
         self.height = 0;
@@ -96,7 +92,8 @@ typedef struct
 
 - (instancetype)init:(NSUInteger)width height:(NSUInteger)height
 {
-    if (self = [super init])
+    NSArray<NSString*>* arguments = @[@(width).stringValue, @(height).stringValue];
+    if (self = [super initCommand:kVMwareToolsResolutionSet withArguments:arguments])
     {
         self.flags = 1;
         self.width = width;
