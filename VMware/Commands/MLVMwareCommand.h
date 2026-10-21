@@ -10,9 +10,20 @@
 
 #pragma mark - MLVMwareCommand
 
+extern NSString* const kVMwareToolsResolutionSet;
+extern NSString* const kVMwareToolsCmdLineIntf;
+
 @interface MLVMwareCommand : MLShellCommand
 
-- (instancetype)initWithArguments:(NSArray<NSString *> *)arguments;
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initCommand:(NSString*)command NS_UNAVAILABLE;
+
+- (instancetype)initCommand:(NSString*)command atPath:(NSString*)path NS_UNAVAILABLE;
+
+- (instancetype)initCommand:(NSString*)command atPath:(NSString*)path withArguments:(NSArray<NSString*>*)arguments NS_UNAVAILABLE;
+
+- (instancetype)initCommand:(NSString*)command withArguments:(NSArray<NSString*>*)arguments NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -24,6 +35,8 @@
 @property (nonatomic, readonly, strong) NSString* version;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initCommand:(NSString*)command withArguments:(NSArray<NSString*>*)arguments NS_UNAVAILABLE;
 
 + (instancetype)version;
 
@@ -37,6 +50,8 @@
 @property (nonatomic, readonly, strong) NSDictionary* session;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initCommand:(NSString*)command withArguments:(NSArray<NSString*>*)arguments NS_UNAVAILABLE;
 
 + (instancetype)session;
 

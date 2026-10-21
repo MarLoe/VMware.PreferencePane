@@ -9,22 +9,17 @@
 #import "MLVMwareCommand.h"
 
 NSString* const kVMwareToolsFolder          = @"/Library/Application Support/VMware Tools/";
+NSString* const kVMwareToolsResolutionSet   = @"vmware-resolutionSet";
 NSString* const kVMwareToolsCmdLineIntf     = @"vmware-tools-cli";
 
 
 @implementation MLVMwareCommand
 
-- (instancetype)initWithArguments:(NSArray<NSString *> *)arguments
+- (instancetype)initCommand:(NSString*)command withArguments:(NSArray<NSString*>*)arguments
 {
-    return [super initCommand:[kVMwareToolsFolder stringByAppendingPathComponent:kVMwareToolsCmdLineIntf]
+    return [super initCommand:[kVMwareToolsFolder stringByAppendingPathComponent:command]
                        atPath:kVMwareToolsFolder
                 withArguments:arguments];
-}
-
-
-+ (instancetype)toolsCli:(NSArray<NSString*>*)arguments
-{
-    return [[MLVMwareCommand alloc] initWithArguments:arguments];
 }
 
 @end
@@ -40,7 +35,8 @@ NSString* const kVMwareToolsCmdLineIntf     = @"vmware-tools-cli";
 
 - (instancetype)init
 {
-    return self = [super initWithArguments:@[@"--version"]];
+    NSArray<NSString*>* arguments = @[@"--version"];
+    return self = [super initCommand:kVMwareToolsCmdLineIntf withArguments:arguments];
 }
 
 + (instancetype)version
@@ -67,8 +63,8 @@ NSString* const kVMwareToolsCmdLineIntf     = @"vmware-tools-cli";
 
 - (instancetype)init
 {
-    NSArray* arguments = @[@"stat", @"raw", @"json", @"session"];
-    return self = [super initWithArguments:arguments];
+    NSArray<NSString*>* arguments = @[@"stat", @"raw", @"json", @"session"];
+    return self = [super initCommand:kVMwareToolsCmdLineIntf withArguments:arguments];
 }
 
 + (instancetype)session
