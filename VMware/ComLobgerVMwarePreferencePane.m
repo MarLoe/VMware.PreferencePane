@@ -12,6 +12,7 @@
 #import <sys/xattr.h>
 #import <GitHubRelease/GitHubRelease.h>
 #import "MLVMwareCommand.h"
+#import "MLVMwareGfxCommand.h"
 #import "STPrivilegedTask/STPrivilegedTask.h"
 #import "NSView+Enabled.h"
 
@@ -244,7 +245,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
                 [strongSelf->_vmWarePreferencesDict writeToURL:strongSelf->_vmWarePreferencesUrl atomically:YES];
                 strongSelf->_autoHiDPI.state = oldAutoHiDPIEnabled ? NSControlStateValueOn : NSControlStateValueOff;
             }
-            [[MLVMwareCommand resolutionSet:oldSize.width height:oldSize.height] executeWithCompletion:nil];
+            [[MLVMwareGfxSetResolutionCommand resolutionSet:oldSize.width height:oldSize.height] executeWithCompletion:nil];
         }
         if (error != nil) {
             [weakSelf showErrorSheet:error];
@@ -256,7 +257,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (void)setScreenSize:(NSSize)size showRevert:(BOOL)showRevert authorization:(SFAuthorization*)authorization completionHandler:(void (^)(BOOL reverted, NSError* error))handler
 {
-    MLVMwareCommand* cmd = [MLVMwareCommand resolutionSet:size.width height:size.height];
+    MLVMwareCommand* cmd = [MLVMwareGfxSetResolutionCommand resolutionSet:size.width height:size.height];
     [cmd executeWithCompletion:^(NSError *error) {
         if (error != nil) {
             handler(NO, error);

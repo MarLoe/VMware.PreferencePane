@@ -6,9 +6,9 @@
 //  Copyright © 2018 ML-Consulting. All rights reserved.
 //
 
-#import "MLCommand.h"
+#import "MLShellCommand.h"
 
-@interface MLLaunchCtrlCommand : MLCommand
+@interface MLLaunchCtrlCommand : MLShellCommand
 
 @property (nonatomic, readonly, strong) NSDictionary* service;
 

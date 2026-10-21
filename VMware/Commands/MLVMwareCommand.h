@@ -6,17 +6,24 @@
 //  Copyright © 2018 ML-Consulting. All rights reserved.
 //
 
-#import "MLCommand.h"
-
-extern NSString* const kVMwareToolsFolder;
-extern NSString* const kVMwareToolsResolutionSet;
-extern NSString* const kVMwareToolsCmdLineIntf;
+#import "MLShellCommand.h"
 
 #pragma mark - MLVMwareCommand
 
-@interface MLVMwareCommand : MLCommand
+extern NSString* const kVMwareToolsResolutionSet;
+extern NSString* const kVMwareToolsCmdLineIntf;
 
-+ (instancetype)resolutionSet:(NSInteger)width height:(NSInteger)height;
+@interface MLVMwareCommand : MLShellCommand
+
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initCommand:(NSString*)command NS_UNAVAILABLE;
+
+- (instancetype)initCommand:(NSString*)command atPath:(NSString*)path NS_UNAVAILABLE;
+
+- (instancetype)initCommand:(NSString*)command atPath:(NSString*)path withArguments:(NSArray<NSString*>*)arguments NS_UNAVAILABLE;
+
+- (instancetype)initCommand:(NSString*)command withArguments:(NSArray<NSString*>*)arguments NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -28,6 +35,8 @@ extern NSString* const kVMwareToolsCmdLineIntf;
 @property (nonatomic, readonly, strong) NSString* version;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initCommand:(NSString*)command withArguments:(NSArray<NSString*>*)arguments NS_UNAVAILABLE;
 
 + (instancetype)version;
 
@@ -41,6 +50,8 @@ extern NSString* const kVMwareToolsCmdLineIntf;
 @property (nonatomic, readonly, strong) NSDictionary* session;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initCommand:(NSString*)command withArguments:(NSArray<NSString*>*)arguments NS_UNAVAILABLE;
 
 + (instancetype)session;
 
