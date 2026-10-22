@@ -626,11 +626,15 @@ doCommandBySelector:(SEL)commandSelector
     
     if (control == _textFieldResX)
     {
-        self.resX += delta;
+        // Passing by textfield, inforces number formatting
+        _textFieldResX.integerValue += delta;
+        self.resX = _textFieldResX.integerValue;
     }
     else if (control == _textFieldResY)
     {
-        self.resY += delta;
+        // Passing by textfield, inforces number formatting
+        _textFieldResY.integerValue += delta;
+        self.resY = _textFieldResY.integerValue;
     }
     else
     {
