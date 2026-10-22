@@ -106,14 +106,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     self.resX = _currentWidth.integerValue;
     self.resY = _currentHeight.integerValue;
     
-    for (NSDictionary* preset in _presetsArrayController.arrangedObjects) {
-        if ([preset[kPresetWidth] isEqualToValue:_currentWidth] &&
-            [preset[kPresetHeight] isEqualToValue:_currentHeight]) {
-            [_presetsArrayController setSelectedObjects:@[preset]];
-            [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
-            break;
-        }
-    }
+    [self selectPresetWithWidth:_currentWidth andHeight:_currentHeight];
     
     NSString* libraryFolder = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject;
     _vmWarePreferencesUrl = [NSURL fileURLWithPathComponents:@[libraryFolder, @"Preferences", @"com.vmware.tools.plist"]];
@@ -223,6 +216,19 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
         NSArray* presets = [NSArray arrayWithContentsOfURL:presetsUrl];
         [_presetsArrayController addObjects:presets];
         [_presetsArrayController setSelectionIndexes:[NSIndexSet new]];
+    }
+}
+
+
+- (void)selectPresetWithWidth:(NSNumber*)width andHeight:(NSNumber*)heihgt
+{
+    for (NSDictionary* preset in _presetsArrayController.arrangedObjects) {
+        if ([preset[kPresetWidth] isEqualToValue:width] &&
+            [preset[kPresetHeight] isEqualToValue:heihgt]) {
+            [_presetsArrayController setSelectedObjects:@[preset]];
+            [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
+            break;
+        }
     }
 }
 
