@@ -490,11 +490,11 @@
 				<key>FOLLOW_SYMBOLIC_LINKS</key>
 				<true/>
 				<key>IDENTIFIER</key>
-				<string>com.lobger.pkg.vmwareprefpane</string>
+				<string>com.lobger.VMware.PreferencePane.pkg</string>
 				<key>LOCATION</key>
 				<integer>0</integer>
 				<key>NAME</key>
-				<string>VMware.prefPane</string>
+				<string>VMware.PreferencePane</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>PAYLOAD_SIZE</key>
