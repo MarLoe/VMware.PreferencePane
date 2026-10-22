@@ -8,7 +8,7 @@
 
 #import <PreferencePanes/PreferencePanes.h>
 
-@interface ComLobgerVMwarePreferencePane : NSPreferencePane<NSTableViewDelegate>
+@interface ComLobgerVMwarePreferencePane : NSPreferencePane<NSTableViewDelegate, NSTextFieldDelegate>
 
 @property (nonatomic, strong) IBOutlet NSString* version;
 

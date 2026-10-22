@@ -588,6 +588,43 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     self.resY = [selectedPreset[kPresetHeight] integerValue];
 }
 
+#pragma mark - NSTextFieldDelegate
+
+- (BOOL)control:(NSControl *)control
+       textView:(NSTextView *)textView
+doCommandBySelector:(SEL)commandSelector
+{
+    NSInteger delta = 0;
+    if (commandSelector == @selector(moveUp:))
+    {
+        delta = 1;
+    }
+    else if (commandSelector == @selector(moveDown:))
+    {
+        delta = -1;
+    }
+    else
+    {
+        return NO;   // let the text field handle every other key
+    }
+    
+    if (control == _textFieldResX)
+    {
+        self.resX += delta;
+    }
+    else if (control == _textFieldResY)
+    {
+        self.resY += delta;
+    }
+    else
+    {
+        return NO;   // let the text field handle every other key
+    }
+
+    [textView selectAll:nil];   // keeps the field editable and makes repeated presses feel natural
+    return YES;
+}
+
 
 #pragma mark - Interface Builder Action
 

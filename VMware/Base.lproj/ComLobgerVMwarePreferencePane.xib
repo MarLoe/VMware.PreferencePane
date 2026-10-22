@@ -83,6 +83,7 @@
                                                         <bool key="NSValidatesImmediately" value="YES"/>
                                                     </dictionary>
                                                 </binding>
+                                                <outlet property="delegate" destination="-2" id="c9A-vx-r72"/>
                                             </connections>
                                         </textField>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ogO-mw-Ufl">
@@ -127,6 +128,7 @@
                                                         <bool key="NSValidatesImmediately" value="YES"/>
                                                     </dictionary>
                                                 </binding>
+                                                <outlet property="delegate" destination="-2" id="yjI-bn-ab4"/>
                                             </connections>
                                         </textField>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="22A-sq-P4P">
