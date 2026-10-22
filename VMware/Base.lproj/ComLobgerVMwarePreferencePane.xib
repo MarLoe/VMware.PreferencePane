@@ -77,7 +77,7 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.stepperResX.integerValue" id="6tK-hf-g65">
+                                                <binding destination="-2" name="value" keyPath="self.resX" id="pjb-qX-YYD">
                                                     <dictionary key="options">
                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                         <bool key="NSValidatesImmediately" value="YES"/>
@@ -96,6 +96,7 @@
                                             <connections>
                                                 <binding destination="-2" name="maxValue" keyPath="self.textFieldResX.formatter.maximum" id="gYO-mt-PJq"/>
                                                 <binding destination="-2" name="minValue" keyPath="self.textFieldResX.formatter.minimum" previousBinding="gYO-mt-PJq" id="uGb-x4-Bkk"/>
+                                                <binding destination="-2" name="value" keyPath="self.resX" previousBinding="uGb-x4-Bkk" id="hab-Vi-1pB"/>
                                             </connections>
                                         </stepper>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cSP-Gc-jxM">
@@ -120,7 +121,7 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.stepperResY.integerValue" id="VsX-Ov-ygg">
+                                                <binding destination="-2" name="value" keyPath="self.resY" id="VdT-h0-Cxu">
                                                     <dictionary key="options">
                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                         <bool key="NSValidatesImmediately" value="YES"/>
@@ -139,6 +140,7 @@
                                             <connections>
                                                 <binding destination="-2" name="maxValue" keyPath="self.textFieldResY.formatter.maximum" id="yrx-b7-2z8"/>
                                                 <binding destination="-2" name="minValue" keyPath="self.textFieldResY.formatter.minimum" previousBinding="yrx-b7-2z8" id="72m-Nh-EVa"/>
+                                                <binding destination="-2" name="value" keyPath="self.resY" previousBinding="72m-Nh-EVa" id="2dT-mH-QQV"/>
                                             </connections>
                                         </stepper>
                                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Smz-cM-XLV">

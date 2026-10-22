@@ -36,6 +36,9 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 @interface ComLobgerVMwarePreferencePane() <MLGitHubReleaseCheckerDelegate>
 
+@property (nonatomic) NSInteger                             resX;
+@property (nonatomic) NSInteger                             resY;
+
 @property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
 @property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
 @property (nonatomic, weak) IBOutlet NSStepper*             stepperResX;
@@ -100,8 +103,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     
     [self loadDefaultPresets:NO];
     
-    _stepperResX.integerValue = _currentWidth.integerValue;
-    _stepperResY.integerValue = _currentHeight.integerValue;
+    self.resX = _currentWidth.integerValue;
+    self.resY = _currentHeight.integerValue;
     
     for (NSDictionary* preset in _presetsArrayController.arrangedObjects) {
         if ([preset[kPresetWidth] isEqualToValue:_currentWidth] &&
@@ -575,8 +578,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
     NSDictionary* selectedPreset = [_presetsArrayController.selectedObjects firstObject];
-    _stepperResX.integerValue = [selectedPreset[kPresetWidth] integerValue];
-    _stepperResY.integerValue = [selectedPreset[kPresetHeight] integerValue];
+    self.resX = [selectedPreset[kPresetWidth] integerValue];
+    self.resY = [selectedPreset[kPresetHeight] integerValue];
 }
 
 
