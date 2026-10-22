@@ -728,6 +728,11 @@ doCommandBySelector:(SEL)commandSelector
         kPresetHeight : @(_textFieldResY.integerValue),
     };
     [_presetsArrayController addObject:newPreset];
+    
+    [_presetsArrayController setSelectedObjects:@[newPreset]];
+    [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
+    
+    [self presetRename:sender];
 }
 
 
