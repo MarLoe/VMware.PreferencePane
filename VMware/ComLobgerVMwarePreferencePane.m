@@ -36,6 +36,9 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 @interface ComLobgerVMwarePreferencePane() <MLGitHubReleaseCheckerDelegate>
 
+@property (nonatomic) NSInteger                             resX;
+@property (nonatomic) NSInteger                             resY;
+
 @property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
 @property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
 @property (nonatomic, weak) IBOutlet NSStepper*             stepperResX;
@@ -100,17 +103,10 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     
     [self loadDefaultPresets:NO];
     
-    _stepperResX.integerValue = _currentWidth.integerValue;
-    _stepperResY.integerValue = _currentHeight.integerValue;
+    self.resX = _currentWidth.integerValue;
+    self.resY = _currentHeight.integerValue;
     
-    for (NSDictionary* preset in _presetsArrayController.arrangedObjects) {
-        if ([preset[kPresetWidth] isEqualToValue:_currentWidth] &&
-            [preset[kPresetHeight] isEqualToValue:_currentHeight]) {
-            [_presetsArrayController setSelectedObjects:@[preset]];
-            [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
-            break;
-        }
-    }
+    [self selectPresetWithWidth:_currentWidth andHeight:_currentHeight];
     
     NSString* libraryFolder = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject;
     _vmWarePreferencesUrl = [NSURL fileURLWithPathComponents:@[libraryFolder, @"Preferences", @"com.vmware.tools.plist"]];
@@ -221,6 +217,21 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
         [_presetsArrayController addObjects:presets];
         [_presetsArrayController setSelectionIndexes:[NSIndexSet new]];
     }
+}
+
+
+- (void)selectPresetWithWidth:(NSNumber*)width andHeight:(NSNumber*)heihgt
+{
+    for (NSDictionary* preset in _presetsArrayController.arrangedObjects) {
+        if ([preset[kPresetWidth] isEqualToValue:width] &&
+            [preset[kPresetHeight] isEqualToValue:heihgt]) {
+            [_presetsArrayController setSelectedObjects:@[preset]];
+            [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
+            return;;
+        }
+    }
+    
+    [_presetsArrayController setSelectedObjects:@[]];
 }
 
 
@@ -369,6 +380,29 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     return ([NSEvent modifierFlags] & NSEventModifierFlagOption) == NSEventModifierFlagOption;
 }
 
+
+#pragma mark - Property Access Methods
+
+- (void)setResX:(NSInteger)resX
+{
+    if (_resX == resX) {
+        return;
+    }
+    _resX = resX;
+    
+    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+}
+
+
+- (void)setResY:(NSInteger)resY
+{
+    if (_resY == resY) {
+        return;
+    }
+    _resY = resY;
+
+    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+}
 
 #pragma mark - Alerts
 
@@ -575,8 +609,68 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
     NSDictionary* selectedPreset = [_presetsArrayController.selectedObjects firstObject];
-    _stepperResX.integerValue = [selectedPreset[kPresetWidth] integerValue];
-    _stepperResY.integerValue = [selectedPreset[kPresetHeight] integerValue];
+    if (selectedPreset != NULL)
+    {
+        self.resX = [selectedPreset[kPresetWidth] integerValue];
+        self.resY = [selectedPreset[kPresetHeight] integerValue];
+    }
+}
+
+#pragma mark - NSTextFieldDelegate
+
+- (BOOL)control:(NSControl *)control
+       textView:(NSTextView *)textView
+doCommandBySelector:(SEL)commandSelector
+{
+    NSInteger delta = 0;
+    if (commandSelector == @selector(moveUp:))
+    {
+        delta = 1;
+    }
+    else if (commandSelector == @selector(moveUpAndModifySelection:))
+    {
+        delta = 10;
+    }
+    else if (commandSelector == @selector(moveToBeginningOfDocumentAndModifySelection:))
+    {
+        delta = 100;
+    }
+    else if (commandSelector == @selector(moveDown:))
+    {
+        delta = -1;
+    }
+    else if (commandSelector == @selector(moveDownAndModifySelection:))
+    {
+        delta = -10;
+    }
+    else if (commandSelector == @selector(moveToEndOfDocumentAndModifySelection:))
+    {
+        delta = -100;
+    }
+    else
+    {
+        return NO;   // let the text field handle every other key
+    }
+    
+    if (control == _textFieldResX)
+    {
+        // Passing by textfield, inforces number formatting
+        _textFieldResX.integerValue += delta;
+        self.resX = _textFieldResX.integerValue;
+    }
+    else if (control == _textFieldResY)
+    {
+        // Passing by textfield, inforces number formatting
+        _textFieldResY.integerValue += delta;
+        self.resY = _textFieldResY.integerValue;
+    }
+    else
+    {
+        return NO;   // let the text field handle every other key
+    }
+    
+    [textView selectAll:nil];   // keeps the field editable and makes repeated presses feel natural
+    return YES;
 }
 
 
