@@ -227,9 +227,11 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
             [preset[kPresetHeight] isEqualToValue:heihgt]) {
             [_presetsArrayController setSelectedObjects:@[preset]];
             [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
-            break;
+            return;;
         }
     }
+    
+    [_presetsArrayController setSelectedObjects:@[]];
 }
 
 
@@ -378,6 +380,29 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     return ([NSEvent modifierFlags] & NSEventModifierFlagOption) == NSEventModifierFlagOption;
 }
 
+
+#pragma mark - Property Access Methods
+
+- (void)setResX:(NSInteger)resX
+{
+    if (_resX == resX) {
+        return;
+    }
+    _resX = resX;
+    
+    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+}
+
+
+- (void)setResY:(NSInteger)resY
+{
+    if (_resY == resY) {
+        return;
+    }
+    _resY = resY;
+
+    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+}
 
 #pragma mark - Alerts
 
@@ -584,8 +609,11 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
     NSDictionary* selectedPreset = [_presetsArrayController.selectedObjects firstObject];
-    self.resX = [selectedPreset[kPresetWidth] integerValue];
-    self.resY = [selectedPreset[kPresetHeight] integerValue];
+    if (selectedPreset != NULL)
+    {
+        self.resX = [selectedPreset[kPresetWidth] integerValue];
+        self.resY = [selectedPreset[kPresetHeight] integerValue];
+    }
 }
 
 #pragma mark - NSTextFieldDelegate
