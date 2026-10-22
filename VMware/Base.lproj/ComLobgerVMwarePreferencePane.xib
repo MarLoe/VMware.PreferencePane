@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -32,7 +31,7 @@
                 <string>height</string>
             </declaredKeys>
             <connections>
-                <binding destination="Xs9-rl-isb" name="contentArray" keyPath="values.com.lobger.VMware.PreferencePane@presets" id="52G-vL-FIS">
+                <binding destination="Xs9-rl-isb" name="contentArray" keyPath="values.com.lobger.VMware.PreferencePane.presets" id="5Xa-q1-awL">
                     <dictionary key="options">
                         <bool key="NSHandlesContentAsCompoundValue" value="YES"/>
                     </dictionary>
@@ -43,7 +42,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="176" y="715" width="680" height="409"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1792" height="1097"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="775"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="680" height="409"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -80,12 +79,13 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.stepperResX.integerValue" id="6tK-hf-g65">
+                                                <binding destination="-2" name="value" keyPath="self.resX" id="pjb-qX-YYD">
                                                     <dictionary key="options">
                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                         <bool key="NSValidatesImmediately" value="YES"/>
                                                     </dictionary>
                                                 </binding>
+                                                <outlet property="delegate" destination="-2" id="c9A-vx-r72"/>
                                             </connections>
                                         </textField>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ogO-mw-Ufl">
@@ -97,8 +97,8 @@
                                                 </connections>
                                             </stepperCell>
                                             <connections>
-                                                <binding destination="-2" name="maxValue" keyPath="self.textFieldResX.formatter.maximum" id="gYO-mt-PJq"/>
-                                                <binding destination="-2" name="minValue" keyPath="self.textFieldResX.formatter.minimum" previousBinding="gYO-mt-PJq" id="uGb-x4-Bkk"/>
+                                                <binding destination="-2" name="value" keyPath="self.resX" id="ebF-47-sht"/>
+                                                <outlet property="formatter" destination="r4S-Oc-Yz1" id="Epa-EI-4tU"/>
                                             </connections>
                                         </stepper>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cSP-Gc-jxM">
@@ -114,7 +114,7 @@
                                             <rect key="frame" x="430" y="247" width="60" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" usesSingleLineMode="YES" id="xdl-Ih-fOe">
-                                                <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="MP8-mg-Bby">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="MP8-mg-Bby" customClass="IntegerValueFormatter">
                                                     <real key="minimum" value="768"/>
                                                     <real key="maximum" value="8192"/>
                                                 </numberFormatter>
@@ -123,12 +123,13 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.stepperResY.integerValue" id="VsX-Ov-ygg">
+                                                <binding destination="-2" name="value" keyPath="self.resY" id="VdT-h0-Cxu">
                                                     <dictionary key="options">
                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                         <bool key="NSValidatesImmediately" value="YES"/>
                                                     </dictionary>
                                                 </binding>
+                                                <outlet property="delegate" destination="-2" id="yjI-bn-ab4"/>
                                             </connections>
                                         </textField>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="22A-sq-P4P">
@@ -140,8 +141,8 @@
                                                 </connections>
                                             </stepperCell>
                                             <connections>
-                                                <binding destination="-2" name="maxValue" keyPath="self.textFieldResY.formatter.maximum" id="yrx-b7-2z8"/>
-                                                <binding destination="-2" name="minValue" keyPath="self.textFieldResY.formatter.minimum" previousBinding="yrx-b7-2z8" id="72m-Nh-EVa"/>
+                                                <binding destination="-2" name="value" keyPath="self.resY" id="wSa-EZ-x9V"/>
+                                                <outlet property="formatter" destination="MP8-mg-Bby" id="ceK-uN-BrB"/>
                                             </connections>
                                         </stepper>
                                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Smz-cM-XLV">
@@ -158,7 +159,7 @@
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn width="173" minWidth="100" maxWidth="3.4028234663852886e+38" id="vce-Bl-xz4">
+                                                            <tableColumn width="135" minWidth="100" maxWidth="3.4028234663852886e+38" id="vce-Bl-xz4">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -171,16 +172,16 @@
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                 <prototypeCellViews>
                                                                     <tableCellView id="jAp-oO-746">
-                                                                        <rect key="frame" x="1" y="1" width="173" height="34"/>
+                                                                        <rect key="frame" x="1" y="1" width="144" height="34"/>
                                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                         <subviews>
                                                                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cgI-6D-0CH">
-                                                                                <rect key="frame" x="3" y="17" width="17" height="17"/>
+                                                                                <rect key="frame" x="3" y="17" width="14" height="17"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSComputer" id="tUc-hf-LTE"/>
                                                                             </imageView>
                                                                             <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lsB-oQ-ymf">
-                                                                                <rect key="frame" x="25" y="17" width="148" height="17"/>
+                                                                                <rect key="frame" x="25" y="17" width="119" height="17"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Name" usesSingleLineMode="YES" id="269-Y6-Z83">
                                                                                     <font key="font" metaFont="system"/>
@@ -200,7 +201,7 @@
                                                                                 </connections>
                                                                             </textField>
                                                                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qKk-KE-huY">
-                                                                                <rect key="frame" x="25" y="5" width="148" height="11"/>
+                                                                                <rect key="frame" x="25" y="5" width="119" height="11"/>
                                                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" title="Resolution" id="heo-LI-Lk3">
                                                                                     <font key="font" metaFont="miniSystem"/>
@@ -289,7 +290,7 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
                                                         <popUpButtonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="left" scrollable="YES" lineBreakMode="clipping" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" pullsDown="YES" autoenablesItems="NO" altersStateOfSelectedItem="NO" id="npB-nL-98z">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                            <font key="font" metaFont="system"/>
+                                                            <font key="font" metaFont="menu"/>
                                                             <menu key="menu" autoenablesItems="NO" id="bll-pg-SXC">
                                                                 <items>
                                                                     <menuItem state="on" image="NSActionTemplate" hidden="YES" id="bvj-Vr-4ni"/>
@@ -604,9 +605,9 @@
         <userDefaultsController representsSharedInstance="YES" id="Xs9-rl-isb"/>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="NSAddTemplate" width="11" height="11"/>
+        <image name="NSActionTemplate" width="15" height="15"/>
+        <image name="NSAddTemplate" width="15" height="13"/>
         <image name="NSComputer" width="32" height="32"/>
-        <image name="NSRemoveTemplate" width="11" height="11"/>
+        <image name="NSRemoveTemplate" width="15" height="4"/>
     </resources>
 </document>

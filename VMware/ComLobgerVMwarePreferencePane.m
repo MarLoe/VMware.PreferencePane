@@ -13,6 +13,7 @@
 #import <GitHubRelease/GitHubRelease.h>
 #import <STPrivilegedTask/STPrivilegedTask.h>
 #import "MLVMwareCommand.h"
+#import "MLVMwareGfxCommand.h"
 #import "NSTabViewItemInfo.h"
 #import "NSView+Enabled.h"
 
@@ -36,6 +37,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 @interface ComLobgerVMwarePreferencePane() <MLGitHubReleaseCheckerDelegate>
 
+@property (nonatomic) NSInteger                             resX;
+@property (nonatomic) NSInteger                             resY;
 @property (nonatomic, weak) IBOutlet NSTabView*             tabView;
 @property (nonatomic, weak) IBOutlet NSTabViewItemInfo*     tabViewItemInfo;
 
@@ -103,17 +106,10 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     
     [self loadDefaultPresets:NO];
     
-    _stepperResX.integerValue = _currentWidth.integerValue;
-    _stepperResY.integerValue = _currentHeight.integerValue;
+    self.resX = _currentWidth.integerValue;
+    self.resY = _currentHeight.integerValue;
     
-    for (NSDictionary* preset in _presetsArrayController.arrangedObjects) {
-        if ([preset[kPresetWidth] isEqualToValue:_currentWidth] &&
-            [preset[kPresetHeight] isEqualToValue:_currentHeight]) {
-            [_presetsArrayController setSelectedObjects:@[preset]];
-            [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
-            break;
-        }
-    }
+    [self selectPresetWithWidth:_currentWidth andHeight:_currentHeight];
     
     NSString* libraryFolder = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject;
     _vmWarePreferencesUrl = [NSURL fileURLWithPathComponents:@[libraryFolder, @"Preferences", @"com.vmware.tools.plist"]];
@@ -128,7 +124,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     if ([_authorizationView.subviews count] == 0) {
         // On earlier versions (seen on Yosemite) the SFAuthorizationView does
         // not deserialieze from xib correctly, leaving it "empty".
-        // If it is empty we know it failed and we can mauallyt create
+        // If it is empty we know it failed and we can maually create
         // one to work around it - thank you Apple :(
         SFAuthorizationView* authView = [[SFAuthorizationView alloc] initWithFrame:_authorizationView.frame];
         [_authorizationView.superview addSubview:authView];
@@ -167,7 +163,6 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 {
     _forceCheckForUpdate |= [self isOptionsKeyPressed];
     
-    NSString* releaseName = self.version;
     if (_releaseChecker == nil) {
         _releaseChecker = [[MLGitHubReleaseChecker alloc] initWithUser:@"MarLoe" andProject:@"VMware.PreferencePane"];
         _releaseChecker.delegate = self;
@@ -175,14 +170,16 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     
     if (!_forceCheckForUpdate) {
         // The standard check for update was not bypassed - so do it :)
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        if ([[userDefaults stringForKey:@"skip"] isEqualToString:releaseName]) {
+        NSUserDefaults* userDefaults = _userDefaultsController.defaults;
+        NSString* skipKey = [_bundleIdentifier stringByAppendingString:@".skip"];
+        NSString* releaseKey = [_bundleIdentifier stringByAppendingFormat:@".(%@)", self.version];
+        if ([[userDefaults stringForKey:skipKey] isEqualToString:releaseKey]) {
             // The user has opted out of more alerts regarding this version.
             return;
         }
         
 #if !TEST_ENVIROMENT // <- Drop the 24 hour check interval if we are in test enviroment
-        NSDate* lastCheck = [userDefaults objectForKey:releaseName];
+        NSDate* lastCheck = [userDefaults objectForKey:releaseKey];
         if (lastCheck != nil && [lastCheck timeIntervalSinceNow] > -24*60*60) {
             // It has been less than 24 hours since last check
             return;
@@ -192,7 +189,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     
     _forceCheckForUpdate = NO;
     
-    [_releaseChecker checkReleaseWithName:releaseName];
+    [_releaseChecker checkReleaseWithName:self.version];
 }
 
 
@@ -217,19 +214,34 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (void)loadDefaultPresets:(bool)reset
 {
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString* presetsKey = [_bundleIdentifier stringByAppendingString:@"@presets"];
+    NSUserDefaults* userDefaults = _userDefaultsController.defaults;
+    NSString* presetsKey = [_bundleIdentifier stringByAppendingString:@".presets"];
     if (reset) {
         [_presetsArrayController removeObjects:_presetsArrayController.arrangedObjects];
         [userDefaults removeObjectForKey:presetsKey];
     }
-    if ( [userDefaults arrayForKey:presetsKey].count == 0) {
+    if ([userDefaults arrayForKey:presetsKey].count == 0) {
         NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
         NSURL* presetsUrl = [prefPaneBundle URLForResource:@"Presets" withExtension:@"plist"];
         NSArray* presets = [NSArray arrayWithContentsOfURL:presetsUrl];
         [_presetsArrayController addObjects:presets];
         [_presetsArrayController setSelectionIndexes:[NSIndexSet new]];
     }
+}
+
+
+- (void)selectPresetWithWidth:(NSNumber*)width andHeight:(NSNumber*)heihgt
+{
+    for (NSDictionary* preset in _presetsArrayController.arrangedObjects) {
+        if ([preset[kPresetWidth] isEqualToValue:width] &&
+            [preset[kPresetHeight] isEqualToValue:heihgt]) {
+            [_presetsArrayController setSelectedObjects:@[preset]];
+            [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
+            return;;
+        }
+    }
+    
+    [_presetsArrayController setSelectedObjects:@[]];
 }
 
 
@@ -254,7 +266,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
                 [strongSelf->_vmWarePreferencesDict writeToURL:strongSelf->_vmWarePreferencesUrl atomically:YES];
                 strongSelf.autoHiDPI.state = oldAutoHiDPIEnabled ? NSControlStateValueOn : NSControlStateValueOff;
             }
-            [[MLVMwareCommand resolutionSet:oldSize.width height:oldSize.height] executeWithCompletion:nil];
+            [[MLVMwareGfxSetResolutionCommand resolutionSet:oldSize.width height:oldSize.height] executeWithCompletion:nil];
         }
         if (error != nil) {
             [strongSelf showErrorSheet:error];
@@ -266,7 +278,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (void)setScreenSize:(NSSize)size showRevert:(BOOL)showRevert authorization:(SFAuthorization*)authorization completionHandler:(void (^)(BOOL reverted, NSError* error))handler
 {
-    MLVMwareCommand* cmd = [MLVMwareCommand resolutionSet:size.width height:size.height];
+    MLVMwareCommand* cmd = [MLVMwareGfxSetResolutionCommand resolutionSet:size.width height:size.height];
     [cmd executeWithCompletion:^(NSError *error) {
         if (error != nil) {
             handler(NO, error);
@@ -336,9 +348,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
             if (httpResponse.statusCode != 200) {
                 error = [NSError errorWithDomain:NSURLErrorDomain
                                             code:httpResponse.statusCode
-                                        userInfo:@{
-                                                   NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:httpResponse.statusCode]
-                                                   }];
+                                        userInfo:@{ NSLocalizedDescriptionKey : [NSHTTPURLResponse localizedStringForStatusCode:httpResponse.statusCode] }];
             }
         }
         
@@ -381,6 +391,29 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 }
 
 
+#pragma mark - Property Access Methods
+
+- (void)setResX:(NSInteger)resX
+{
+    if (_resX == resX) {
+        return;
+    }
+    _resX = resX;
+    
+    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+}
+
+
+- (void)setResY:(NSInteger)resY
+{
+    if (_resY == resY) {
+        return;
+    }
+    _resY = resY;
+
+    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+}
+
 #pragma mark - Alerts
 
 - (void)showResetPresetsWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler
@@ -400,8 +433,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 {
     // Setup release note
     NSDictionary<NSAttributedStringKey, id>* titleAttr = @{
-                                                           NSFontAttributeName : [NSFont boldSystemFontOfSize:14.0]
-                                                           };
+        NSFontAttributeName : [NSFont boldSystemFontOfSize:14.0]
+    };
     NSAttributedString* releaseNote = [_releaseChecker generateReleaseNoteFromRelease:_releaseChecker.currentRelease
                                                                             toRelease:_releaseChecker.availableRelease
                                                                  withHeaderAttributes:titleAttr
@@ -436,8 +469,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     alert.messageText = NSLocalizedString(@"A new version is available", -);
     alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Version %@ is available.\nYou are currently running %@", -),
                              _releaseChecker.availableRelease.name,
-                             _releaseChecker.currentRelease.name
-                             ];
+                             _releaseChecker.currentRelease.name];
     alert.accessoryView = releaseNoteScrollView;
     
     
@@ -554,15 +586,16 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundReleaseInfo:(MLGitHubRelease*)releaseInfo
 {
     NSLog(@"%@", releaseInfo);
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:[NSDate date] forKey:releaseInfo.name];
-    [userDefaults synchronize];
+    NSUserDefaults* userDefaults = _userDefaultsController.defaults;
+    NSString* releaseKey = [_bundleIdentifier stringByAppendingFormat:@".(%@)", releaseInfo.name];
+    [userDefaults setObject:[NSDate date] forKey:releaseKey];
 }
 
 
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundNewReleaseInfo:(MLGitHubRelease*)releaseInfo
 {
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults* userDefaults = _userDefaultsController.defaults;
+    NSString* skipKey = [_bundleIdentifier stringByAppendingString:@".skip"];
     
     if (releaseInfo.htmlURL == nil) {
         return;
@@ -572,7 +605,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     [self showNewVersionAvailableWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset) {
         if (suppressionState == NSControlStateValueOn) {
             // Suppress this alert from now on
-            [userDefaults setObject:releaseInfo.name forKey:@"skip"];
+            [userDefaults setObject:releaseInfo.name forKey:skipKey];
         }
         
         if (returnCode == NSModalResponseView) {
@@ -609,8 +642,68 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
     NSDictionary* selectedPreset = [_presetsArrayController.selectedObjects firstObject];
-    _stepperResX.integerValue = [selectedPreset[kPresetWidth] integerValue];
-    _stepperResY.integerValue = [selectedPreset[kPresetHeight] integerValue];
+    if (selectedPreset != NULL)
+    {
+        self.resX = [selectedPreset[kPresetWidth] integerValue];
+        self.resY = [selectedPreset[kPresetHeight] integerValue];
+    }
+}
+
+#pragma mark - NSTextFieldDelegate
+
+- (BOOL)control:(NSControl *)control
+       textView:(NSTextView *)textView
+doCommandBySelector:(SEL)commandSelector
+{
+    NSInteger delta = 0;
+    if (commandSelector == @selector(moveUp:))
+    {
+        delta = 1;
+    }
+    else if (commandSelector == @selector(moveUpAndModifySelection:))
+    {
+        delta = 10;
+    }
+    else if (commandSelector == @selector(moveToBeginningOfDocumentAndModifySelection:))
+    {
+        delta = 100;
+    }
+    else if (commandSelector == @selector(moveDown:))
+    {
+        delta = -1;
+    }
+    else if (commandSelector == @selector(moveDownAndModifySelection:))
+    {
+        delta = -10;
+    }
+    else if (commandSelector == @selector(moveToEndOfDocumentAndModifySelection:))
+    {
+        delta = -100;
+    }
+    else
+    {
+        return NO;   // let the text field handle every other key
+    }
+    
+    if (control == _textFieldResX)
+    {
+        // Passing by textfield, inforces number formatting
+        _textFieldResX.integerValue += delta;
+        self.resX = _textFieldResX.integerValue;
+    }
+    else if (control == _textFieldResY)
+    {
+        // Passing by textfield, inforces number formatting
+        _textFieldResY.integerValue += delta;
+        self.resY = _textFieldResY.integerValue;
+    }
+    else
+    {
+        return NO;   // let the text field handle every other key
+    }
+    
+    [textView selectAll:nil];   // keeps the field editable and makes repeated presses feel natural
+    return YES;
 }
 
 
@@ -619,8 +712,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 - (IBAction)apply:(id)sender
 {
     BOOL optionsKeyPressed = [self isOptionsKeyPressed];
-    NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@"@skipPrivilegedWarning"];
+    NSUserDefaults* userDefaults = _userDefaultsController.defaults;
+    NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@".skipPrivilegedWarning"];
     
     if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
         [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:[_authorizationView authorization]];
@@ -645,32 +738,34 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (IBAction)presetNameAction:(id)sender
 {
-    // The ugliest hack ever:
-    // In order to trigger NSArrayController to write
-    // back changes, we will add/remove an object :(
-    // Please, anyone! Tell me how to go bout this....
-    id selectedObjects = _presetsArrayController.selectedObjects;
-    
-    NSDictionary* newPreset = @{
-                                kPresetName : @"dummy",
-                                kPresetWidth : @0,
-                                kPresetHeight : @0
-                                };
-    [_presetsArrayController addObject:newPreset];
-    [_presetsArrayController removeObject:newPreset];
-    
-    _presetsArrayController.selectedObjects = selectedObjects;
+    // Binding is not triggered when bound properties are set
+    NSDictionary *bindingInfo = [_presetsArrayController infoForBinding:@"contentArray"];
+    if (bindingInfo) {
+        NSObject *object = [bindingInfo objectForKey:NSObservedObjectKey];
+        NSString *keyPath = [bindingInfo objectForKey:NSObservedKeyPathKey];
+        
+        // Ignoring options to apply value transformer, placeholder, etc. to value
+        // NSDictionary *options = [bindingInfo objectForKey:NSOptionsKey];
+        
+        // Tell the model or controller object the new value
+        [object setValue:_presetsArrayController.content forKeyPath:keyPath];
+    }
 }
 
 
 - (IBAction)presetsAdd:(id)sender
 {
     NSDictionary* newPreset = @{
-                                kPresetName : @"New Screen Size",
-                                kPresetWidth : @(_textFieldResX.integerValue),
-                                kPresetHeight : @(_textFieldResY.integerValue)
-                                };
+        kPresetName : @"New Screen Size",
+        kPresetWidth : @(_textFieldResX.integerValue),
+        kPresetHeight : @(_textFieldResY.integerValue),
+    };
     [_presetsArrayController addObject:newPreset];
+    
+    [_presetsArrayController setSelectedObjects:@[newPreset]];
+    [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
+    
+    [self presetRename:sender];
 }
 
 

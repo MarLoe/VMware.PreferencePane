@@ -12,12 +12,10 @@
 
 @property (nonatomic, assign) BOOL                  isExecuting;
 
-@property (nullable, nonatomic, strong) NSString*   standardOutput;
-@property (nullable, nonatomic, strong) NSString*   standardError;
+- (NSError*)execute;
 @property (nonatomic, assign) int                   terminationStatus;
 
 
-- (BOOL)parseStandardOutput:(nonnull NSString*)stdOutput error:(out NSError *_Nullable*_Nullable)error;
-- (BOOL)parseStandardError:(nonnull NSString*)stdError error:(out NSError *_Nullable*_Nullable)error;
+- (void)callCompletion:(completion_block_t)completion withError:(NSError*)error;
 
 @end

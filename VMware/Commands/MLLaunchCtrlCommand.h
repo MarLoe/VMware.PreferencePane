@@ -6,11 +6,11 @@
 //  Copyright © 2018 ML-Consulting. All rights reserved.
 //
 
-#import "MLCommand.h"
+#import "MLShellCommand.h"
 
 @class MLLaunchCtrlPrintCommand;
 
-@interface MLLaunchCtrlCommand : MLCommand
+@interface MLLaunchCtrlCommand : MLShellCommand
 
 + (MLLaunchCtrlCommand*)loadService:(NSString*)service;
 
