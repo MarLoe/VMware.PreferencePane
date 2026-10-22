@@ -599,9 +599,25 @@ doCommandBySelector:(SEL)commandSelector
     {
         delta = 1;
     }
+    else if (commandSelector == @selector(moveUpAndModifySelection:))
+    {
+        delta = 10;
+    }
+    else if (commandSelector == @selector(moveToBeginningOfDocumentAndModifySelection:))
+    {
+        delta = 100;
+    }
     else if (commandSelector == @selector(moveDown:))
     {
         delta = -1;
+    }
+    else if (commandSelector == @selector(moveDownAndModifySelection:))
+    {
+        delta = -10;
+    }
+    else if (commandSelector == @selector(moveToEndOfDocumentAndModifySelection:))
+    {
+        delta = -100;
     }
     else
     {
@@ -620,7 +636,7 @@ doCommandBySelector:(SEL)commandSelector
     {
         return NO;   // let the text field handle every other key
     }
-
+    
     [textView selectAll:nil];   // keeps the field editable and makes repeated presses feel natural
     return YES;
 }
