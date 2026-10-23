@@ -22,7 +22,6 @@
 		5B3A8280203182440062DFEF /* IntegerValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3A827E203182440062DFEF /* IntegerValueFormatter.m */; };
 		5B509F9520362265001A2037 /* Presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5B509F9420362265001A2037 /* Presets.plist */; };
 		5BB1E4BF2038498600576AAF /* SecurityInterface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BB1E4BE2038498600576AAF /* SecurityInterface.framework */; };
-		6D2929D3212D898700A950AF /* MLShellCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2929D1212D898700A950AF /* MLShellCommand.h */; };
 		6D2929D4212D898700A950AF /* MLShellCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2929D2212D898700A950AF /* MLShellCommand.m */; };
 		6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D2929D5212D96A200A950AF /* MLVMwareCommand.h */; };
 		6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2929D6212D96A200A950AF /* MLVMwareCommand.m */; };
@@ -283,12 +282,10 @@
 				6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */,
 				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
 				6D914149213DF455000D7931 /* NSTabViewItemInfo.h in Headers */,
-				6D406E36308B5D5100C8FFAB /* MLVMwareVersionCommand.h in Headers */,
-				6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */,
-				6D2929D3212D898700A950AF /* MLShellCommand.h in Headers */,
 				6D406E3A308B5DCE00C8FFAB /* MLVMwareSessionCommand.h in Headers */,
+				6D406E36308B5D5100C8FFAB /* MLVMwareVersionCommand.h in Headers */,
 				6D914150213DF5EB000D7931 /* NSTimeIntervalTransformer.h in Headers */,
-				6D2929D3212D898700A950AF /* MLShellCommand.h in Headers */,
+				6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */,
 				6D8F8C353087E50500713904 /* MLVMwareGfxCommand.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

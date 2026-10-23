@@ -8,27 +8,25 @@
 
 #import "MLShellCommand.h"
 
-@class MLLaunchCtrlPrintCommand;
+//@class MLLaunchCtrlPrintCommand;
 
 @interface MLLaunchCtrlCommand : MLShellCommand
 
-+ (MLLaunchCtrlCommand*)loadService:(NSString*)service;
+@property (nonatomic, readonly, strong) NSString*       serviceName;
+@property (nonatomic, readonly, strong) NSString*       domainName;
 
-+ (MLLaunchCtrlCommand*)unloadService:(NSString*)service;
++ (instancetype)loadService:(NSString*)service inDomain:(NSString*)domain;
 
-+ (MLLaunchCtrlPrintCommand*)printService:(NSString*)service inDomain:(NSString*)domain;
++ (instancetype)unloadService:(NSString*)service inDomain:(NSString*)domain;
 
 @end
 
 @interface MLLaunchCtrlPrintCommand : MLLaunchCtrlCommand
 
-@property (nonatomic, readonly, strong) NSString*       serviceName;
-@property (nonatomic, readonly, strong) NSString*       domainName;
-
-@property (nonatomic, readonly, strong) NSDictionary*   service;
-
 @property (nonatomic, readonly, assign) NSString*       state;
 @property (nonatomic, readonly, assign) BOOL            isRunning;
 @property (nonatomic, readonly, assign) NSInteger       pid;
+
++ (instancetype)printService:(NSString*)service inDomain:(NSString*)domain;
 
 @end

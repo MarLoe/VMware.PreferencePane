@@ -10,51 +10,50 @@
 #import "MLCommand+internal.h"
 #import "MLPlistParser.h"
 
-@interface MLLaunchCtrlPrintCommand()
+@interface MLLaunchCtrlCommand()
 
-@property (nonatomic, strong) NSDictionary*     service;
+- (instancetype)initService:(NSString*)service inDomain:(NSString*)domain withArguments:(NSArray<NSString *> *)arguments;
+
+@end
+
+@interface MLLaunchCtrlPrintCommand()
 
 @property (nonatomic, assign) NSString*         state;
 @property (nonatomic, assign) BOOL              isRunning;
 @property (nonatomic, assign) NSInteger         pid;
-
-- (instancetype)initService:(NSString*)service inDomain:(NSString*)domain;
 
 @end
 
 
 @implementation MLLaunchCtrlCommand
 
-- (instancetype)initWithArguments:(NSArray<NSString *> *)arguments
+- (instancetype)initService:(NSString*)service inDomain:(NSString*)domain withArguments:(NSArray<NSString *> *)arguments
 {
-    if (self = [super initCommand:@"/bin/launchctl"
-                           atPath:@"/bin"
-                    withArguments:arguments]) {
+    if (self = [super initCommand:@"/bin/launchctl" atPath:@"/bin" withArguments:arguments])
+    {
+        _domainName = domain;
+        _serviceName = service;
     }
     return self;
 }
 
-+ (MLLaunchCtrlCommand*)loadService:(NSString*)service
++ (instancetype)loadService:(NSString*)service inDomain:(NSString*)domain;
 {
     NSString* plist = [NSString stringWithFormat:@"/Library/LaunchDaemons/%@.plist", service];
-    return [[MLLaunchCtrlCommand alloc] initWithArguments:@[@"load", plist]];
+    MLLaunchCtrlCommand* _self = [[MLLaunchCtrlCommand alloc] initService:service
+                                                                 inDomain:domain
+                                                            withArguments:@[@"bootstrap", domain, plist]];
+    return _self;
 }
 
-+ (MLLaunchCtrlCommand*)unloadService:(NSString*)service
++ (instancetype)unloadService:(NSString*)service inDomain:(NSString*)domain;
 {
-    NSString* plist = [NSString stringWithFormat:@"/Library/LaunchDaemons/%@.plist", service];
-    return [[MLLaunchCtrlCommand alloc] initWithArguments:@[@"unload", plist]];
-}
+    NSString* domainService = [domain stringByAppendingFormat:@"/%@", service];
+    MLLaunchCtrlCommand* _self = [[MLLaunchCtrlCommand alloc] initService:service
+                                                                 inDomain:domain
+                                                            withArguments:@[@"bootout", domainService]];
 
-+ (MLLaunchCtrlPrintCommand*)printService:(NSString*)service inDomain:(NSString*)domain
-{
-    return [[MLLaunchCtrlPrintCommand alloc] initService:service inDomain:domain];
-    //    return [[MLLaunchCtrlCommand alloc] initCommand:@"/bin/launchctl"
-    //                                             atPath:@"/bin"
-    //                                      withArguments:@[@"dumpstate"]];
-    //    return [[MLLaunchCtrlCommand alloc] initCommand:@"/bin/launchctl"
-    //                                             atPath:@"/bin"
-    //                                      withArguments:@[@"list", @"com.vmware.launchd.vmware-tools-userd"]];
+    return _self;
 }
 
 @end
@@ -64,11 +63,13 @@
 
 - (instancetype)initService:(NSString*)service inDomain:(NSString*)domain
 {
-    if (self = [super initWithArguments:@[@"print", [domain stringByAppendingFormat:@"/%@", service]]]) {
-        _serviceName = service;
-        _domainName = domain;
-    }
-    return self;
+    NSString* domainService = [domain stringByAppendingFormat:@"/%@", service];
+    return [super initService:service inDomain:domain withArguments:@[@"print", domainService]];
+}
+
++ (instancetype)printService:(NSString*)service inDomain:(NSString*)domain
+{
+    return [[MLLaunchCtrlPrintCommand alloc] initService:service inDomain:domain];
 }
 
 - (BOOL)parseStandardOutput:(NSString *)stdOutput error:(out NSError *__autoreleasing *)error
@@ -91,7 +92,7 @@
 - (BOOL)parseStandardError:(NSString *)stdError error:(out NSError *__autoreleasing *)error
 {
     if (self.terminationStatus == 113) {
-        if ([stdError containsString:_serviceName]) {
+        if ([stdError containsString:self.serviceName]) {
             self.state = @"stopped";
             self.isRunning = NO;
         }
