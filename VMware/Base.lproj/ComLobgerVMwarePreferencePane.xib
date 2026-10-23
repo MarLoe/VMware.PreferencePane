@@ -13,11 +13,11 @@
                 <outlet property="buttonApply" destination="8ew-TP-RYp" id="nSl-iW-gD1"/>
                 <outlet property="presetsArrayController" destination="kcO-Vf-8QR" id="q2Y-WT-Ihe"/>
                 <outlet property="presetsTableView" destination="yV1-Es-Vol" id="z8Q-yn-yV0"/>
-                <outlet property="stepperResX" destination="ogO-mw-Ufl" id="kIm-q1-0I2"/>
+                <outlet property="stepperResX" destination="ogO-mw-Ufl" id="tRw-7N-cTe"/>
                 <outlet property="stepperResY" destination="22A-sq-P4P" id="W8l-Rh-fFD"/>
                 <outlet property="tabView" destination="8hv-iW-oT2" id="nky-zl-7Vv"/>
                 <outlet property="tabViewItemInfo" destination="rf4-ZH-5aB" id="Xf5-Qt-hqf"/>
-                <outlet property="textFieldResX" destination="N4B-s8-esC" id="BDu-oY-C5p"/>
+                <outlet property="textFieldResX" destination="N4B-s8-esC" id="Dfo-yD-3Iq"/>
                 <outlet property="textFieldResY" destination="0w8-gU-ovm" id="0p1-h1-rdA"/>
                 <outlet property="userDefaultsController" destination="Xs9-rl-isb" id="Y9W-Q4-4b3"/>
             </connections>
@@ -42,7 +42,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="176" y="715" width="680" height="409"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="775"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="680" height="409"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -79,17 +79,12 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.resX" id="pjb-qX-YYD">
-                                                    <dictionary key="options">
-                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                        <bool key="NSValidatesImmediately" value="YES"/>
-                                                    </dictionary>
-                                                </binding>
+                                                <binding destination="-2" name="value" keyPath="self.resX" id="LvH-Ml-lBc"/>
                                                 <outlet property="delegate" destination="-2" id="c9A-vx-r72"/>
                                             </connections>
                                         </textField>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ogO-mw-Ufl">
-                                            <rect key="frame" x="383" y="245" width="19" height="27"/>
+                                            <rect key="frame" x="385" y="245" width="19" height="27"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <stepperCell key="cell" continuous="YES" alignment="left" id="y0x-xP-D1x">
                                                 <connections>
@@ -103,7 +98,7 @@
                                             </connections>
                                         </stepper>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cSP-Gc-jxM">
-                                            <rect key="frame" x="400" y="250" width="11" height="17"/>
+                                            <rect key="frame" x="410" y="250" width="11" height="17"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="x" id="1VZ-Cj-xEN">
                                                 <font key="font" metaFont="system"/>
@@ -134,7 +129,7 @@
                                             </connections>
                                         </textField>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="22A-sq-P4P">
-                                            <rect key="frame" x="487" y="245" width="19" height="27"/>
+                                            <rect key="frame" x="490" y="245" width="19" height="27"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <stepperCell key="cell" continuous="YES" alignment="left" id="s5L-mm-3i4">
                                                 <connections>
