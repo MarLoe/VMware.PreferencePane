@@ -97,8 +97,9 @@
                                                 </connections>
                                             </stepperCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.resX" id="ebF-47-sht"/>
-                                                <outlet property="formatter" destination="r4S-Oc-Yz1" id="Epa-EI-4tU"/>
+                                                <binding destination="-2" name="value" keyPath="self.resX" previousBinding="uGb-x4-Bkk" id="hab-Vi-1pB"/>
+                                                <binding destination="-2" name="maxValue" keyPath="self.textFieldResX.formatter.maximum" id="gYO-mt-PJq"/>
+                                                <binding destination="-2" name="minValue" keyPath="self.textFieldResX.formatter.minimum" previousBinding="gYO-mt-PJq" id="uGb-x4-Bkk"/>
                                             </connections>
                                         </stepper>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cSP-Gc-jxM">
@@ -135,14 +136,15 @@
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="22A-sq-P4P">
                                             <rect key="frame" x="487" y="245" width="19" height="27"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <stepperCell key="cell" continuous="YES" alignment="left" minValue="768" maxValue="8192" doubleValue="768" id="s5L-mm-3i4">
+                                            <stepperCell key="cell" continuous="YES" alignment="left" id="s5L-mm-3i4">
                                                 <connections>
                                                     <action selector="takeIntegerValueFrom:" target="0w8-gU-ovm" id="jwA-86-PgB"/>
                                                 </connections>
                                             </stepperCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.resY" id="wSa-EZ-x9V"/>
-                                                <outlet property="formatter" destination="MP8-mg-Bby" id="ceK-uN-BrB"/>
+                                                <binding destination="-2" name="value" keyPath="self.resY" previousBinding="72m-Nh-EVa" id="2dT-mH-QQV"/>
+                                                <binding destination="-2" name="maxValue" keyPath="self.textFieldResY.formatter.maximum" id="yrx-b7-2z8"/>
+                                                <binding destination="-2" name="minValue" keyPath="self.textFieldResY.formatter.minimum" previousBinding="yrx-b7-2z8" id="72m-Nh-EVa"/>
                                             </connections>
                                         </stepper>
                                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Smz-cM-XLV">
