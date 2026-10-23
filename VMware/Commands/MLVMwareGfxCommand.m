@@ -70,8 +70,10 @@ typedef struct
 
 @implementation MLVMwareGfxGetResolutionCommand
 
-- (instancetype)init {
-    if (self = [super initCommand:kVMwareToolsResolutionSet withArguments:nil]) {
+- (instancetype)init
+{
+    if (self = [super initResolutionWithArguments:nil])
+    {
         self.flags = 0;
         self.width = 0;
         self.height = 0;
@@ -93,7 +95,7 @@ typedef struct
 - (instancetype)init:(NSUInteger)width height:(NSUInteger)height
 {
     NSArray<NSString*>* arguments = @[@(width).stringValue, @(height).stringValue];
-    if (self = [super initCommand:kVMwareToolsResolutionSet withArguments:arguments])
+    if (self = [super initResolutionWithArguments:arguments])
     {
         self.flags = 1;
         self.width = width;

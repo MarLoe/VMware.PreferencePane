@@ -30,15 +30,19 @@
 		6D2929DC212DF00400A950AF /* MLLaunchCtrlCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D2929DA212DF00400A950AF /* MLLaunchCtrlCommand.m */; };
 		6D292A12212E128200A950AF /* MLPlistParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D292A10212E128200A950AF /* MLPlistParser.h */; };
 		6D292A13212E128200A950AF /* MLPlistParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D292A11212E128200A950AF /* MLPlistParser.m */; };
+		6D406E36308B5D5100C8FFAB /* MLVMwareVersionCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D406E35308B5D5100C8FFAB /* MLVMwareVersionCommand.h */; };
+		6D406E38308B5D6500C8FFAB /* MLVMwareVersionCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D406E37308B5D6500C8FFAB /* MLVMwareVersionCommand.m */; };
+		6D406E3A308B5DCE00C8FFAB /* MLVMwareSessionCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D406E39308B5DCE00C8FFAB /* MLVMwareSessionCommand.h */; };
+		6D406E3C308B5DE000C8FFAB /* MLVMwareSessionCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D406E3B308B5DE000C8FFAB /* MLVMwareSessionCommand.m */; };
 		6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
+		6D8F8C313087D96900713904 /* MLCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F8C303087D96900713904 /* MLCommand.m */; };
+		6D8F8C353087E50500713904 /* MLVMwareGfxCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D8F8C333087E50500713904 /* MLVMwareGfxCommand.h */; };
+		6D8F8C363087E50500713904 /* MLVMwareGfxCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F8C343087E50500713904 /* MLVMwareGfxCommand.m */; };
 		6D914149213DF455000D7931 /* NSTabViewItemInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D914147213DF455000D7931 /* NSTabViewItemInfo.h */; };
 		6D91414A213DF455000D7931 /* NSTabViewItemInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D914148213DF455000D7931 /* NSTabViewItemInfo.m */; };
 		6D914150213DF5EB000D7931 /* NSTimeIntervalTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D91414E213DF5EB000D7931 /* NSTimeIntervalTransformer.h */; };
 		6D914151213DF5EB000D7931 /* NSTimeIntervalTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D91414F213DF5EB000D7931 /* NSTimeIntervalTransformer.m */; };
-		6D8F8C313087D96900713904 /* MLCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F8C303087D96900713904 /* MLCommand.m */; };
-		6D8F8C353087E50500713904 /* MLVMwareGfxCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D8F8C333087E50500713904 /* MLVMwareGfxCommand.h */; };
-		6D8F8C363087E50500713904 /* MLVMwareGfxCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F8C343087E50500713904 /* MLVMwareGfxCommand.m */; };
 		6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */; };
 		6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */; };
 		6DD6407A213E731300962088 /* VMware.searchTerms in Resources */ = {isa = PBXBuildFile; fileRef = 6DD64079213E731300962088 /* VMware.searchTerms */; };
@@ -87,14 +91,18 @@
 		6D292A0F212E0F4F00A950AF /* MLCommand+internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MLCommand+internal.h"; sourceTree = "<group>"; };
 		6D292A10212E128200A950AF /* MLPlistParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLPlistParser.h; sourceTree = "<group>"; };
 		6D292A11212E128200A950AF /* MLPlistParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLPlistParser.m; sourceTree = "<group>"; };
-		6D914147213DF455000D7931 /* NSTabViewItemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTabViewItemInfo.h; sourceTree = "<group>"; };
-		6D914148213DF455000D7931 /* NSTabViewItemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTabViewItemInfo.m; sourceTree = "<group>"; };
-		6D91414E213DF5EB000D7931 /* NSTimeIntervalTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTimeIntervalTransformer.h; sourceTree = "<group>"; };
-		6D91414F213DF5EB000D7931 /* NSTimeIntervalTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTimeIntervalTransformer.m; sourceTree = "<group>"; };
+		6D406E35308B5D5100C8FFAB /* MLVMwareVersionCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLVMwareVersionCommand.h; sourceTree = "<group>"; };
+		6D406E37308B5D6500C8FFAB /* MLVMwareVersionCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLVMwareVersionCommand.m; sourceTree = "<group>"; };
+		6D406E39308B5DCE00C8FFAB /* MLVMwareSessionCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLVMwareSessionCommand.h; sourceTree = "<group>"; };
+		6D406E3B308B5DE000C8FFAB /* MLVMwareSessionCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLVMwareSessionCommand.m; sourceTree = "<group>"; };
 		6D8F8C2F3087D84D00713904 /* MLCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLCommand.h; sourceTree = "<group>"; };
 		6D8F8C303087D96900713904 /* MLCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLCommand.m; sourceTree = "<group>"; };
 		6D8F8C333087E50500713904 /* MLVMwareGfxCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLVMwareGfxCommand.h; sourceTree = "<group>"; };
 		6D8F8C343087E50500713904 /* MLVMwareGfxCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLVMwareGfxCommand.m; sourceTree = "<group>"; };
+		6D914147213DF455000D7931 /* NSTabViewItemInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTabViewItemInfo.h; sourceTree = "<group>"; };
+		6D914148213DF455000D7931 /* NSTabViewItemInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTabViewItemInfo.m; sourceTree = "<group>"; };
+		6D91414E213DF5EB000D7931 /* NSTimeIntervalTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTimeIntervalTransformer.h; sourceTree = "<group>"; };
+		6D91414F213DF5EB000D7931 /* NSTimeIntervalTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTimeIntervalTransformer.m; sourceTree = "<group>"; };
 		6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Enabled.h"; sourceTree = "<group>"; };
 		6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Enabled.m"; sourceTree = "<group>"; };
 		6DB3F5BA20D092BF0019CB79 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -214,6 +222,10 @@
 				6D2929DA212DF00400A950AF /* MLLaunchCtrlCommand.m */,
 				6D2929D5212D96A200A950AF /* MLVMwareCommand.h */,
 				6D2929D6212D96A200A950AF /* MLVMwareCommand.m */,
+				6D406E35308B5D5100C8FFAB /* MLVMwareVersionCommand.h */,
+				6D406E37308B5D6500C8FFAB /* MLVMwareVersionCommand.m */,
+				6D406E39308B5DCE00C8FFAB /* MLVMwareSessionCommand.h */,
+				6D406E3B308B5DE000C8FFAB /* MLVMwareSessionCommand.m */,
 				6D8F8C333087E50500713904 /* MLVMwareGfxCommand.h */,
 				6D8F8C343087E50500713904 /* MLVMwareGfxCommand.m */,
 			);
@@ -227,17 +239,6 @@
 				6D292A11212E128200A950AF /* MLPlistParser.m */,
 			);
 			path = Utils;
-			sourceTree = "<group>";
-		};
-		C077CD66E110BD15E581CBC6 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				813B5373A4B957136F72F264 /* Pods-VMware.debug.xcconfig */,
-				B784E464BB58024B941D2D38 /* Pods-VMware.release.xcconfig */,
-				5175EB2C23389E39AC073BFE /* Pods-VMware.Debug.debug.xcconfig */,
-				A28A2078499282211B68C2CB /* Pods-VMware.Debug.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		6D91413D213DF383000D7931 /* Tabs */ = {
@@ -258,6 +259,17 @@
 			path = ValueTransformers;
 			sourceTree = "<group>";
 		};
+		C077CD66E110BD15E581CBC6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				813B5373A4B957136F72F264 /* Pods-VMware.debug.xcconfig */,
+				B784E464BB58024B941D2D38 /* Pods-VMware.release.xcconfig */,
+				5175EB2C23389E39AC073BFE /* Pods-VMware.Debug.debug.xcconfig */,
+				A28A2078499282211B68C2CB /* Pods-VMware.Debug.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -271,8 +283,10 @@
 				6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */,
 				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
 				6D914149213DF455000D7931 /* NSTabViewItemInfo.h in Headers */,
+				6D406E36308B5D5100C8FFAB /* MLVMwareVersionCommand.h in Headers */,
 				6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */,
-				6D2929D3212D898700A950AF /* MLCommand.h in Headers */,
+				6D2929D3212D898700A950AF /* MLShellCommand.h in Headers */,
+				6D406E3A308B5DCE00C8FFAB /* MLVMwareSessionCommand.h in Headers */,
 				6D914150213DF5EB000D7931 /* NSTimeIntervalTransformer.h in Headers */,
 				6D2929D3212D898700A950AF /* MLShellCommand.h in Headers */,
 				6D8F8C353087E50500713904 /* MLVMwareGfxCommand.h in Headers */,
@@ -438,7 +452,9 @@
 				6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */,
 				6D914151213DF5EB000D7931 /* NSTimeIntervalTransformer.m in Sources */,
 				6D2929D4212D898700A950AF /* MLShellCommand.m in Sources */,
+				6D406E3C308B5DE000C8FFAB /* MLVMwareSessionCommand.m in Sources */,
 				6D292A13212E128200A950AF /* MLPlistParser.m in Sources */,
+				6D406E38308B5D6500C8FFAB /* MLVMwareVersionCommand.m in Sources */,
 				6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */,
 				6D91414A213DF455000D7931 /* NSTabViewItemInfo.m in Sources */,
 				6D8F8C363087E50500713904 /* MLVMwareGfxCommand.m in Sources */,

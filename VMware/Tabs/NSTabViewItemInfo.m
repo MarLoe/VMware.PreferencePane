@@ -8,6 +8,8 @@
 
 #import "NSTabViewItemInfo.h"
 #import "MLVMwareCommand.h"
+#import "MLVMwareVersionCommand.h"
+#import "MLVMwareSessionCommand.h"
 #import "MLLaunchCtrlCommand.h"
 #import <STPrivilegedTask/STPrivilegedTask.h>
 

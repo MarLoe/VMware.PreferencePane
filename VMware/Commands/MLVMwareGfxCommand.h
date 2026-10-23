@@ -32,7 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initCommand:(NSString*)command withArguments:(NSArray<NSString*>*)arguments NS_UNAVAILABLE;
+- (instancetype)initToolsWithArguments:(NSArray<NSString *> *)arguments NS_UNAVAILABLE;
+
+- (instancetype)initResolutionWithArguments:(NSArray<NSString *> *)arguments NS_UNAVAILABLE;
 
 - (instancetype)init:(NSUInteger)width height:(NSUInteger)height NS_DESIGNATED_INITIALIZER;
 
