@@ -12,9 +12,7 @@
 
 @property (nonatomic, assign) BOOL                  isExecuting;
 
-- (NSError*)execute;
-@property (nonatomic, assign) int                   terminationStatus;
-
+- (void)executeUserModeWithCompletion:(completion_block_t)completion;
 
 - (void)callCompletion:(completion_block_t)completion withError:(NSError*)error;
 

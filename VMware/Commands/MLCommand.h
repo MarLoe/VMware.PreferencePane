@@ -18,8 +18,6 @@ typedef void (^completion_block_t)(NSError* error);
 
 @property (nonatomic, readonly, assign) BOOL                isExecuting;
 
-@property (nonatomic, readonly, assign) int                 terminationStatus;
-
 - (instancetype)init;
 
 - (void)executeWithCompletion:(completion_block_t)completion;
