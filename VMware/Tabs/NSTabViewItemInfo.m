@@ -113,7 +113,9 @@
 {
     id cmd = [MLLaunchCtrlCommand loadService:@"com.vmware.launchd.tools" inDomain:@"system"];
     [self executePrivilidgedCommand:cmd withAuthorization:_authorization];
- }
+    
+    [self refreshService];
+}
 
 - (IBAction)stopService:(id)sender
 {
@@ -150,8 +152,6 @@
         NSLog(@"Error: %d", processError);
         return privTask.terminationStatus;
     }
-    
-    [self refreshService];
     
     return errAuthorizationSuccess;
 }

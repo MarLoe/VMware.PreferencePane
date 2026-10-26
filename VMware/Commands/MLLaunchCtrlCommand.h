@@ -8,8 +8,6 @@
 
 #import "MLShellCommand.h"
 
-//@class MLLaunchCtrlPrintCommand;
-
 @interface MLLaunchCtrlCommand : MLShellCommand
 
 @property (nonatomic, readonly, strong) NSString*       serviceName;

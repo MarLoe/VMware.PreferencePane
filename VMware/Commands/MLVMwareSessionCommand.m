@@ -1,5 +1,5 @@
 //
-//  MLVMwareCommand.m
+//  MLVMwareSessionCommand.m
 //  VMware
 //
 //  Created by Martin Løbger on 22/08/2018.

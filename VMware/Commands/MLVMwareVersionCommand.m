@@ -1,9 +1,9 @@
 //
-//  MLVMwareCommand.m
+//  MLVMwareVersionCommand.m
 //  VMware
 //
-//  Created by Martin Løbger on 22/08/2018.
-//  Copyright © 2018 ML-Consulting. All rights reserved.
+//  Created by Martin Løbger on 20/10/2026.
+//  Copyright © 2026 ML-Consulting. All rights reserved.
 //
 
 #import "MLVMwareVersionCommand.h"
