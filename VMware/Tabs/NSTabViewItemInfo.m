@@ -96,7 +96,7 @@
 {
     MLLaunchCtrlPrintCommand* cmd = [MLLaunchCtrlPrintCommand printService:@"com.vmware.launchd.tools" inDomain:@"system"];
     [cmd executeWithCompletion:^(NSError *error) {
-        if (error != nil) {
+        if (error != nil && cmd.state.length == 0) {
             NSLog(@"Service Error: %@", error);
             self.serviceState = NSLocalizedString(@"N/A", -);
             self.serviceRunning = false;
@@ -112,22 +112,48 @@
 - (IBAction)startService:(id)sender
 {
     id cmd = [MLLaunchCtrlCommand loadService:@"com.vmware.launchd.tools" inDomain:@"system"];
-    [cmd executeWithCompletion:^(NSError *error) {
-        [self refreshService];
-    }];
-}
+    [self executePrivilidgedCommand:cmd withAuthorization:_authorization];
+ }
 
 - (IBAction)stopService:(id)sender
 {
     id cmd = [MLLaunchCtrlCommand unloadService:@"com.vmware.launchd.tools" inDomain:@"system"];
-    [cmd executeWithCompletion:^(NSError *error) {
-        [self refreshService];
-    }];
-//    [cmd executeWithCompletion:^(NSError *error) {
-//        NSLog(@"%*", cmd);
-//        [self refreshService];
-//    }];
+    [self executePrivilidgedCommand:cmd withAuthorization:_authorization];
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [weakSelf refreshService];
+    });
 }
 
+
+#pragma mark - Helper Methods
+
+-(OSStatus)executePrivilidgedCommand:(MLShellCommand*)command withAuthorization:(SFAuthorization*)authorization
+{
+    if (authorization == nil) {
+        return errAuthorizationInvalidSet;
+    }
+    
+    STPrivilegedTask* privTask = [[STPrivilegedTask alloc] initWithLaunchPath:command.command
+                                                                    arguments:command.arguments
+                                                             currentDirectory:command.path];
+    OSStatus processError = [privTask launchWithAuthorization:[_authorization authorizationRef]];
+    if (processError != errAuthorizationSuccess) {
+        NSLog(@"Error: %d", processError);
+        return processError;
+    }
+    
+    [privTask waitUntilExit];
+    
+    if (privTask.terminationStatus != errAuthorizationSuccess) {
+        NSLog(@"Error: %d", processError);
+        return privTask.terminationStatus;
+    }
+    
+    [self refreshService];
+    
+    return errAuthorizationSuccess;
+}
 
 @end
