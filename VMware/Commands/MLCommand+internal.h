@@ -12,7 +12,7 @@
 
 @property (nonatomic, assign) BOOL                  isExecuting;
 
-- (NSError*)execute;
+- (void)executeUserModeWithCompletion:(completion_block_t)completion;
 
 - (void)callCompletion:(completion_block_t)completion withError:(NSError*)error;
 

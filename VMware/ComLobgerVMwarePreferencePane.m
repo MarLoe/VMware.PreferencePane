@@ -11,9 +11,10 @@
 #import <SecurityInterface/SFAuthorizationView.h>
 #import <sys/xattr.h>
 #import <GitHubRelease/GitHubRelease.h>
+#import <STPrivilegedTask/STPrivilegedTask.h>
 #import "MLVMwareCommand.h"
 #import "MLVMwareGfxCommand.h"
-#import "STPrivilegedTask/STPrivilegedTask.h"
+#import "NSTabViewItemInfo.h"
 #import "NSView+Enabled.h"
 
 #define TEST_ENVIROMENT (DEBUG && FALSE)
@@ -38,6 +39,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 @property (nonatomic) NSInteger                             resX;
 @property (nonatomic) NSInteger                             resY;
+@property (nonatomic, weak) IBOutlet NSTabView*             tabView;
+@property (nonatomic, weak) IBOutlet NSTabViewItemInfo*     tabViewItemInfo;
 
 @property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
 @property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
@@ -140,6 +143,13 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (void)revealElementForKey:(NSString*)key
 {
+    @try {
+        [_tabView selectTabViewItemWithIdentifier:[NSString stringWithFormat:@"tab_%@", key]];
+    }
+    @catch (NSException* ex) {
+        NSLog(@"Error: Tab with identifier %@ was not found", key);
+        [_tabView selectFirstTabViewItem:self];
+    }
 }
 
 
@@ -250,16 +260,16 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     __weak typeof(self) weakSelf = self;
     [self setScreenSize:newSize showRevert:showRevert authorization:authorization completionHandler:^(BOOL reverted, NSError* error) {
         __strong typeof(self) strongSelf = weakSelf;
-        if (reverted) {
+        if (reverted && strongSelf != nil) {
             if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
                 strongSelf->_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(oldAutoHiDPIEnabled);
                 [strongSelf->_vmWarePreferencesDict writeToURL:strongSelf->_vmWarePreferencesUrl atomically:YES];
-                strongSelf->_autoHiDPI.state = oldAutoHiDPIEnabled ? NSControlStateValueOn : NSControlStateValueOff;
+                strongSelf.autoHiDPI.state = oldAutoHiDPIEnabled ? NSControlStateValueOn : NSControlStateValueOff;
             }
             [[MLVMwareGfxSetResolutionCommand resolutionSet:oldSize.width height:oldSize.height] executeWithCompletion:nil];
         }
         if (error != nil) {
-            [weakSelf showErrorSheet:error];
+            [strongSelf showErrorSheet:error];
         }
     }];
     
@@ -547,6 +557,30 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 }
 
 
+#pragma mark - Notification Handlers
+
+- (void)applicationDidChangeScreenParametersNotification:(NSNotification*) notification
+{
+    NSScreen* screen = NSScreen.mainScreen;
+    NSRect screenSize = screen.frame;
+    self.currentWidth = [NSNumber numberWithInteger:screenSize.size.width];
+    self.currentHeight = [NSNumber numberWithInteger:screenSize.size.height];
+}
+
+#pragma mark - SFAuthorizationViewDelegate
+
+- (void)authorizationViewDidAuthorize:(SFAuthorizationView *)view
+{
+    _tabViewItemInfo.authorization = view.authorization;
+}
+
+
+- (void)authorizationViewDidDeauthorize:(SFAuthorizationView *)view
+{
+    _tabViewItemInfo.authorization = nil;
+}
+
+
 #pragma mark - MLGitHubReleaseCheckerDelegate
 
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker*)sender foundReleaseInfo:(MLGitHubRelease*)releaseInfo
@@ -593,14 +627,13 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 }
 
 
-#pragma mark - Notification Handlers
+#pragma mark - NSTabViewDelegate
 
-- (void)applicationDidChangeScreenParametersNotification:(NSNotification*) notification
+- (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(nullable NSTabViewItem *)tabViewItem
 {
-    NSScreen* screen = NSScreen.mainScreen;
-    NSRect screenSize = screen.frame;
-    self.currentWidth = [NSNumber numberWithInteger:screenSize.size.width];
-    self.currentHeight = [NSNumber numberWithInteger:screenSize.size.height];
+    if (tabViewItem == _tabViewItemInfo) {
+        [_tabViewItemInfo refresh];
+    }
 }
 
 

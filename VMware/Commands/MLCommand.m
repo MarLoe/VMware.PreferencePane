@@ -22,7 +22,7 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
 
 - (void)executeWithCompletion:(completion_block_t)completion
 {
-    dispatch_queue_t queue = dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^(void) {
         
         dispatch_barrier_sync(queue, ^{
@@ -30,28 +30,33 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
             if (self.isExecuting) {
                 NSError* error = [NSError errorWithDomain:MLCommandErrorDomain
                                                      code:1
-                                                 userInfo:@{ NSLocalizedDescriptionKey: @"Execution in progress" }];
+                                                 userInfo:@{ NSLocalizedDescriptionKey: NSLocalizedString(@"Execution in progress", -) }];
                 [self callCompletion:completion withError:error];
                 return;
             }
             
             self.isExecuting = YES;
             @try {
-                NSError* error = [self execute];
-                [self callCompletion:completion withError:error];
+                [self executeUserModeWithCompletion:^(NSError *error) {
+                    if (error != nil) {
+                        NSLog(@"ERROR:\n%@", error);
+                    }
+                    [self callCompletion:completion withError:error];
+                    self.isExecuting = NO;
+                }];
             }
-            @finally {
+            @catch (NSException* e) {
                 self.isExecuting = NO;
             }
         });
-
+        
     });
 }
 
 
-- (NSError*)execute
+- (void)executeUserModeWithCompletion:(completion_block_t)completion
 {
-    return nil;
+    completion(nil);
 }
 
 

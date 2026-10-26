@@ -1,9 +1,9 @@
 //
-//  MLCommand.h
+//  MLShellCommand.h
 //  VMware
 //
-//  Created by Martin Løbger on 22/08/2018.
-//  Copyright © 2018 ML-Consulting. All rights reserved.
+//  Created by Martin Løbger on 20/10/2026.
+//  Copyright © 2026 ML-Consulting. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -19,6 +19,7 @@
 @property (nonatomic, readonly, strong) NSString*           standardOutput;
 @property (nonatomic, readonly, strong) NSString*           standardError;
 
+@property (nonatomic, readonly, assign) int                 terminationStatus;
 
 - (instancetype)init NS_UNAVAILABLE;
 
