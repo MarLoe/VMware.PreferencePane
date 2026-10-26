@@ -33,6 +33,8 @@
 		6D406E38308B5D6500C8FFAB /* MLVMwareVersionCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D406E37308B5D6500C8FFAB /* MLVMwareVersionCommand.m */; };
 		6D406E3A308B5DCE00C8FFAB /* MLVMwareSessionCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D406E39308B5DCE00C8FFAB /* MLVMwareSessionCommand.h */; };
 		6D406E3C308B5DE000C8FFAB /* MLVMwareSessionCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D406E3B308B5DE000C8FFAB /* MLVMwareSessionCommand.m */; };
+		6D406E3E308F53E200C8FFAB /* NSTabViewScreenResolution.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D406E3D308F53E200C8FFAB /* NSTabViewScreenResolution.h */; };
+		6D406E40308F53EB00C8FFAB /* NSTabViewScreenResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D406E3F308F53EB00C8FFAB /* NSTabViewScreenResolution.m */; };
 		6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6D8F8C313087D96900713904 /* MLCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F8C303087D96900713904 /* MLCommand.m */; };
@@ -94,6 +96,8 @@
 		6D406E37308B5D6500C8FFAB /* MLVMwareVersionCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLVMwareVersionCommand.m; sourceTree = "<group>"; };
 		6D406E39308B5DCE00C8FFAB /* MLVMwareSessionCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLVMwareSessionCommand.h; sourceTree = "<group>"; };
 		6D406E3B308B5DE000C8FFAB /* MLVMwareSessionCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLVMwareSessionCommand.m; sourceTree = "<group>"; };
+		6D406E3D308F53E200C8FFAB /* NSTabViewScreenResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTabViewScreenResolution.h; sourceTree = "<group>"; };
+		6D406E3F308F53EB00C8FFAB /* NSTabViewScreenResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTabViewScreenResolution.m; sourceTree = "<group>"; };
 		6D8F8C2F3087D84D00713904 /* MLCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLCommand.h; sourceTree = "<group>"; };
 		6D8F8C303087D96900713904 /* MLCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLCommand.m; sourceTree = "<group>"; };
 		6D8F8C333087E50500713904 /* MLVMwareGfxCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLVMwareGfxCommand.h; sourceTree = "<group>"; };
@@ -243,6 +247,8 @@
 		6D91413D213DF383000D7931 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
+				6D406E3D308F53E200C8FFAB /* NSTabViewScreenResolution.h */,
+				6D406E3F308F53EB00C8FFAB /* NSTabViewScreenResolution.m */,
 				6D914147213DF455000D7931 /* NSTabViewItemInfo.h */,
 				6D914148213DF455000D7931 /* NSTabViewItemInfo.m */,
 			);
@@ -280,6 +286,7 @@
 				5B3A827F203182440062DFEF /* IntegerValueFormatter.h in Headers */,
 				5B3A823E2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h in Headers */,
 				6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */,
+				6D406E3E308F53E200C8FFAB /* NSTabViewScreenResolution.h in Headers */,
 				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
 				6D914149213DF455000D7931 /* NSTabViewItemInfo.h in Headers */,
 				6D406E3A308B5DCE00C8FFAB /* MLVMwareSessionCommand.h in Headers */,
@@ -444,6 +451,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D2929DC212DF00400A950AF /* MLLaunchCtrlCommand.m in Sources */,
+				6D406E40308F53EB00C8FFAB /* NSTabViewScreenResolution.m in Sources */,
 				5B3A82402030ED960062DFEF /* ComLobgerVMwarePreferencePane.m in Sources */,
 				6D8F8C313087D96900713904 /* MLCommand.m in Sources */,
 				6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */,
