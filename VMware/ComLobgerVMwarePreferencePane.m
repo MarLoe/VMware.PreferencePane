@@ -14,6 +14,7 @@
 #import <STPrivilegedTask/STPrivilegedTask.h>
 #import "MLVMwareCommand.h"
 #import "MLVMwareGfxCommand.h"
+#import "NSTabViewScreenResolution.h"
 #import "NSTabViewItemInfo.h"
 #import "NSView+Enabled.h"
 
@@ -40,7 +41,8 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 @property (nonatomic) NSInteger                             resX;
 @property (nonatomic) NSInteger                             resY;
 @property (nonatomic, weak) IBOutlet NSTabView*             tabView;
-@property (nonatomic, weak) IBOutlet NSTabViewItemInfo*     tabViewItemInfo;
+@property (nonatomic, weak) IBOutlet NSTabViewScreenResolution*     tabViewScreenResolution;
+@property (nonatomic, weak) IBOutlet NSTabViewItemInfo*             tabViewItemInfo;
 
 @property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
 @property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
@@ -571,12 +573,14 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (void)authorizationViewDidAuthorize:(SFAuthorizationView *)view
 {
+    _tabViewScreenResolution.authorization = view.authorization;
     _tabViewItemInfo.authorization = view.authorization;
 }
 
 
 - (void)authorizationViewDidDeauthorize:(SFAuthorizationView *)view
 {
+    _tabViewScreenResolution.authorization = nil;
     _tabViewItemInfo.authorization = nil;
 }
 
@@ -631,7 +635,10 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (void)tabView:(NSTabView *)tabView willSelectTabViewItem:(nullable NSTabViewItem *)tabViewItem
 {
-    if (tabViewItem == _tabViewItemInfo) {
+    if (tabViewItem == _tabViewScreenResolution) {
+        [_tabViewScreenResolution refresh];
+    }
+    else if (tabViewItem == _tabViewItemInfo) {
         [_tabViewItemInfo refresh];
     }
 }
