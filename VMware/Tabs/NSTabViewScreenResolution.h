@@ -9,10 +9,18 @@
 #import <Cocoa/Cocoa.h>
 #import <SecurityInterface/SFAuthorizationView.h>
 
-@interface NSTabViewScreenResolution : NSTabViewItem
+extern NSString* const kVMWarePrefsAutoHDPI;
 
-@property (nonatomic, assign)   SFAuthorization*    authorization;
+@interface NSTabViewScreenResolution : NSTabViewItem<NSTableViewDelegate, NSTextFieldDelegate>
+
+@property (nonatomic, assign)   SFAuthorization*            authorization;
+
+@property (nonatomic, weak)     NSString* bundleIdentifier;
+@property (nonatomic, assign) IBOutlet NSNumber* currentWidth;
+@property (nonatomic, assign) IBOutlet NSNumber* currentHeight;
 
 - (void)refresh;
+
+- (void)loadDefaultPresets:(bool)reset;
 
 @end

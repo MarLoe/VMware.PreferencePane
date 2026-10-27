@@ -25,34 +25,17 @@
 NSString* const kTestReleaseName                            = @"1.2.1";
 #endif
 
-NSString* const kPresetName                                 = @"name";
-NSString* const kPresetWidth                                = @"width";
-NSString* const kPresetHeight                               = @"height";
-
-NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI";
-
 
 @interface ComLobgerVMwarePreferencePane() <MLGitHubReleaseCheckerDelegate>
 
-@property (nonatomic) NSInteger                             resX;
-@property (nonatomic) NSInteger                             resY;
-@property (nonatomic, weak) IBOutlet NSTabView*             tabView;
+@property (nonatomic, weak) IBOutlet NSTabView*                     tabView;
 @property (nonatomic, weak) IBOutlet NSTabViewScreenResolution*     tabViewScreenResolution;
 @property (nonatomic, weak) IBOutlet NSTabViewItemInfo*             tabViewItemInfo;
 
-@property (nonatomic, weak) IBOutlet NSTableView*           presetsTableView;
-@property (nonatomic, weak) IBOutlet NSTextField*           textFieldResX;
-@property (nonatomic, weak) IBOutlet NSStepper*             stepperResX;
-@property (nonatomic, weak) IBOutlet NSTextField*           textFieldResY;
-@property (nonatomic, weak) IBOutlet NSStepper*             stepperResY;
-
-@property (nonatomic, weak) IBOutlet NSButton*              autoHiDPI;
-
-@property (nonatomic, weak) IBOutlet SFAuthorizationView*   authorizationView;
-@property (nonatomic, weak) IBOutlet NSButton*              buttonApply;
+@property (nonatomic, weak) IBOutlet SFAuthorizationView*           authorizationView;
 
 @property (strong) IBOutlet NSUserDefaultsController*       userDefaultsController;
-@property (strong) IBOutlet NSArrayController*              presetsArrayController;
+//@property (strong) IBOutlet NSArrayController*              presetsArrayController;
 
 @end
 
@@ -61,8 +44,6 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
     BOOL                        _forceCheckForUpdate;
     NSString*                   _bundleIdentifier;
     MLGitHubReleaseChecker*     _releaseChecker;
-    NSURL*                      _vmWarePreferencesUrl;
-    NSMutableDictionary*        _vmWarePreferencesDict;
 }
 
 
@@ -85,7 +66,7 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
 - (void)mainViewDidLoad
 {
     _forceCheckForUpdate |= [self isOptionsKeyPressed];
-    
+        
     // Fix for size according to :
     // https://blog.timschroeder.net/2016/07/16/the-strange-case-of-the-os-x-system-preferences-window-width
     NSSize size = self.mainView.frame.size;
@@ -100,25 +81,10 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
     self.version = kTestReleaseName;
 #endif
     
-    [self applicationDidChangeScreenParametersNotification:nil];
-    
-    [self loadDefaultPresets:NO];
-    
-    self.resX = _currentWidth.integerValue;
-    self.resY = _currentHeight.integerValue;
-    
-    [self selectPresetWithWidth:_currentWidth andHeight:_currentHeight];
-    
-    NSString* libraryFolder = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject;
-    _vmWarePreferencesUrl = [NSURL fileURLWithPathComponents:@[libraryFolder, @"Preferences", @"com.vmware.tools.plist"]];
-    _vmWarePreferencesDict = [[NSDictionary dictionaryWithContentsOfURL:_vmWarePreferencesUrl] mutableCopy];
-    _autoHiDPI.state = [_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] boolValue] ? NSControlStateValueOn : NSControlStateValueOff;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidChangeScreenParametersNotification:)
-                                                 name:NSApplicationDidChangeScreenParametersNotification
-                                               object:nil];
-    
+    _tabViewScreenResolution.bundleIdentifier = _bundleIdentifier;
+    [_tabViewScreenResolution loadDefaultPresets:NO];
+
+
     if ([_authorizationView.subviews count] == 0) {
         // On earlier versions (seen on Yosemite) the SFAuthorizationView does
         // not deserialieze from xib correctly, leaving it "empty".
@@ -210,114 +176,6 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
 }
 
 
-- (void)loadDefaultPresets:(bool)reset
-{
-    NSUserDefaults* userDefaults = _userDefaultsController.defaults;
-    NSString* presetsKey = [_bundleIdentifier stringByAppendingString:@".presets"];
-    if (reset) {
-        [_presetsArrayController removeObjects:_presetsArrayController.arrangedObjects];
-        [userDefaults removeObjectForKey:presetsKey];
-    }
-    if ([userDefaults arrayForKey:presetsKey].count == 0) {
-        NSBundle* prefPaneBundle = [NSBundle bundleForClass:self.class];
-        NSURL* presetsUrl = [prefPaneBundle URLForResource:@"Presets" withExtension:@"plist"];
-        NSArray* presets = [NSArray arrayWithContentsOfURL:presetsUrl];
-        [_presetsArrayController addObjects:presets];
-        [_presetsArrayController setSelectionIndexes:[NSIndexSet new]];
-    }
-}
-
-
-- (void)selectPresetWithWidth:(NSNumber*)width andHeight:(NSNumber*)heihgt
-{
-    for (NSDictionary* preset in _presetsArrayController.arrangedObjects) {
-        if ([preset[kPresetWidth] isEqualToValue:width] &&
-            [preset[kPresetHeight] isEqualToValue:heihgt]) {
-            [_presetsArrayController setSelectedObjects:@[preset]];
-            [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
-            return;;
-        }
-    }
-    
-    [_presetsArrayController setSelectedObjects:@[]];
-}
-
-
-- (void)applySettingsWithRevert:(BOOL)showRevert andAuthorization:(SFAuthorization*)authorization
-{
-    NSSize newSize = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
-    NSSize oldSize = NSMakeSize(_currentWidth.integerValue, _currentHeight.integerValue);
-    
-    BOOL newAutoHiDPIEnabled = _autoHiDPI.state == NSControlStateValueOn;
-    BOOL oldAutoHiDPIEnabled = [_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] boolValue];
-    if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
-        _vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(newAutoHiDPIEnabled);
-        [_vmWarePreferencesDict writeToURL:_vmWarePreferencesUrl atomically:YES];
-    }
-    
-    __weak typeof(self) weakSelf = self;
-    [self setScreenSize:newSize showRevert:showRevert authorization:authorization completionHandler:^(BOOL reverted, NSError* error) {
-        __strong typeof(self) strongSelf = weakSelf;
-        if (reverted && strongSelf != nil) {
-            if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
-                strongSelf->_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(oldAutoHiDPIEnabled);
-                [strongSelf->_vmWarePreferencesDict writeToURL:strongSelf->_vmWarePreferencesUrl atomically:YES];
-                strongSelf.autoHiDPI.state = oldAutoHiDPIEnabled ? NSControlStateValueOn : NSControlStateValueOff;
-            }
-            [[MLVMwareGfxSetResolutionCommand resolutionSet:oldSize.width height:oldSize.height] executeWithCompletion:nil];
-        }
-        if (error != nil) {
-            [strongSelf showErrorSheet:error];
-        }
-    }];
-    
-}
-
-
-- (void)setScreenSize:(NSSize)size showRevert:(BOOL)showRevert authorization:(SFAuthorization*)authorization completionHandler:(void (^)(BOOL reverted, NSError* error))handler
-{
-    MLVMwareCommand* cmd = [MLVMwareGfxSetResolutionCommand resolutionSet:size.width height:size.height];
-    [cmd executeWithCompletion:^(NSError *error) {
-        if (error != nil) {
-            handler(NO, error);
-            return;
-        }
-        
-        void (^handlerBlock)(NSModalResponse returnCode) = ^(NSModalResponse returnCode) {
-            
-            if (returnCode == NSModalResponseCancel) {
-                handler(YES, nil);
-                return;
-            }
-            
-            if (authorization != nil) {
-                STPrivilegedTask* privTask = [[STPrivilegedTask alloc] initWithLaunchPath:cmd.command
-                                                                                arguments:cmd.arguments];
-                OSStatus processError = [privTask launchWithAuthorization:[authorization authorizationRef]];
-                if (processError != errAuthorizationSuccess) {
-                    handler(NO, [NSError errorWithDomain:NSOSStatusErrorDomain code:processError userInfo:nil]);
-                    return;
-                }
-                
-                [privTask waitUntilExit];
-                
-                if (privTask.terminationStatus != errAuthorizationSuccess) {
-                    NSLog(@"Error: %d", processError);
-                }
-            }
-            
-            handler(NO, nil);
-        };
-        if (!showRevert) {
-            handlerBlock(NSModalResponseKeep);
-        }
-        else {
-            [self showKeepChangesWithCompletionHandler:handlerBlock];
-        }
-    }];
-}
-
-
 - (void)downloadAsset:(MLGitHubAsset*)asset
 {
     NSFileManager* fileManager = [NSFileManager defaultManager];
@@ -388,40 +246,6 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
     return ([NSEvent modifierFlags] & NSEventModifierFlagOption) == NSEventModifierFlagOption;
 }
 
-
-#pragma mark - Property Access Methods
-
-- (void)setResX:(NSInteger)resX
-{
-    if (_resX == resX) {
-        return;
-    }
-    _resX = resX;
-    
-    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
-}
-
-
-- (void)setResY:(NSInteger)resY
-{
-    if (_resY == resY) {
-        return;
-    }
-    _resY = resY;
-
-    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
-}
-
-
-#pragma mark - Notification Handlers
-
-- (void)applicationDidChangeScreenParametersNotification:(NSNotification*) notification
-{
-    NSScreen* screen = NSScreen.mainScreen;
-    NSRect screenSize = screen.frame;
-    self.currentWidth = [NSNumber numberWithInteger:screenSize.size.width];
-    self.currentHeight = [NSNumber numberWithInteger:screenSize.size.height];
-}
 
 #pragma mark - SFAuthorizationViewDelegate
 
@@ -495,160 +319,6 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
     else if (tabViewItem == _tabViewItemInfo) {
         [_tabViewItemInfo refresh];
     }
-}
-
-
-#pragma mark - NSTableViewDelegate
-
-- (void)tableViewSelectionDidChange:(NSNotification *)notification
-{
-    NSDictionary* selectedPreset = [_presetsArrayController.selectedObjects firstObject];
-    if (selectedPreset != NULL)
-    {
-        self.resX = [selectedPreset[kPresetWidth] integerValue];
-        self.resY = [selectedPreset[kPresetHeight] integerValue];
-    }
-}
-
-#pragma mark - NSTextFieldDelegate
-
-- (BOOL)control:(NSControl *)control
-       textView:(NSTextView *)textView
-doCommandBySelector:(SEL)commandSelector
-{
-    NSInteger delta = 0;
-    if (commandSelector == @selector(moveUp:))
-    {
-        delta = 1;
-    }
-    else if (commandSelector == @selector(moveUpAndModifySelection:))
-    {
-        delta = 10;
-    }
-    else if (commandSelector == @selector(moveToBeginningOfDocumentAndModifySelection:))
-    {
-        delta = 100;
-    }
-    else if (commandSelector == @selector(moveDown:))
-    {
-        delta = -1;
-    }
-    else if (commandSelector == @selector(moveDownAndModifySelection:))
-    {
-        delta = -10;
-    }
-    else if (commandSelector == @selector(moveToEndOfDocumentAndModifySelection:))
-    {
-        delta = -100;
-    }
-    else
-    {
-        return NO;   // let the text field handle every other key
-    }
-    
-    if (control == _textFieldResX)
-    {
-        // Passing by textfield, inforces number formatting
-        _textFieldResX.integerValue += delta;
-        self.resX = _textFieldResX.integerValue;
-    }
-    else if (control == _textFieldResY)
-    {
-        // Passing by textfield, inforces number formatting
-        _textFieldResY.integerValue += delta;
-        self.resY = _textFieldResY.integerValue;
-    }
-    else
-    {
-        return NO;   // let the text field handle every other key
-    }
-    
-    [textView selectAll:nil];   // keeps the field editable and makes repeated presses feel natural
-    return YES;
-}
-
-
-#pragma mark - Interface Builder Action
-
-- (IBAction)apply:(id)sender
-{
-    BOOL optionsKeyPressed = [self isOptionsKeyPressed];
-    NSUserDefaults* userDefaults = _userDefaultsController.defaults;
-    NSString* skipPrivilegedWarningKey = [_bundleIdentifier stringByAppendingString:@".skipPrivilegedWarning"];
-    
-    if (_authorizationView.authorizationState == SFAuthorizationViewUnlockedState) {
-        [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:[_authorizationView authorization]];
-    }
-    else if ([userDefaults boolForKey:skipPrivilegedWarningKey]) {
-        [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:nil];
-    }
-    else {
-        [self showPrivilegedWarningWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState) {
-            if (returnCode == NSModalResponseCancel) {
-                return;
-            }
-            if (suppressionState == NSControlStateValueOn) {
-                // Suppress this alert from now on
-                [userDefaults setBool:YES forKey:skipPrivilegedWarningKey];
-            }
-            [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:nil];
-        }];
-    }
-}
-
-
-- (IBAction)presetNameAction:(id)sender
-{
-    // Binding is not triggered when bound properties are set
-    NSDictionary *bindingInfo = [_presetsArrayController infoForBinding:@"contentArray"];
-    if (bindingInfo) {
-        NSObject *object = [bindingInfo objectForKey:NSObservedObjectKey];
-        NSString *keyPath = [bindingInfo objectForKey:NSObservedKeyPathKey];
-        
-        // Ignoring options to apply value transformer, placeholder, etc. to value
-        // NSDictionary *options = [bindingInfo objectForKey:NSOptionsKey];
-        
-        // Tell the model or controller object the new value
-        [object setValue:_presetsArrayController.content forKeyPath:keyPath];
-    }
-}
-
-
-- (IBAction)presetsAdd:(id)sender
-{
-    NSDictionary* newPreset = @{
-        kPresetName : @"New Screen Size",
-        kPresetWidth : @(_textFieldResX.integerValue),
-        kPresetHeight : @(_textFieldResY.integerValue),
-    };
-    [_presetsArrayController addObject:newPreset];
-    
-    [_presetsArrayController setSelectedObjects:@[newPreset]];
-    [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
-    
-    [self presetRename:sender];
-}
-
-
-- (IBAction)presetRename:(id)sender
-{
-    NSInteger selectedRow = _presetsTableView.selectedRow;
-    if (selectedRow >= 0) {
-        [_presetsTableView editColumn:0
-                                  row:selectedRow
-                            withEvent:nil
-                               select:YES];
-    }
-}
-
-
-- (IBAction)presetReset:(id)sender
-{
-    [self showResetPresetsWithCompletionHandler:^(NSModalResponse returnCode) {
-        if (returnCode == NSModalResponseReset) {
-            [self loadDefaultPresets:YES];
-        }
-    }];
 }
 
 @end

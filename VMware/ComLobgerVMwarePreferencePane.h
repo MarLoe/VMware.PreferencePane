@@ -12,7 +12,4 @@
 
 @property (nonatomic, strong) IBOutlet NSString* version;
 
-@property (nonatomic, assign) IBOutlet NSNumber* currentWidth;
-@property (nonatomic, assign) IBOutlet NSNumber* currentHeight;
-
 @end
