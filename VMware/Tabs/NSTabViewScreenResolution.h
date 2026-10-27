@@ -14,9 +14,8 @@
 
 @property (nonatomic, assign)   SFAuthorization*            authorization;
 
-@property (nonatomic, weak)     NSString* bundleIdentifier;
-@property (nonatomic, assign) IBOutlet NSNumber* currentWidth;
-@property (nonatomic, assign) IBOutlet NSNumber* currentHeight;
+@property (nonatomic, weak)     NSString*                   bundleIdentifier;
+
 
 - (void)refresh;
 

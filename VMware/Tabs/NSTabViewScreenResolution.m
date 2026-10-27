@@ -24,8 +24,11 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
 
 @interface NSTabViewScreenResolution ()
 
-@property (nonatomic) NSInteger                             resX;
-@property (nonatomic) NSInteger                             resY;
+@property (nonatomic, assign) NSInteger                             currentWidth;
+@property (nonatomic, assign) NSInteger                             currentHeight;
+
+@property (nonatomic, assign) NSInteger                             resX;
+@property (nonatomic, assign) NSInteger                             resY;
 
 @property (nonatomic, strong)   IBOutlet NSArrayController*         presetsArrayController;
 @property (nonatomic, weak)     IBOutlet NSUserDefaultsController*  userDefaultsController;
@@ -79,14 +82,14 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
     _autoHiDPI.state = [[self loadVMwarePreferences][kVMwarePrefsAutoHDPI] boolValue] ? NSControlStateValueOn : NSControlStateValueOff;
         
     [self getScreenSize];
-    self.resX = _currentWidth.integerValue;
-    self.resY = _currentHeight.integerValue;
+    self.resX = _currentWidth;
+    self.resY = _currentHeight;
 }
 
 
 - (void)refresh
 {
-    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+    [self selectPresetWithWidth:_resX andHeight:_resY];
 }
 
 
@@ -135,14 +138,19 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
         [_presetsArrayController setSelectionIndexes:[NSIndexSet new]];
     }
     
-    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+    [self selectPresetWithWidth:_resX andHeight:_resY];
 }
 
 
-- (void)selectPresetWithWidth:(NSNumber*)width andHeight:(NSNumber*)heihgt
+- (void)selectPresetWithWidth:(NSInteger)width andHeight:(NSInteger)height
 {
+    id widthNumber = @(width);
+    id heightNumber = @(height);
     for (NSDictionary* preset in _presetsArrayController.arrangedObjects) {
-        if ([self selectPreset:preset ifMatchingWidth:width andHeight:heihgt]) {
+        if ([preset[kPresetWidth] isEqualToValue:widthNumber] &&
+            [preset[kPresetHeight] isEqualToValue:heightNumber]) {
+            [_presetsArrayController setSelectedObjects:@[preset]];
+            [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
             return;
         }
     }
@@ -151,25 +159,12 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
 }
 
 
-- (BOOL)selectPreset:(NSDictionary*)preset ifMatchingWidth:(NSNumber*)width andHeight:(NSNumber*)heihgt
-{
-    if ([preset[kPresetWidth] isEqualToValue:width] &&
-        [preset[kPresetHeight] isEqualToValue:heihgt]) {
-        [_presetsArrayController setSelectedObjects:@[preset]];
-        [_presetsTableView scrollRowToVisible:_presetsArrayController.selectionIndex];
-        return YES;
-    }
-    
-    return NO;
-}
-
-
 - (void)getScreenSize
 {
     NSScreen* screen = NSScreen.mainScreen;
     NSRect screenSize = screen.frame;
-    self.currentWidth = [NSNumber numberWithInteger:screenSize.size.width];
-    self.currentHeight = [NSNumber numberWithInteger:screenSize.size.height];
+    self.currentWidth = screenSize.size.width;
+    self.currentHeight = screenSize.size.height;
 }
 
 
@@ -219,8 +214,8 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
 
 - (void)applySettingsWithRevert:(BOOL)showRevert andAuthorization:(SFAuthorization*)authorization
 {
-    NSSize newSize = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
-    NSSize oldSize = NSMakeSize(_currentWidth.integerValue, _currentHeight.integerValue);
+    NSSize newSize = NSMakeSize(_resX, _resY);
+    NSSize oldSize = NSMakeSize(_currentWidth, _currentHeight);
     
     NSMutableDictionary* vmWarePreferences = [[self loadVMwarePreferences] mutableCopy];
     BOOL newAutoHiDPIEnabled = _autoHiDPI.state == NSControlStateValueOn;
@@ -258,13 +253,6 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
 
 #pragma mark - NSTableViewDelegate
 
-//- (void)tableView:(NSTableView *)tableView didAddRowView:(NSTableRowView *)rowView forRow:(NSInteger)row
-//{
-//    NSDictionary* preset = [_presetsArrayController.arrangedObjects objectAtIndex:row];
-//    [self selectPreset:preset ifMatchingWidth:@(_resX) andHeight:@(_resY)];
-//}
-//
-//
 - (void)tableViewSelectionDidChange:(NSNotification *)notification
 {
     NSDictionary* selectedPreset = [_presetsArrayController.selectedObjects firstObject];
@@ -357,8 +345,8 @@ doCommandBySelector:(SEL)commandSelector
 {
     NSDictionary* newPreset = @{
         kPresetName : @"New Screen Size",
-        kPresetWidth : @(_textFieldResX.integerValue),
-        kPresetHeight : @(_textFieldResY.integerValue),
+        kPresetWidth : @(_resX),
+        kPresetHeight : @(_resY),
     };
     [_presetsArrayController addObject:newPreset];
     
@@ -426,7 +414,7 @@ doCommandBySelector:(SEL)commandSelector
     }
     _resX = resX;
     
-    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+    [self selectPresetWithWidth:_resX andHeight:_resY];
 }
 
 
@@ -437,18 +425,7 @@ doCommandBySelector:(SEL)commandSelector
     }
     _resY = resY;
 
-    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+    [self selectPresetWithWidth:_resX andHeight:_resY];
 }
-
-//- (void)setPresetsArrayController:(NSArrayController*)presetsArrayController
-//{
-//    if (_presetsArrayController == presetsArrayController) {
-//        return;
-//    }
-//    _presetsArrayController = presetsArrayController;
-//    
-//    [self loadDefaultPresets:NO];
-//    [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
-//}
 
 @end
