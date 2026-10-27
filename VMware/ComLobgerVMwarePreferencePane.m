@@ -227,7 +227,7 @@ NSString* const kTestReleaseName                            = @"1.2.1";
         if (error != nil) {
             // In case of error, remove our placeholder file.
             [fileManager removeItemAtURL:downloadUrl error:nil];
-            [MLAlert showErrorSheet:error];
+            [[MLAlert alertOnView:self.mainView] showErrorSheet:error];
         }
         
         [progress unpublish]; // End "Downloads stack" progress
@@ -284,7 +284,7 @@ NSString* const kTestReleaseName                            = @"1.2.1";
     }
     
     // Now create the alert
-    [MLAlert showNewVersionAvailableForReleaseChecker:_releaseChecker withCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset) {
+    [[MLAlert alertOnView:self.mainView] showNewVersionAvailableForReleaseChecker:_releaseChecker withCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset) {
         if (suppressionState == NSControlStateValueOn) {
             // Suppress this alert from now on
             [userDefaults setObject:releaseInfo.name forKey:skipKey];
@@ -305,7 +305,7 @@ NSString* const kTestReleaseName                            = @"1.2.1";
 
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker *)sender failedWithError:(NSError *)error
 {
-    [MLAlert showError:error];
+    [[MLAlert alertOnView:self.mainView] showError:error];
 }
 
 

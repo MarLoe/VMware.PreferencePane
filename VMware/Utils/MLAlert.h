@@ -18,14 +18,15 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 @interface MLAlert : NSObject
 
-+ (void)showResetPresetsWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler;
-+ (void)showKeepChangesWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler;
-+ (void)showNewVersionAvailableForReleaseChecker:(MLGitHubReleaseChecker*)releaseChecker withCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset))handler;
-+ (void)showPrivilegedWarningWithCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState))handler;
-//+ (void)showKeepChangesForWindow:(NSWindow *)sheetWindow completionHandler:(void (^)(NSModalResponse returnCode))handler;
++ (instancetype)alertOnView:(NSView*)view;
 
-+ (void)showError:(NSError*)error;
-+ (void)showErrorSheet:(NSError*)error;
+- (void)showResetPresetsWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler;
+- (void)showKeepChangesWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler;
+- (void)showNewVersionAvailableForReleaseChecker:(MLGitHubReleaseChecker*)releaseChecker withCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset))handler;
+- (void)showPrivilegedWarningWithCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState))handler;
+
+- (void)showError:(NSError*)error;
+- (void)showErrorSheet:(NSError*)error;
 
 @end
 

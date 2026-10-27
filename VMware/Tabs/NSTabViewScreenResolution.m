@@ -206,7 +206,7 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
             handlerBlock(NSModalResponseKeep);
         }
         else {
-            [MLAlert showKeepChangesWithCompletionHandler:handlerBlock];
+            [[MLAlert alertOnView:self.view] showKeepChangesWithCompletionHandler:handlerBlock];
         }
     }];
 }
@@ -237,7 +237,7 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
             [[MLVMwareGfxSetResolutionCommand resolutionSet:oldSize.width height:oldSize.height] executeWithCompletion:nil];
         }
         if (error != nil) {
-            [MLAlert showErrorSheet:error];
+            [[MLAlert alertOnView:strongSelf.view] showErrorSheet:error];
         }
     }];
 }
@@ -371,7 +371,7 @@ doCommandBySelector:(SEL)commandSelector
 
 - (IBAction)presetReset:(id)sender
 {
-    [MLAlert showResetPresetsWithCompletionHandler:^(NSModalResponse returnCode) {
+    [[MLAlert alertOnView:self.view] showResetPresetsWithCompletionHandler:^(NSModalResponse returnCode) {
         if (returnCode == NSModalResponseReset) {
             [self loadDefaultPresets:YES];
         }
@@ -391,7 +391,7 @@ doCommandBySelector:(SEL)commandSelector
         [self applySettingsWithRevert:!optionsKeyPressed andAuthorization:nil];
     }
     else {
-        [MLAlert showPrivilegedWarningWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState) {
+        [[MLAlert alertOnView:self.view] showPrivilegedWarningWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState) {
             if (returnCode == NSModalResponseCancel) {
                 return;
             }

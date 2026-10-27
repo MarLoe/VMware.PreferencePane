@@ -10,19 +10,27 @@
 
 @interface MLAlert()
 
-@property (class, nonatomic, readonly) NSWindow *mainWindow;
+@property (nonatomic, weak) NSWindow *mainWindow;
 
 @end
 
 @implementation MLAlert
 
-+ (NSWindow *)mainWindow {
-    NSWindow *w = NSApplication.sharedApplication.mainWindow;
-    return w ?: NSApplication.sharedApplication.keyWindow;   // fallback
+- (instancetype)initWithView:(NSView*)view
+{
+    if (self = [super init]) {
+        self.mainWindow = view.window;
+    }
     
+    return self;
 }
 
-+ (void)showResetPresetsWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler
++ (instancetype)alertOnView:(NSView*)view
+{
+    return [[MLAlert alloc] initWithView:view];
+}
+
+- (void)showResetPresetsWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler
 {
     NSAlert* alert = [[NSAlert alloc] init];
     alert.alertStyle = NSAlertStyleWarning;
@@ -31,11 +39,11 @@
     [alert addButtonWithTitle:NSLocalizedString(@"Reset", -)].tag = NSModalResponseReset;
     [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
     
-    [alert beginSheetModalForWindow:MLAlert.mainWindow completionHandler:handler];
+    [alert beginSheetModalForWindow:_mainWindow completionHandler:handler];
 }
 
 
-+ (void)showKeepChangesWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler
+- (void)showKeepChangesWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler
 {
     static dispatch_source_t timer = NULL;
     
@@ -54,7 +62,7 @@
     [alert addButtonWithTitle:NSLocalizedString(@"Keep", -)].tag = NSModalResponseKeep;
     NSButton* revertButton = [alert addButtonWithTitle:NSLocalizedString(@"Revert", -)];
     revertButton.tag = NSModalResponseCancel;
-    [alert beginSheetModalForWindow:MLAlert.mainWindow completionHandler:^(NSModalResponse returnCode) {
+    [alert beginSheetModalForWindow:_mainWindow completionHandler:^(NSModalResponse returnCode) {
         if (timer != NULL) {
             dispatch_source_cancel(timer);
             timer = nil;
@@ -75,7 +83,7 @@
 }
 
 
-+ (void)showNewVersionAvailableForReleaseChecker:(MLGitHubReleaseChecker*)releaseChecker withCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset))handler
+- (void)showNewVersionAvailableForReleaseChecker:(MLGitHubReleaseChecker*)releaseChecker withCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset))handler
 {
     // Setup release note
     NSDictionary<NSAttributedStringKey, id>* titleAttr = @{
@@ -125,13 +133,13 @@
     }
     [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
     
-    [alert beginSheetModalForWindow:MLAlert.mainWindow completionHandler:^(NSModalResponse returnCode) {
+    [alert beginSheetModalForWindow:_mainWindow completionHandler:^(NSModalResponse returnCode) {
         handler(returnCode, alert.suppressionButton.state, asset);
     }];
 }
 
 
-+ (void)showPrivilegedWarningWithCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState))handler
+- (void)showPrivilegedWarningWithCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState))handler
 {
     NSAlert* alert = [[NSAlert alloc] init];
     alert.alertStyle = NSAlertStyleWarning;
@@ -141,13 +149,13 @@
     [alert addButtonWithTitle:NSLocalizedString(@"Continue", -)];
     [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
     
-    [alert beginSheetModalForWindow:MLAlert.mainWindow completionHandler:^(NSModalResponse returnCode) {
+    [alert beginSheetModalForWindow:_mainWindow completionHandler:^(NSModalResponse returnCode) {
         handler(returnCode, alert.suppressionButton.state);
     }];
 }
 
 
-+ (void)showError:(NSError*)error
+- (void)showError:(NSError*)error
 {
     NSLog(@"ERROR: %@", error);
     NSAlert* alert = [NSAlert alertWithError:error];
@@ -155,11 +163,11 @@
 }
 
 
-+ (void)showErrorSheet:(NSError*)error
+- (void)showErrorSheet:(NSError*)error
 {
     NSLog (@"ERROR:\n%@", error);
     NSAlert* alert = [NSAlert alertWithError:error];
-    [alert beginSheetModalForWindow:MLAlert.mainWindow completionHandler:nil];
+    [alert beginSheetModalForWindow:_mainWindow completionHandler:nil];
 }
 
 @end
