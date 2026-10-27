@@ -9,16 +9,9 @@
             <connections>
                 <outlet property="_window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
                 <outlet property="authorizationView" destination="IgJ-mo-r8R" id="yyq-jO-udO"/>
-                <outlet property="autoHiDPI" destination="egh-w0-HZH" id="R6k-am-8fg"/>
-                <outlet property="buttonApply" destination="8ew-TP-RYp" id="nSl-iW-gD1"/>
-                <outlet property="presetsArrayController" destination="kcO-Vf-8QR" id="q2Y-WT-Ihe"/>
-                <outlet property="presetsTableView" destination="yV1-Es-Vol" id="z8Q-yn-yV0"/>
-                <outlet property="stepperResX" destination="ogO-mw-Ufl" id="tRw-7N-cTe"/>
-                <outlet property="stepperResY" destination="22A-sq-P4P" id="W8l-Rh-fFD"/>
                 <outlet property="tabView" destination="8hv-iW-oT2" id="nky-zl-7Vv"/>
                 <outlet property="tabViewItemInfo" destination="rf4-ZH-5aB" id="Xf5-Qt-hqf"/>
-                <outlet property="textFieldResX" destination="N4B-s8-esC" id="Dfo-yD-3Iq"/>
-                <outlet property="textFieldResY" destination="0w8-gU-ovm" id="0p1-h1-rdA"/>
+                <outlet property="tabViewScreenResolution" destination="9Kb-4t-mB1" id="JLk-y2-2Mg"/>
                 <outlet property="userDefaultsController" destination="Xs9-rl-isb" id="Y9W-Q4-4b3"/>
             </connections>
         </customObject>
@@ -42,7 +35,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="176" y="715" width="680" height="409"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1600" height="945"/>
             <view key="contentView" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="680" height="409"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -52,7 +45,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <font key="font" metaFont="system"/>
                         <tabViewItems>
-                            <tabViewItem label="Display" identifier="tab_display" id="9Kb-4t-mB1">
+                            <tabViewItem label="Display" identifier="tab_display" id="9Kb-4t-mB1" customClass="NSTabViewScreenResolution">
                                 <view key="view" id="5G4-7z-Up1">
                                     <rect key="frame" x="10" y="33" width="634" height="294"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -79,8 +72,8 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.resX" id="LvH-Ml-lBc"/>
-                                                <outlet property="delegate" destination="-2" id="c9A-vx-r72"/>
+                                                <binding destination="9Kb-4t-mB1" name="value" keyPath="self.resX" id="7h1-sm-igK"/>
+                                                <outlet property="delegate" destination="9Kb-4t-mB1" id="5GU-tR-37l"/>
                                             </connections>
                                         </textField>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ogO-mw-Ufl">
@@ -92,9 +85,9 @@
                                                 </connections>
                                             </stepperCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.resX" previousBinding="uGb-x4-Bkk" id="hab-Vi-1pB"/>
-                                                <binding destination="-2" name="maxValue" keyPath="self.textFieldResX.formatter.maximum" id="gYO-mt-PJq"/>
-                                                <binding destination="-2" name="minValue" keyPath="self.textFieldResX.formatter.minimum" previousBinding="gYO-mt-PJq" id="uGb-x4-Bkk"/>
+                                                <binding destination="9Kb-4t-mB1" name="value" keyPath="self.resX" previousBinding="dbz-Qd-hWK" id="4GL-Jn-M7W"/>
+                                                <binding destination="9Kb-4t-mB1" name="maxValue" keyPath="self.textFieldResX.formatter.maximum" id="6Le-ta-mpc"/>
+                                                <binding destination="9Kb-4t-mB1" name="minValue" keyPath="self.textFieldResX.formatter.minimum" previousBinding="6Le-ta-mpc" id="dbz-Qd-hWK"/>
                                             </connections>
                                         </stepper>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cSP-Gc-jxM">
@@ -119,7 +112,7 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.resY" id="VdT-h0-Cxu">
+                                                <binding destination="9Kb-4t-mB1" name="value" keyPath="self.resY" id="oyj-hT-1Nu">
                                                     <dictionary key="options">
                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                         <bool key="NSValidatesImmediately" value="YES"/>
@@ -137,9 +130,9 @@
                                                 </connections>
                                             </stepperCell>
                                             <connections>
-                                                <binding destination="-2" name="value" keyPath="self.resY" previousBinding="72m-Nh-EVa" id="2dT-mH-QQV"/>
-                                                <binding destination="-2" name="maxValue" keyPath="self.textFieldResY.formatter.maximum" id="yrx-b7-2z8"/>
-                                                <binding destination="-2" name="minValue" keyPath="self.textFieldResY.formatter.minimum" previousBinding="yrx-b7-2z8" id="72m-Nh-EVa"/>
+                                                <binding destination="9Kb-4t-mB1" name="value" keyPath="self.resY" previousBinding="ABH-Ho-Fsw" id="kfp-Qv-yru"/>
+                                                <binding destination="9Kb-4t-mB1" name="maxValue" keyPath="self.textFieldResY.formatter.maximum" id="HeJ-YP-VTt"/>
+                                                <binding destination="9Kb-4t-mB1" name="minValue" keyPath="self.textFieldResY.formatter.minimum" previousBinding="HeJ-YP-VTt" id="ABH-Ho-Fsw"/>
                                             </connections>
                                         </stepper>
                                         <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="36" horizontalPageScroll="10" verticalLineScroll="36" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Smz-cM-XLV">
@@ -186,7 +179,7 @@
                                                                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                                 </textFieldCell>
                                                                                 <connections>
-                                                                                    <action selector="presetNameAction:" target="-2" id="8qr-sA-k05"/>
+                                                                                    <action selector="presetNameAction:" target="9Kb-4t-mB1" id="Z6v-U6-Xkm"/>
                                                                                     <binding destination="jAp-oO-746" name="value" keyPath="objectValue.name" id="wYs-Np-2tv">
                                                                                         <dictionary key="options">
                                                                                             <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
@@ -231,7 +224,7 @@
                                                             </tableColumn>
                                                         </tableColumns>
                                                         <connections>
-                                                            <outlet property="delegate" destination="-2" id="nmK-El-3Js"/>
+                                                            <outlet property="delegate" destination="9Kb-4t-mB1" id="RiR-Uh-XYA"/>
                                                         </connections>
                                                     </tableView>
                                                 </subviews>
@@ -260,7 +253,7 @@
                                                             <font key="font" metaFont="system"/>
                                                         </buttonCell>
                                                         <connections>
-                                                            <action selector="presetsAdd:" target="-2" id="7NJ-9C-svn"/>
+                                                            <action selector="presetsAdd:" target="9Kb-4t-mB1" id="Nwh-Mi-UzL"/>
                                                         </connections>
                                                     </button>
                                                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lw6-CY-UK3" userLabel="Minus">
@@ -294,7 +287,7 @@
                                                                     <menuItem title="Rename" id="OS8-cI-EjH">
                                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                                         <connections>
-                                                                            <action selector="presetRename:" target="-2" id="R21-z2-M6b"/>
+                                                                            <action selector="presetRename:" target="9Kb-4t-mB1" id="kvG-np-Xyb"/>
                                                                             <binding destination="kcO-Vf-8QR" name="enabled" keyPath="selectedObjects.@count" id="vI9-U7-pqV">
                                                                                 <dictionary key="options">
                                                                                     <integer key="NSMultipleValuesPlaceholder" value="0"/>
@@ -308,7 +301,7 @@
                                                                     <menuItem isSeparatorItem="YES" id="yvw-1p-4VJ"/>
                                                                     <menuItem title="Reset" id="WAC-aa-wqw">
                                                                         <connections>
-                                                                            <action selector="presetReset:" target="-2" id="HHE-Jd-9iD"/>
+                                                                            <action selector="presetReset:" target="9Kb-4t-mB1" id="raM-JM-L25"/>
                                                                         </connections>
                                                                     </menuItem>
                                                                 </items>
@@ -336,38 +329,17 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <connections>
-                                                <action selector="apply:" target="-2" id="eUV-3H-1YR"/>
+                                                <action selector="apply:" target="9Kb-4t-mB1" id="ODo-gQ-fPY"/>
                                             </connections>
                                         </button>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OSt-wG-QBg">
-                                            <rect key="frame" x="202" y="8" width="111" height="11"/>
+                                            <rect key="frame" x="202" y="8" width="129" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" sendsActionOnEndEditing="YES" title="Current resolution" id="nrp-7j-cOB">
-                                                <font key="font" metaFont="miniSystem"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Current resolution" usesSingleLineMode="YES" id="nrp-7j-cOB">
+                                                <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
-                                        </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pIX-lf-Sez">
-                                            <rect key="frame" x="310" y="8" width="111" height="11"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" sendsActionOnEndEditing="YES" title="1024 x 768" id="OBW-BW-bod">
-                                                <font key="font" metaFont="miniSystem"/>
-                                                <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                            <connections>
-                                                <binding destination="-2" name="displayPatternValue2" keyPath="self.currentHeight" previousBinding="Kr9-VU-Tb2" id="sZQ-JG-hzq">
-                                                    <dictionary key="options">
-                                                        <string key="NSDisplayPattern">%{value1}@ x %{value2}@</string>
-                                                    </dictionary>
-                                                </binding>
-                                                <binding destination="-2" name="displayPatternValue1" keyPath="self.currentWidth" id="Kr9-VU-Tb2">
-                                                    <dictionary key="options">
-                                                        <string key="NSDisplayPattern">%{value1}@ x %{value2}@</string>
-                                                    </dictionary>
-                                                </binding>
-                                            </connections>
                                         </textField>
                                         <button toolTip="If your screen automatically reverts to half the screen size you set, you might want to try and disable auto HiDPI " verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="egh-w0-HZH">
                                             <rect key="frame" x="325" y="198" width="22" height="18"/>
@@ -386,8 +358,40 @@
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pIX-lf-Sez">
+                                            <rect key="frame" x="325" y="9" width="111" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="1024 x 768" usesSingleLineMode="YES" id="OBW-BW-bod">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="9Kb-4t-mB1" name="displayPatternValue2" keyPath="self.currentHeight" previousBinding="XfW-1P-6BU" id="cXi-OC-VR8">
+                                                    <dictionary key="options">
+                                                        <string key="NSDisplayPattern">%{value1}@ x %{value2}@</string>
+                                                    </dictionary>
+                                                </binding>
+                                                <binding destination="9Kb-4t-mB1" name="displayPatternValue1" keyPath="self.currentWidth" id="XfW-1P-6BU">
+                                                    <dictionary key="options">
+                                                        <string key="NSDisplayPattern">%{value1}@ x %{value2}@</string>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
+                                        </textField>
                                     </subviews>
                                 </view>
+                                <connections>
+                                    <outlet property="autoHiDPI" destination="egh-w0-HZH" id="sIY-ze-vMM"/>
+                                    <outlet property="buttonApply" destination="8ew-TP-RYp" id="GUk-rv-g4R"/>
+                                    <outlet property="presetsArrayController" destination="kcO-Vf-8QR" id="4m4-wK-XyS"/>
+                                    <outlet property="presetsTableView" destination="yV1-Es-Vol" id="smE-xf-nuq"/>
+                                    <outlet property="stepperResX" destination="ogO-mw-Ufl" id="gF9-UF-nCO"/>
+                                    <outlet property="stepperResY" destination="22A-sq-P4P" id="QLg-ln-K8e"/>
+                                    <outlet property="textFieldResX" destination="N4B-s8-esC" id="ODg-zi-l4y"/>
+                                    <outlet property="textFieldResY" destination="0w8-gU-ovm" id="Gss-gQ-ASv"/>
+                                    <outlet property="userDefaultsController" destination="Xs9-rl-isb" id="jaw-1d-tow"/>
+                                </connections>
                             </tabViewItem>
                             <tabViewItem label="Info" identifier="tab_info" id="rf4-ZH-5aB" customClass="NSTabViewItemInfo">
                                 <view key="view" id="DFU-Oj-vgZ">
