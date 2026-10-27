@@ -19,6 +19,9 @@ NSString* const kPresetHeight                               = @"height";
 
 NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI";
 
+NSString* const kPreferencesDirectory                       = @"Preferences";
+NSString* const kVMwareToolsPlist                           = @"com.vmware.tools.plist";
+
 @interface NSTabViewScreenResolution ()
 
 @property (nonatomic) NSInteger                             resX;
@@ -32,19 +35,12 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
 @property (nonatomic, weak)     IBOutlet NSStepper*                 stepperResX;
 @property (nonatomic, weak)     IBOutlet NSTextField*               textFieldResY;
 @property (nonatomic, weak)     IBOutlet NSStepper*                 stepperResY;
-
 @property (nonatomic, weak)     IBOutlet NSButton*                  autoHiDPI;
-
 @property (nonatomic, weak)     IBOutlet NSButton*                  buttonApply;
 
 @end
 
 @implementation NSTabViewScreenResolution
-{
-    NSURL*                      _vmWarePreferencesUrl;
-    NSMutableDictionary*        _vmWarePreferencesDict;
-}
-
 
 - (instancetype)init
 {
@@ -79,11 +75,8 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
                                              selector:@selector(applicationDidChangeScreenParametersNotification:)
                                                  name:NSApplicationDidChangeScreenParametersNotification
                                                object:nil];
-        
-    NSString* libraryFolder = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject;
-    _vmWarePreferencesUrl = [NSURL fileURLWithPathComponents:@[libraryFolder, @"Preferences", @"com.vmware.tools.plist"]];
-    _vmWarePreferencesDict = [[NSDictionary dictionaryWithContentsOfURL:_vmWarePreferencesUrl] mutableCopy];
-    _autoHiDPI.state = [_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] boolValue] ? NSControlStateValueOn : NSControlStateValueOff;
+
+    _autoHiDPI.state = [[self loadVMwarePreferences][kVMWarePrefsAutoHDPI] boolValue] ? NSControlStateValueOn : NSControlStateValueOff;
         
     [self getScreenSize];
     self.resX = _currentWidth.integerValue;
@@ -94,6 +87,33 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
 - (void)refresh
 {
     [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
+}
+
+
+- (NSDictionary*)loadVMwarePreferences
+{
+    NSURL* vmWarePreferencesUrl = [NSURL fileURLWithPathComponents:@[
+        NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject,
+        kPreferencesDirectory,
+        kVMwareToolsPlist]];
+
+    return [NSDictionary dictionaryWithContentsOfURL:vmWarePreferencesUrl];
+}
+
+
+- (NSError*)saveVMwarePreferences:(NSDictionary*)preferences
+{
+    NSURL* vmWarePreferencesUrl = [NSURL fileURLWithPathComponents:@[
+        NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject,
+        kPreferencesDirectory,
+        kVMwareToolsPlist]];
+    
+    NSError* error = nil;
+    if (![preferences writeToURL:vmWarePreferencesUrl error:&error]) {
+        return error;
+    }
+    
+    return nil;
 }
 
 
@@ -202,11 +222,12 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
     NSSize newSize = NSMakeSize(_textFieldResX.integerValue, _textFieldResY.integerValue);
     NSSize oldSize = NSMakeSize(_currentWidth.integerValue, _currentHeight.integerValue);
     
+    NSMutableDictionary* vmWarePreferences = [[self loadVMwarePreferences] mutableCopy];
     BOOL newAutoHiDPIEnabled = _autoHiDPI.state == NSControlStateValueOn;
-    BOOL oldAutoHiDPIEnabled = [_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] boolValue];
+    BOOL oldAutoHiDPIEnabled = [vmWarePreferences[kVMWarePrefsAutoHDPI] boolValue];
     if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
-        _vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(newAutoHiDPIEnabled);
-        [_vmWarePreferencesDict writeToURL:_vmWarePreferencesUrl atomically:YES];
+        vmWarePreferences[kVMWarePrefsAutoHDPI] = @(newAutoHiDPIEnabled);
+        [self saveVMwarePreferences:vmWarePreferences];
     }
     
     __weak typeof(self) weakSelf = self;
@@ -214,8 +235,8 @@ NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI"
         __strong typeof(self) strongSelf = weakSelf;
         if (reverted && strongSelf != nil) {
             if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
-                strongSelf->_vmWarePreferencesDict[kVMWarePrefsAutoHDPI] = @(oldAutoHiDPIEnabled);
-                [strongSelf->_vmWarePreferencesDict writeToURL:strongSelf->_vmWarePreferencesUrl atomically:YES];
+                vmWarePreferences[kVMWarePrefsAutoHDPI] = @(oldAutoHiDPIEnabled);
+                [strongSelf saveVMwarePreferences:vmWarePreferences];
                 strongSelf.autoHiDPI.state = oldAutoHiDPIEnabled ? NSControlStateValueOn : NSControlStateValueOff;
             }
             [[MLVMwareGfxSetResolutionCommand resolutionSet:oldSize.width height:oldSize.height] executeWithCompletion:nil];
