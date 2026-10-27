@@ -12,6 +12,7 @@
 #import <sys/xattr.h>
 #import <GitHubRelease/GitHubRelease.h>
 #import <STPrivilegedTask/STPrivilegedTask.h>
+#import "MLAlert.h"
 #import "MLVMwareCommand.h"
 #import "MLVMwareGfxCommand.h"
 #import "NSTabViewScreenResolution.h"
@@ -29,11 +30,6 @@ NSString* const kPresetWidth                                = @"width";
 NSString* const kPresetHeight                               = @"height";
 
 NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI";
-
-static const NSModalResponse NSModalResponseKeep            = (-1000);
-static const NSModalResponse NSModalResponseReset           = (-1001);
-static const NSModalResponse NSModalResponseView            = (-1002);
-static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 
 @interface ComLobgerVMwarePreferencePane() <MLGitHubReleaseCheckerDelegate>
@@ -373,7 +369,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
         if (error != nil) {
             // In case of error, remove our placeholder file.
             [fileManager removeItemAtURL:downloadUrl error:nil];
-            [self showErrorSheet:error];
+            [MLAlert showErrorSheet:error];
         }
         
         [progress unpublish]; // End "Downloads stack" progress
@@ -414,148 +410,6 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     _resY = resY;
 
     [self selectPresetWithWidth:@(_resX) andHeight:@(_resY)];
-}
-
-#pragma mark - Alerts
-
-- (void)showResetPresetsWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler
-{
-    NSAlert* alert = [[NSAlert alloc] init];
-    alert.alertStyle = NSAlertStyleWarning;
-    alert.messageText = NSLocalizedString(@"Reset all presets?", -);
-    alert.informativeText = NSLocalizedString(@"This will remove all presets and restore the defaults!", -);
-    [alert addButtonWithTitle:NSLocalizedString(@"Reset", -)].tag = NSModalResponseReset;
-    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-    
-    [alert beginSheetModalForWindow:self.mainView.window completionHandler:handler];
-}
-
-
-- (void)showNewVersionAvailableWithCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset))handler
-{
-    // Setup release note
-    NSDictionary<NSAttributedStringKey, id>* titleAttr = @{
-        NSFontAttributeName : [NSFont boldSystemFontOfSize:14.0]
-    };
-    NSAttributedString* releaseNote = [_releaseChecker generateReleaseNoteFromRelease:_releaseChecker.currentRelease
-                                                                            toRelease:_releaseChecker.availableRelease
-                                                                 withHeaderAttributes:titleAttr
-                                                                    andBodyAttributes:nil];
-    
-    NSTextField* releaseNoteTextField;
-    if (@available(macOS 10.12, *)) {
-        releaseNoteTextField = [NSTextField labelWithAttributedString:releaseNote];
-    }
-    else {
-        // This might clip some of the bottom :(
-        // The size calculation is incorrect and neither me nor Google knows what's wrong...
-        NSRect frame = { .origin = NSZeroPoint, .size = [releaseNote size]};
-        releaseNoteTextField = [[NSTextField alloc] initWithFrame:frame];
-        releaseNoteTextField.bordered = NO;
-        releaseNoteTextField.editable = NO;
-        releaseNoteTextField.attributedStringValue = releaseNote;
-    }
-    
-    NSScrollView* releaseNoteScrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 300, 100)];
-    releaseNoteScrollView.hasVerticalScroller = YES;
-    releaseNoteScrollView.hasHorizontalScroller = YES;
-    releaseNoteScrollView.documentView = releaseNoteTextField;
-    
-    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"name == %@", @"VMware.prefPane.zip"];
-    MLGitHubAsset* asset = [_releaseChecker.availableRelease.assets filteredArrayUsingPredicate:predicate].firstObject;
-    
-    
-    NSAlert* alert = [[NSAlert alloc] init];
-    alert.alertStyle = NSAlertStyleWarning;
-    alert.showsSuppressionButton = YES; // Uses default checkbox title
-    alert.messageText = NSLocalizedString(@"A new version is available", -);
-    alert.informativeText = [NSString stringWithFormat:NSLocalizedString(@"Version %@ is available.\nYou are currently running %@", -),
-                             _releaseChecker.availableRelease.name,
-                             _releaseChecker.currentRelease.name];
-    alert.accessoryView = releaseNoteScrollView;
-    
-    
-    [alert addButtonWithTitle:NSLocalizedString(@"View", -)].tag = NSModalResponseView;
-    if (asset != nil) {
-        [alert addButtonWithTitle:NSLocalizedString(@"Download", -)].tag = NSModalResponseDownload;
-    }
-    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-    
-    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
-        handler(returnCode, alert.suppressionButton.state, asset);
-    }];
-}
-
-
-- (void)showPrivilegedWarningWithCompletionHandler:(void (^)(NSModalResponse returnCode, NSControlStateValue suppressionState))handler
-{
-    NSAlert* alert = [[NSAlert alloc] init];
-    alert.alertStyle = NSAlertStyleWarning;
-    alert.showsSuppressionButton = YES; // Uses default checkbox title
-    alert.messageText = NSLocalizedString(@"This is not permanent!", -);
-    alert.informativeText = NSLocalizedString(@"To make the screen size change accross reboots, you must unlock the padlock before pressing \"Apply\"!", -);
-    [alert addButtonWithTitle:NSLocalizedString(@"Continue", -)];
-    [alert addButtonWithTitle:NSLocalizedString(@"Cancel", -)].tag = NSModalResponseCancel;
-    
-    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
-        handler(returnCode, alert.suppressionButton.state);
-    }];
-}
-
-
-- (void)showKeepChangesWithCompletionHandler:(void (^)(NSModalResponse returnCode))handler
-{
-    static dispatch_source_t timer = NULL;
-    
-    if (timer != NULL) {
-        dispatch_source_cancel(timer);
-        timer = nil;
-    }
-    
-    // Show timer for reverting back to previous screen size
-    NSInteger __block countDown = 15;
-    NSString* informativeText = NSLocalizedString(@"Reverting to previous resolution in %@ seconds.", -);
-    NSAlert* alert = [[NSAlert alloc] init];
-    alert.alertStyle = NSAlertStyleInformational;
-    alert.messageText = NSLocalizedString(@"Will you keep this display resolution?", -);
-    alert.informativeText = [NSString stringWithFormat:informativeText, @(countDown)];
-    [alert addButtonWithTitle:NSLocalizedString(@"Keep", -)].tag = NSModalResponseKeep;
-    NSButton* revertButton = [alert addButtonWithTitle:NSLocalizedString(@"Revert", -)];
-    revertButton.tag = NSModalResponseCancel;
-    [alert beginSheetModalForWindow:self.mainView.window completionHandler:^(NSModalResponse returnCode) {
-        if (timer != NULL) {
-            dispatch_source_cancel(timer);
-            timer = nil;
-        }
-        handler(returnCode);
-    }];
-    
-    timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-    dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
-    dispatch_source_set_event_handler(timer, ^{
-        if (countDown < 0) {
-            [revertButton performClick:self];
-        }
-        alert.informativeText = [NSString stringWithFormat:informativeText, @(countDown)];
-        countDown -= 1;
-    });
-    dispatch_resume(timer);
-}
-
-
-- (void)showError:(NSError*)error
-{
-    NSLog(@"ERROR: %@", error);
-    NSAlert* alert = [NSAlert alertWithError:error];
-    [alert runModal];
-}
-
-
-- (void)showErrorSheet:(NSError*)error
-{
-    NSLog (@"ERROR:\n%@", error);
-    NSAlert* alert = [NSAlert alertWithError:error];
-    [alert beginSheetModalForWindow:self.mainView.window completionHandler:nil];
 }
 
 
@@ -606,7 +460,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
     }
     
     // Now create the alert
-    [self showNewVersionAvailableWithCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset) {
+    [MLAlert showNewVersionAvailableForReleaseChecker:_releaseChecker withCompletionHandler:^(NSModalResponse returnCode, NSControlStateValue suppressionState, MLGitHubAsset* asset) {
         if (suppressionState == NSControlStateValueOn) {
             // Suppress this alert from now on
             [userDefaults setObject:releaseInfo.name forKey:skipKey];
@@ -627,7 +481,7 @@ static const NSModalResponse NSModalResponseDownload        = (-1003);
 
 - (void)gitHubReleaseChecker:(MLGitHubReleaseChecker *)sender failedWithError:(NSError *)error
 {
-    [self showError:error];
+    [MLAlert showError:error];
 }
 
 

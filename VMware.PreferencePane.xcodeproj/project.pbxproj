@@ -35,6 +35,8 @@
 		6D406E3C308B5DE000C8FFAB /* MLVMwareSessionCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D406E3B308B5DE000C8FFAB /* MLVMwareSessionCommand.m */; };
 		6D406E3E308F53E200C8FFAB /* NSTabViewScreenResolution.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D406E3D308F53E200C8FFAB /* NSTabViewScreenResolution.h */; };
 		6D406E40308F53EB00C8FFAB /* NSTabViewScreenResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D406E3F308F53EB00C8FFAB /* NSTabViewScreenResolution.m */; };
+		6D406E44308F7EF700C8FFAB /* MLAlert.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D406E42308F7EF700C8FFAB /* MLAlert.h */; };
+		6D406E45308F7EF700C8FFAB /* MLAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D406E43308F7EF700C8FFAB /* MLAlert.m */; };
 		6D7527AD20CEFBBD00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6D7527AF20CEFC2F00ECAAD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B3A8258203114AB0062DFEF /* Assets.xcassets */; };
 		6D8F8C313087D96900713904 /* MLCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D8F8C303087D96900713904 /* MLCommand.m */; };
@@ -98,6 +100,8 @@
 		6D406E3B308B5DE000C8FFAB /* MLVMwareSessionCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLVMwareSessionCommand.m; sourceTree = "<group>"; };
 		6D406E3D308F53E200C8FFAB /* NSTabViewScreenResolution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTabViewScreenResolution.h; sourceTree = "<group>"; };
 		6D406E3F308F53EB00C8FFAB /* NSTabViewScreenResolution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTabViewScreenResolution.m; sourceTree = "<group>"; };
+		6D406E42308F7EF700C8FFAB /* MLAlert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLAlert.h; sourceTree = "<group>"; };
+		6D406E43308F7EF700C8FFAB /* MLAlert.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLAlert.m; sourceTree = "<group>"; };
 		6D8F8C2F3087D84D00713904 /* MLCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MLCommand.h; sourceTree = "<group>"; };
 		6D8F8C303087D96900713904 /* MLCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MLCommand.m; sourceTree = "<group>"; };
 		6D8F8C333087E50500713904 /* MLVMwareGfxCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLVMwareGfxCommand.h; sourceTree = "<group>"; };
@@ -240,6 +244,8 @@
 			children = (
 				6D292A10212E128200A950AF /* MLPlistParser.h */,
 				6D292A11212E128200A950AF /* MLPlistParser.m */,
+				6D406E42308F7EF700C8FFAB /* MLAlert.h */,
+				6D406E43308F7EF700C8FFAB /* MLAlert.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -290,6 +296,7 @@
 				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
 				6D914149213DF455000D7931 /* NSTabViewItemInfo.h in Headers */,
 				6D406E3A308B5DCE00C8FFAB /* MLVMwareSessionCommand.h in Headers */,
+				6D406E44308F7EF700C8FFAB /* MLAlert.h in Headers */,
 				6D406E36308B5D5100C8FFAB /* MLVMwareVersionCommand.h in Headers */,
 				6D914150213DF5EB000D7931 /* NSTimeIntervalTransformer.h in Headers */,
 				6D2929D7212D96A200A950AF /* MLVMwareCommand.h in Headers */,
@@ -451,6 +458,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D2929DC212DF00400A950AF /* MLLaunchCtrlCommand.m in Sources */,
+				6D406E45308F7EF700C8FFAB /* MLAlert.m in Sources */,
 				6D406E40308F53EB00C8FFAB /* NSTabViewScreenResolution.m in Sources */,
 				5B3A82402030ED960062DFEF /* ComLobgerVMwarePreferencePane.m in Sources */,
 				6D8F8C313087D96900713904 /* MLCommand.m in Sources */,
