@@ -27,7 +27,7 @@ typedef struct
 
 @implementation MLVMwareGfxResolutionCommand
 
-- (NSError*)execute
+- (void)executeUserModeWithCompletion:(completion_block_t)completion
 {
     CFMutableDictionaryRef s = IOServiceMatching("VMwareGfx");
     
@@ -38,9 +38,11 @@ typedef struct
     IOObjectRelease(service);
     if (result != kIOReturnSuccess) {
         NSLog(@"%08x", result);
-        return [NSError errorWithDomain:MLCommandErrorDomain
-                                   code:result
-                               userInfo:@{ NSLocalizedDescriptionKey: @"Failed to open service" }];
+        id error = [NSError errorWithDomain:MLCommandErrorDomain
+                                       code:result
+                                   userInfo:@{ NSLocalizedDescriptionKey: @"Failed to open service" }];
+        completion(error);
+        return;
     }
     
     SetResReq req = {
@@ -58,13 +60,16 @@ typedef struct
     IOServiceClose(handle);
     if (result != kIOReturnSuccess) {
         NSLog(@"%08x", result);
-        return [NSError errorWithDomain:MLCommandErrorDomain
-                                   code:result
-                               userInfo:@{ NSLocalizedDescriptionKey: @"Failed to set resolution" }];
+        id error = [NSError errorWithDomain:MLCommandErrorDomain
+                                       code:result
+                                   userInfo:@{ NSLocalizedDescriptionKey: @"Failed to set resolution" }];
+        completion(error);
+        return;
     }
     
-    return nil;
+    completion(nil);
 }
+
 @end
 
 

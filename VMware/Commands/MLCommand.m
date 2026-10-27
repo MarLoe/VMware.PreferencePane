@@ -49,7 +49,6 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
                 self.isExecuting = NO;
             }
         });
-        
     });
 }
 
