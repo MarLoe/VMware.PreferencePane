@@ -9,7 +9,6 @@
 #import <Cocoa/Cocoa.h>
 #import <SecurityInterface/SFAuthorizationView.h>
 
-extern NSString* const kVMWarePrefsAutoHDPI;
 
 @interface NSTabViewScreenResolution : NSTabViewItem<NSTableViewDelegate, NSTextFieldDelegate>
 

@@ -52,7 +52,7 @@ cp -r VMware.prefPane /Library/PreferencePanes/
 
 ### **macOS** Catalina
 
-On macOS Catalina it seems to be even harder to run an unsigned custom preference pane. But here is how. Once you have installed the VMWare preference pane, try to start it. You might get this error message:
+On macOS Catalina it seems to be even harder to run an unsigned custom preference pane. But here is how. Once you have installed the VMware preference pane, try to start it. You might get this error message:
 
 ![VMware.prefPane](Images/VMware.prefPane-Catalina01.png)
 
@@ -61,7 +61,7 @@ If this happens, you should go to "Security & Privacy" and click the "Open Anywa
 ![VMware.prefPane](Images/VMware.prefPane-Catalina02.png)
 
 It will most likely result in an error message saying:
-**"Could not load VMware preference pane."** That is not a problem, just press Ok. Now you should quit the System Preferences aand the open it again. Now when you select the VMWare preference pane, you should get the old familiar warning where you can select "Open":
+**"Could not load VMware preference pane."** That is not a problem, just press Ok. Now you should quit the System Preferences aand the open it again. Now when you select the VMware preference pane, you should get the old familiar warning where you can select "Open":
 
 ![VMware.prefPane](Images/VMware.prefPane-Catalina03.png)
 

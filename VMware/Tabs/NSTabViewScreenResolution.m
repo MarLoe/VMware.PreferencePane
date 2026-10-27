@@ -17,7 +17,7 @@ NSString* const kPresetWidth                                = @"width";
 NSString* const kPresetHeight                               = @"height";
 
 
-NSString* const kVMWarePrefsAutoHDPI                        = @"enableAutoHiDPI";
+NSString* const kVMwarePrefsAutoHDPI                        = @"enableAutoHiDPI";
 
 NSString* const kPreferencesDirectory                       = @"Preferences";
 NSString* const kVMwareToolsPlist                           = @"com.vmware.tools.plist";
@@ -76,7 +76,7 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
                                                  name:NSApplicationDidChangeScreenParametersNotification
                                                object:nil];
 
-    _autoHiDPI.state = [[self loadVMwarePreferences][kVMWarePrefsAutoHDPI] boolValue] ? NSControlStateValueOn : NSControlStateValueOff;
+    _autoHiDPI.state = [[self loadVMwarePreferences][kVMwarePrefsAutoHDPI] boolValue] ? NSControlStateValueOn : NSControlStateValueOff;
         
     [self getScreenSize];
     self.resX = _currentWidth.integerValue;
@@ -224,9 +224,9 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
     
     NSMutableDictionary* vmWarePreferences = [[self loadVMwarePreferences] mutableCopy];
     BOOL newAutoHiDPIEnabled = _autoHiDPI.state == NSControlStateValueOn;
-    BOOL oldAutoHiDPIEnabled = [vmWarePreferences[kVMWarePrefsAutoHDPI] boolValue];
+    BOOL oldAutoHiDPIEnabled = [vmWarePreferences[kVMwarePrefsAutoHDPI] boolValue];
     if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
-        vmWarePreferences[kVMWarePrefsAutoHDPI] = @(newAutoHiDPIEnabled);
+        vmWarePreferences[kVMwarePrefsAutoHDPI] = @(newAutoHiDPIEnabled);
         [self saveVMwarePreferences:vmWarePreferences];
     }
     
@@ -235,7 +235,7 @@ NSString* const kVMwareToolsPlist                           = @"com.vmware.tools
         __strong typeof(self) strongSelf = weakSelf;
         if (reverted && strongSelf != nil) {
             if (newAutoHiDPIEnabled != oldAutoHiDPIEnabled) {
-                vmWarePreferences[kVMWarePrefsAutoHDPI] = @(oldAutoHiDPIEnabled);
+                vmWarePreferences[kVMwarePrefsAutoHDPI] = @(oldAutoHiDPIEnabled);
                 [strongSelf saveVMwarePreferences:vmWarePreferences];
                 strongSelf.autoHiDPI.state = oldAutoHiDPIEnabled ? NSControlStateValueOn : NSControlStateValueOff;
             }
