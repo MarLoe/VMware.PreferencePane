@@ -7,6 +7,7 @@
 //
 
 #import "MLVMwareSessionCommand.h"
+#import "MLCommand+internal.h"
 #import "VMToolsLibrary.h"
 
 @interface MLVMwareSessionCommand ()
@@ -29,7 +30,7 @@
 {
     NSError* error = nil;
     self.session = [VMToolsLibrary.sharedLibrary sessionInfo:&error];
-    completion(error);
+    [self callCompletion:completion withError:error];
 }
 
 @end
