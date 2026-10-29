@@ -1,21 +1,20 @@
 //
 //  VMToolsLibrary.h
 //
-//  Loads libvmtools.dylib at runtime with dlopen() and exposes the guest RPC
-//  functions. Nothing to link against: don't pass -lvmtools.
-//
-//  libvmtools.dylib is x86_64 only, so build the host process for x86_64.
+//  Created by Martin Løbger on 22/08/2018.
+//  Copyright © 2018 ML-Consulting. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Keys in the dictionary returned by -toolsVersionInfo:.
-extern NSString * const VMToolsVersionStringKey;  // "12.1.1"
-extern NSString * const VMToolsVersionNumberKey;  // "12321" (encoded major.minor.base)
-extern NSString * const VMToolsBuildNumberKey;    // "22484250"
-extern NSString * const VMToolsDescriptionKey;    // "VMware Tools 12.1.1 build 22484250"
+extern NSString * const kVMToolsSessionVersion;
+extern NSString * const kVMToolsSessionUptime;
+extern NSString * const kVMToolsVersionStringKey;   // "12.1.1"
+extern NSString * const kVMToolsVersionNumberKey;   // "12321" (encoded major.minor.base)
+extern NSString * const kVMToolsBuildNumberKey;     // "22484250"
+extern NSString * const kVMToolsDescriptionKey;     // "VMware Tools 12.1.1 build 22484250"
 
 extern NSErrorDomain const VMToolsLibraryErrorDomain;
 

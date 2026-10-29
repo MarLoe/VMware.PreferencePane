@@ -1,6 +1,9 @@
 //
 //  VMToolsLibrary.m
 //
+//  Created by Martin Løbger on 22/08/2018.
+//  Copyright © 2018 ML-Consulting. All rights reserved.
+//
 
 #import "VMToolsLibrary.h"
 
@@ -9,11 +12,12 @@
 
 NSErrorDomain const VMToolsLibraryErrorDomain = @"VMToolsLibraryErrorDomain";
 
-/// Keys in the dictionary returned by -toolsVersionInfo:.
-NSString * const VMToolsVersionStringKey    = @"versionString";
-NSString * const VMToolsVersionNumberKey    = @"versionNumber";
-NSString * const VMToolsBuildNumberKey      = @"buildNumber";
-NSString * const VMToolsDescriptionKey      = @"description";
+NSString * const kVMToolsSessionVersion     = @"version";
+NSString * const kVMToolsSessionUptime      = @"uptime";
+NSString * const kVMToolsVersionStringKey   = @"versionString";
+NSString * const kVMToolsVersionNumberKey   = @"versionNumber";
+NSString * const kVMToolsBuildNumberKey     = @"buildNumber";
+NSString * const kVMToolsDescriptionKey     = @"description";
 
 // Signatures from open-vm-tools (vmware/tools/guestrpc.h, vmcheck.h, util.h).
 // gboolean is an int.
@@ -158,7 +162,7 @@ typedef void (*vm_freeFn)(void *ptr);
 - (NSNumber *)uptimeMicrosecondsFromSession:(NSDictionary<NSString *, id> *)session
 {
     // "uptime":{"type":"static","units":"us","value":685509824116}
-    id uptime = session[@"uptime"];
+    id uptime = session[kVMToolsSessionUptime];
     id value = [uptime isKindOfClass:[NSDictionary class]] ? uptime[@"value"] : nil;
     if (![value isKindOfClass:[NSNumber class]]) {
         return nil;
@@ -169,7 +173,7 @@ typedef void (*vm_freeFn)(void *ptr);
 - (NSString *)hostVersionFromSession:(NSDictionary<NSString *, id> *)session
 {
     // "version":"VMware ESX 6.7.0 build-20497097"
-    id version = session[@"version"];
+    id version = session[kVMToolsSessionVersion];
     if (![version isKindOfClass:[NSString class]]) {
         return nil;
     }
@@ -189,10 +193,10 @@ typedef void (*vm_freeFn)(void *ptr);
     // vmware-tools-daemon publishes these at startup with
     // "info-set guestinfo.vmtools.<key> <value>".
     NSArray<NSString *> *keys = @[
-        VMToolsVersionStringKey,
-        VMToolsVersionNumberKey,
-        VMToolsBuildNumberKey,
-        VMToolsDescriptionKey];
+        kVMToolsVersionStringKey,
+        kVMToolsVersionNumberKey,
+        kVMToolsBuildNumberKey,
+        kVMToolsDescriptionKey];
     
     NSMutableDictionary<NSString *, NSString *> *info = [NSMutableDictionary dictionary];
     NSError *lastError = nil;

@@ -29,14 +29,8 @@
 {
     NSError* error = nil;
     NSDictionary<NSString *, NSString *> * version = [VMToolsLibrary.sharedLibrary toolsVersionInfo:&error];
-    self.version = version[VMToolsDescriptionKey];
+    self.version = version[kVMToolsDescriptionKey];
     completion(error);
 }
-
-//- (BOOL)parseStandardOutput:(NSString *)stdOutput error:(out NSError *__autoreleasing *)error
-//{
-//    self.version = [stdOutput stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-//    return YES;
-//}
 
 @end
