@@ -7,6 +7,7 @@
 //
 
 #import "MLVMwareVersionCommand.h"
+#import "VMToolsLibrary.h"
 
 @interface MLVMwareVersionCommand ()
 @property (nonatomic, strong) NSString* version;
@@ -16,8 +17,7 @@
 
 - (instancetype)init
 {
-    NSArray<NSString*>* arguments = @[@"--version"];
-    return self = [super initToolsWithArguments:arguments];
+    return self = [super init];
 }
 
 + (instancetype)version
@@ -25,10 +25,18 @@
     return [[MLVMwareVersionCommand alloc] init];
 }
 
-- (BOOL)parseStandardOutput:(NSString *)stdOutput error:(out NSError *__autoreleasing *)error
+- (void)executeWithCompletion:(completion_block_t)completion
 {
-    self.version = [stdOutput stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-    return YES;
+    NSError* error = nil;
+    NSDictionary<NSString *, NSString *> * version = [VMToolsLibrary.sharedLibrary toolsVersionInfo:&error];
+    self.version = version[VMToolsDescriptionKey];
+    completion(error);
 }
+
+//- (BOOL)parseStandardOutput:(NSString *)stdOutput error:(out NSError *__autoreleasing *)error
+//{
+//    self.version = [stdOutput stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+//    return YES;
+//}
 
 @end

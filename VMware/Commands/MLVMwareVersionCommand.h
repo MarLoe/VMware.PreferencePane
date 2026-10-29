@@ -9,15 +9,11 @@
 #import "MLVMwareCommand.h"
 
 
-@interface MLVMwareVersionCommand : MLVMwareCommand
+@interface MLVMwareVersionCommand : MLCommand
 
 @property (nonatomic, readonly, strong) NSString* version;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)initToolsWithArguments:(NSArray<NSString *> *)arguments NS_UNAVAILABLE;
-
-- (instancetype)initResolutionWithArguments:(NSArray<NSString *> *)arguments NS_UNAVAILABLE;
 
 + (instancetype)version;
 
