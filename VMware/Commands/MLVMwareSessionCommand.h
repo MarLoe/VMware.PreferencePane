@@ -9,15 +9,11 @@
 #import "MLVMwareCommand.h"
 
 
-@interface MLVMwareSessionCommand : MLVMwareCommand
+@interface MLVMwareSessionCommand : MLCommand
 
 @property (nonatomic, readonly, strong) NSDictionary* session;
 
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)initToolsWithArguments:(NSArray<NSString *> *)arguments NS_UNAVAILABLE;
-
-- (instancetype)initResolutionWithArguments:(NSArray<NSString *> *)arguments NS_UNAVAILABLE;
 
 + (instancetype)session;
 

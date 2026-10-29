@@ -48,6 +48,8 @@
 		6D914151213DF5EB000D7931 /* NSTimeIntervalTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D91414F213DF5EB000D7931 /* NSTimeIntervalTransformer.m */; };
 		6DB3F5B820D087F20019CB79 /* NSView+Enabled.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */; };
 		6DB3F5B920D087F20019CB79 /* NSView+Enabled.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */; };
+		6DD3EC3F3093752D00545A92 /* VMToolsLibrary.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DD3EC3D3093752D00545A92 /* VMToolsLibrary.h */; };
+		6DD3EC403093752D00545A92 /* VMToolsLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD3EC3E3093752D00545A92 /* VMToolsLibrary.m */; };
 		6DD6407A213E731300962088 /* VMware.searchTerms in Resources */ = {isa = PBXBuildFile; fileRef = 6DD64079213E731300962088 /* VMware.searchTerms */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +115,8 @@
 		6DB3F5B620D087F20019CB79 /* NSView+Enabled.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSView+Enabled.h"; sourceTree = "<group>"; };
 		6DB3F5B720D087F20019CB79 /* NSView+Enabled.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSView+Enabled.m"; sourceTree = "<group>"; };
 		6DB3F5BA20D092BF0019CB79 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		6DD3EC3D3093752D00545A92 /* VMToolsLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMToolsLibrary.h; sourceTree = "<group>"; };
+		6DD3EC3E3093752D00545A92 /* VMToolsLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMToolsLibrary.m; sourceTree = "<group>"; };
 		6DD64079213E731300962088 /* VMware.searchTerms */ = {isa = PBXFileReference; explicitFileType = text.plist; path = VMware.searchTerms; sourceTree = "<group>"; };
 		6DFDDA3C2439B11C00CB0FE8 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6DFDDA3E2439B13D00CB0FE8 /* Package */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Package; sourceTree = "<group>"; };
@@ -242,10 +246,12 @@
 		6D8F8C323087E17200713904 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				6D292A10212E128200A950AF /* MLPlistParser.h */,
-				6D292A11212E128200A950AF /* MLPlistParser.m */,
 				6D406E42308F7EF700C8FFAB /* MLAlert.h */,
 				6D406E43308F7EF700C8FFAB /* MLAlert.m */,
+				6D292A10212E128200A950AF /* MLPlistParser.h */,
+				6D292A11212E128200A950AF /* MLPlistParser.m */,
+				6DD3EC3D3093752D00545A92 /* VMToolsLibrary.h */,
+				6DD3EC3E3093752D00545A92 /* VMToolsLibrary.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -293,6 +299,7 @@
 				5B3A823E2030ED960062DFEF /* ComLobgerVMwarePreferencePane.h in Headers */,
 				6D2929DB212DF00400A950AF /* MLLaunchCtrlCommand.h in Headers */,
 				6D406E3E308F53E200C8FFAB /* NSTabViewScreenResolution.h in Headers */,
+				6DD3EC3F3093752D00545A92 /* VMToolsLibrary.h in Headers */,
 				6D292A12212E128200A950AF /* MLPlistParser.h in Headers */,
 				6D914149213DF455000D7931 /* NSTabViewItemInfo.h in Headers */,
 				6D406E3A308B5DCE00C8FFAB /* MLVMwareSessionCommand.h in Headers */,
@@ -461,6 +468,7 @@
 				6D406E45308F7EF700C8FFAB /* MLAlert.m in Sources */,
 				6D406E40308F53EB00C8FFAB /* NSTabViewScreenResolution.m in Sources */,
 				5B3A82402030ED960062DFEF /* ComLobgerVMwarePreferencePane.m in Sources */,
+				6DD3EC403093752D00545A92 /* VMToolsLibrary.m in Sources */,
 				6D8F8C313087D96900713904 /* MLCommand.m in Sources */,
 				6D2929D8212D96A200A950AF /* MLVMwareCommand.m in Sources */,
 				6D914151213DF5EB000D7931 /* NSTimeIntervalTransformer.m in Sources */,
