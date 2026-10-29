@@ -90,7 +90,7 @@
             }
         });
         if (![self parseStandardOutput:self.standardOutput error:&error]) {
-            completion(error);
+            [self callCompletion:completion withError:error];
             return;
         }
         
@@ -103,7 +103,7 @@
             }
         });
         if (![self parseStandardError:self.standardError error:&error]) {
-            completion(error);
+            [self callCompletion:completion withError:error];
             return;
         }
         
@@ -111,16 +111,16 @@
             error = [NSError errorWithDomain:NSPOSIXErrorDomain
                                         code:_task.terminationStatus
                                     userInfo:@{ NSLocalizedDescriptionKey: self.standardError }];
-            completion(error);
+            [self callCompletion:completion withError:error];
             return;
         }
         
-        completion(nil);
+        [self callCompletion:completion withError:nil];
     };
     
     if (@available(macOS 10.13, *)) {
         if (![task launchAndReturnError:(&error)]) {
-            completion(error);
+            [self callCompletion:completion withError:error];
             return;
         }
     }

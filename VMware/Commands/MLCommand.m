@@ -55,16 +55,21 @@ NSErrorDomain const MLCommandErrorDomain = @"kMLCommandErrorDomain";
 
 - (void)executeUserModeWithCompletion:(completion_block_t)completion
 {
-    completion(nil);
+    [self callCompletion:completion withError:nil];
 }
 
 
 - (void)callCompletion:(completion_block_t)completion withError:(NSError*)error
 {
     if (completion != nil) {
-        dispatch_sync(dispatch_get_main_queue(), ^{
+        if ([NSThread isMainThread]) {
             completion(error);
-        });
+        }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(error);
+            });
+        }
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 #import "MLVMwareVersionCommand.h"
+#import "MLCommand+internal.h"
 #import "VMToolsLibrary.h"
 
 @interface MLVMwareVersionCommand ()
@@ -30,7 +31,7 @@
     NSError* error = nil;
     NSDictionary<NSString *, NSString *> * version = [VMToolsLibrary.sharedLibrary toolsVersionInfo:&error];
     self.version = version[kVMToolsDescriptionKey];
-    completion(error);
+    [self callCompletion:completion withError:error];
 }
 
 @end

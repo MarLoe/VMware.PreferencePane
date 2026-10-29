@@ -7,6 +7,7 @@
 //
 
 #import "MLVMwareGfxCommand.h"
+#import "MLCommand+internal.h"
 
 typedef struct
 {
@@ -41,7 +42,7 @@ typedef struct
         id error = [NSError errorWithDomain:MLCommandErrorDomain
                                        code:result
                                    userInfo:@{ NSLocalizedDescriptionKey: @"Failed to open service" }];
-        completion(error);
+        [self callCompletion:completion withError:error];
         return;
     }
     
@@ -63,11 +64,11 @@ typedef struct
         id error = [NSError errorWithDomain:MLCommandErrorDomain
                                        code:result
                                    userInfo:@{ NSLocalizedDescriptionKey: @"Failed to set resolution" }];
-        completion(error);
+        [self callCompletion:completion withError:error];
         return;
     }
     
-    completion(nil);
+    [self callCompletion:completion withError:nil];
 }
 
 @end
