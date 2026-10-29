@@ -11,6 +11,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// Keys in the dictionary returned by -toolsVersionInfo:.
+extern NSString * const VMToolsVersionStringKey;  // "12.1.1"
+extern NSString * const VMToolsVersionNumberKey;  // "12321" (encoded major.minor.base)
+extern NSString * const VMToolsBuildNumberKey;    // "22484250"
+extern NSString * const VMToolsDescriptionKey;    // "VMware Tools 12.1.1 build 22484250"
+
 extern NSErrorDomain const VMToolsLibraryErrorDomain;
 
 typedef NS_ERROR_ENUM(VMToolsLibraryErrorDomain, VMToolsLibraryError) {
@@ -58,6 +64,17 @@ typedef NS_ERROR_ENUM(VMToolsLibraryErrorDomain, VMToolsLibraryError) {
 
 /// Host version string, e.g. "VMware ESX 6.7.0 build-20497097".
 - (nullable NSString *)hostVersionFromSession:(NSDictionary<NSString *, id> *)session;
+
+/// Reads a guestinfo variable from the host ("info-get guestinfo.<key>").
+/// Fails with VMToolsLibraryErrorRPCFailed when the key isn't set.
+- (nullable NSString *)guestInfoValue:(NSString *)key error:(NSError **)error;
+
+
+/// The Tools version as the running vmware-tools-daemon reported it to the
+/// host (guestinfo.vmtools.*). Keys the daemon hasn't set are left out;
+/// returns nil only when none of them could be read.
+- (nullable NSDictionary<NSString *, NSString *> *)toolsVersionInfo:(NSError **)error;
+
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;

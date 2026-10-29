@@ -9,6 +9,12 @@
 
 NSErrorDomain const VMToolsLibraryErrorDomain = @"VMToolsLibraryErrorDomain";
 
+/// Keys in the dictionary returned by -toolsVersionInfo:.
+NSString * const VMToolsVersionStringKey    = @"versionString";
+NSString * const VMToolsVersionNumberKey    = @"versionNumber";
+NSString * const VMToolsBuildNumberKey      = @"buildNumber";
+NSString * const VMToolsDescriptionKey      = @"description";
+
 // Signatures from open-vm-tools (vmware/tools/guestrpc.h, vmcheck.h, util.h).
 // gboolean is an int.
 typedef int (*RpcChannel_SendOneRawFn)(const char *data, size_t dataLen,
@@ -169,6 +175,47 @@ typedef void (*vm_freeFn)(void *ptr);
     }
     return version;
 }
+
+#pragma mark - Tools version
+
+- (NSString *)guestInfoValue:(NSString *)key error:(NSError **)error
+{
+    NSString *cmd = [NSString stringWithFormat:@"info-get guestinfo.%@", key];
+    return [self sendRPCString:cmd error:error];
+}
+
+- (NSDictionary<NSString *, NSString *> *)toolsVersionInfo:(NSError **)error
+{
+    // vmware-tools-daemon publishes these at startup with
+    // "info-set guestinfo.vmtools.<key> <value>".
+    NSArray<NSString *> *keys = @[
+        VMToolsVersionStringKey,
+        VMToolsVersionNumberKey,
+        VMToolsBuildNumberKey,
+        VMToolsDescriptionKey];
+    
+    NSMutableDictionary<NSString *, NSString *> *info = [NSMutableDictionary dictionary];
+    NSError *lastError = nil;
+    
+    for (NSString *key in keys) {
+        NSString *guestInfoKey = [@"vmtools." stringByAppendingString:key];
+        NSString *value = [self guestInfoValue:guestInfoKey error:&lastError];
+        if (value != nil) {
+            info[key] = value;
+        } else if (lastError.code == VMToolsLibraryErrorNotLoaded ||
+                   lastError.code == VMToolsLibraryErrorNotVirtual) {
+            break;
+        }
+    }
+    
+    if (info.count == 0 && error != NULL) {
+        *error = lastError;
+        return nil;
+    }
+    
+    return info;
+}
+
 
 #pragma mark - Helpers
 
