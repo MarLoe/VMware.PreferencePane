@@ -7,7 +7,7 @@
 //
 
 #import "MLVMwareSessionCommand.h"
-
+#import "VMToolsLibrary.h"
 
 @interface MLVMwareSessionCommand ()
 @property (nonatomic, strong) NSDictionary* session;
@@ -17,8 +17,7 @@
 
 - (instancetype)init
 {
-    NSArray<NSString*>* arguments = @[@"stat", @"raw", @"json", @"session"];
-    return self = [super initToolsWithArguments:arguments];
+    return self = [super init];
 }
 
 + (instancetype)session
@@ -26,13 +25,11 @@
     return [[MLVMwareSessionCommand alloc] init];
 }
 
-- (BOOL)parseStandardOutput:(NSString*)stdOutput error:(out NSError **_Nullable)error
+- (void)executeWithCompletion:(completion_block_t)completion
 {
-    NSData* jsonData = [stdOutput dataUsingEncoding:NSUTF8StringEncoding];
-    self.session = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                   options:kNilOptions
-                                                     error:error];
-    return *error == nil;
+    NSError* error = nil;
+    self.session = [VMToolsLibrary.sharedLibrary sessionInfo:&error];
+    completion(error);
 }
 
 @end
