@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1420"
-   version = "1.3">
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -43,7 +43,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = ""
       selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
-      launchStyle = "0"
+      launchStyle = "1"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
@@ -54,14 +54,46 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;rm -rf /Library/PreferencePanes/VMware.prefPane&#10;rm -rf ~/Library/PreferencePanes/VMware.prefPane&#10;">
+               scriptText = "killall &quot;System Settings&quot; 2&gt; /dev/null&#10;">
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "rm -rf &quot;/Library/PreferencePanes/VMware.prefPane&quot;&#10;rm -rf &quot;~/Library/PreferencePanes/VMware.prefPane&quot;&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "5B3A82392030ED960062DFEF"
+                     BuildableName = "VMware.prefPane"
+                     BlueprintName = "VMware"
+                     ReferencedContainer = "container:VMware.PreferencePane.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "cp -r &quot;$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME&quot; &quot;$HOME/Library/PreferencePanes/$FULL_PRODUCT_NAME&quot;&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "5B3A82392030ED960062DFEF"
+                     BuildableName = "VMware.prefPane"
+                     BlueprintName = "VMware"
+                     ReferencedContainer = "container:VMware.PreferencePane.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
             </ActionContent>
          </ExecutionAction>
       </PreActions>
       <PathRunnable
          runnableDebuggingMode = "0"
          BundleIdentifier = "com.apple.systempreferences"
-         FilePath = "/System/Applications/System Preferences.app">
+         FilePath = "/System/Applications/System Settings.app">
       </PathRunnable>
       <MacroExpansion>
          <BuildableReference
@@ -74,7 +106,11 @@
       </MacroExpansion>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME"
+            argument = "-W"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "$HOME/Library/PreferencePanes/$FULL_PRODUCT_NAME"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
