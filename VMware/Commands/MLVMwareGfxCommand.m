@@ -32,7 +32,7 @@ typedef struct
 {
     CFMutableDictionaryRef s = IOServiceMatching("VMwareGfx");
     
-    io_service_t service = IOServiceGetMatchingService(kIOMasterPortDefault, s);
+    io_service_t service = IOServiceGetMatchingService(MACH_PORT_NULL, s);
     
     io_connect_t handle = 0;
     kern_return_t result = IOServiceOpen(service, mach_task_self(), 0x0103, &handle);
